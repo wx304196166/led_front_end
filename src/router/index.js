@@ -30,34 +30,36 @@ export const constantRouterMap = [
   // 菜单相关路由
   { 
     path: '/dashboard', 
-    name:'dashboard',
+    name:'Home',
     meta:{title:'dashboard'}, 
     component: () => import('@/views/dashboard/dashboard')
   },
   { 
-    path: '/download', 
-    name:'download',
-    meta:{title:'download'}, 
-    component: () => import('@/views/download/download')
-  },
-  { 
     path: '/products', 
-    name:'products',
+    name:'Products',
     meta:{title:'products'}, 
     component: () => import('@/views/products/products')
   },
   { 
-    path: '/maintenance', 
-    name:'maintenance',
-    meta:{title:'maintenance'}, 
-    component: () => import('@/views/maintenance/maintenance')
-  },
-  { 
     path: '/integration', 
-    name:'integration',
+    name:'Integration',
     meta:{title:'integration'}, 
     component: () => import('@/views/integration/integration')
   }, 
+  { 
+    path: '/download', 
+    name:'Download',
+    meta:{title:'download'}, 
+    component: () => import('@/views/download/download')
+  },
+
+  { 
+    path: '/maintenance', 
+    name:'Maintenance',
+    meta:{title:'maintenance'}, 
+    component: () => import('@/views/maintenance/maintenance')
+  },
+
   { path: '*', redirect: '/dashboard', hidden: true }
 ]
 
