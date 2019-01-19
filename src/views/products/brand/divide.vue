@@ -1,8 +1,8 @@
 <template>
-<div class="productBrand">
-        <span>brand:</span>
-        <span v-for="(item,index) in brands" :key="index">{{item}}</span>
-      </div>
+  <div class="productBrand">
+    <span>brand:</span>
+    <span v-for="(item,index) in brands" :key="index">{{item}}</span>
+  </div>
 </template>
 
 <script>

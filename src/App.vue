@@ -4,7 +4,7 @@
 
       <li v-for="link in routes" :key="link.path" class="menu-item">
         <router-link v-if="!link.hidden" :to="link.path">
-          {{link.name}}
+          {{ link.name }}
         </router-link>
       </li>
     </ul>
