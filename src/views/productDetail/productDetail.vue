@@ -52,7 +52,7 @@ export default {
 <style rel="stylesheet/scss" lang="scss" scoped>
 .intro,
 .detail-box {
-  padding: 20px 6%;
+  padding: 20px 0;
 }
 .blank {
   width: 3.5%;

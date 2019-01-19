@@ -20,29 +20,29 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 .related {
-  width: 200px;
+  width: 14.2857rem;
 
   .title {
-    font-size: 18px;
+    font-size: 1.2857rem;
     font-weight: 700;
-    line-height: 35px;
+    line-height: 2.5rem;
     color: #fefefe;
     background: #949494;
     text-align: center;
   }
   .list {
     background: #f5f5f5;
-    min-height: 500px;
+    min-height: 35.7143rem;
     .item {
-      padding: 20px 15px;
+      padding: 1.4286rem 1.0714rem;
       > div {
         width: 100%;
-        height: 170px;
+        height: 12.1429rem;
         border: 1px solid #000;
       }
       > p {
-        font-size: 16px;
-        line-height: 20px;
+        font-size: 1.1429rem;
+        line-height: 1.4286rem;
       }
     }
   }
