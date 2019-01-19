@@ -1,9 +1,9 @@
 <template>
   <div class="product">
-    <img :src="product" alt="" />
+    <img :src="product" alt="">
     <div class="Summary">
-      <h3>{{info.title}}</h3>
-      {{info.summary}}
+      <h3>{{ info.title }}</h3>
+      {{ info.summary }}
     </div>
   </div>
 </template>
@@ -13,13 +13,18 @@ import product from '@/assets/img/product.png';
 
 export default {
   name: 'SingleProduct',
+  props: {
+    info: {
+      type: Object,
+      default: function () { return {} }
+    }
+  },
   data() {
     return {
       product
-    }
-  },
-  props:['info']
-}
+    };
+  }
+};
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>

@@ -2,28 +2,22 @@
   <div>
     <ul class="intro clearfix">
       <li class="show-box">
-        <div>
-
-        </div>
+        <div />
         <ul class="spec-list">
-          <li></li>
-          <li>
-
-          </li>
-          <li></li>
+          <li />
+          <li />
+          <li />
         </ul>
       </li>
-      <li class="blank"></li>
+      <li class="blank" />
       <li class="describe-box">
         <div class="title">
           Led Colourful HD Display
-          <i class="collect"></i>
+          <i class="collect" />
         </div>
         <ul class="specifications clearfix">
           <li>Specifications:</li>
-          <li>
-
-          </li>
+          <li />
         </ul>
         <p class="describe">
           Curabitur auctor tristique lobortis. Quisque bibendum, ipsum in feugiat pharetra, odio libero malesuada turpis, tempus fermentum augue est sit amet magna. Vestibulum bibendum lectus non mauris porta, sed blandit purus scelerisque. Sed consequat mollis ornare. Sed laoreet id dolor vitae facilisis. Mauris varius orci sed turpis commodo mattis.
