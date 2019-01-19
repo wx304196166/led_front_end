@@ -8,7 +8,7 @@
         </router-link>
       </li>
     </ul>
-    <div class="page-container">
+    <div>
       <router-view />
     </div>
     <div class="foot" />

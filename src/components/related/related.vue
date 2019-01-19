@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="height:100%">
     <div class="title">Related products</div>
     <ul class="list">
       <li class="item">
@@ -29,7 +29,7 @@ export default {
 }
 .list {
   background: #f5f5f5;
-  min-height: 35.7143rem;
+  height: calc(100% - 2.5rem);
   .item {
     padding: 1.4286rem 1.0714rem;
     > div {
