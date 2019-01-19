@@ -1,16 +1,15 @@
 <template>
   <div class="product">
-    <img :src="product" alt="">
-    <div class="Summary">
+    <img :src="productPng" alt="">
+    <div class="productSummary">
       <h3>{{ info.title }}</h3>
-      {{ info.summary }}
+      <span class="summary">{{ info.summary }}</span>
     </div>
   </div>
 </template>
 
 <script>
-import product from '@/assets/img/product.png';
-
+import productPng from '@/assets/img/product.png';
 export default {
   name: 'SingleProduct',
   props: {
@@ -21,40 +20,44 @@ export default {
   },
   data() {
     return {
-      product
+      productPng
     };
   }
 };
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.productContainer {
-  max-width: 1200px;
-  margin: 0 auto;
-  .productList {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    .product {
-      position: relative;
-      width: 360px;
-      margin: 20px;
-      height: 200px;
-      .productSummary {
-        position: absolute;
-        bottom: 0;
-        height: 50%;
-        width: 100%;
-        background-color: #eee;
-      }
-      i,
-      img {
-        display: inline-block;
-        width: 100%;
-        height: 100%;
-        // background: url('../../style/imgs/product.png') no-repeat 0 0;
-      }
+.product {
+  position: relative;
+  box-sizing: border-box;
+  width: 33.3%;
+  border: 1px solid transparent;
+  overflow: hidden;
+  &:hover {
+    border: 1px solid #000;
+    box-shadow: none;
+    .productSummary {
+      background-color: #E3158C;
+      transform: translateY(-100%);
     }
+  }
+  .productSummary {
+    position: absolute;
+    top: 100%;
+    transform: translateY(-50px);
+    transition: 0.38s;
+    width: 100%;
+    padding-bottom: 10px;
+    text-align: center;
+    .summary {
+      text-align: left;
+    }
+  }
+  i,
+  img {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
   }
 }
 </style>
