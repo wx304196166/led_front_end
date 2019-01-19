@@ -28,12 +28,7 @@
     <ul class="detail-box clearfix">
       <li class="related">
         <div class="title">Related products</div>
-        <ul class="list">
-          <li class="item">
-            <div>图片</div>
-            <p>Product name</p>
-          </li>
-        </ul>
+        <related />
       </li>
       <li class="blank">&emsp;</li>
       <li class="detail">
@@ -47,11 +42,11 @@
 </template>
 
 <script>
-
+import related from '@/components/related/related';
 export default {
-  name: 'ProductDetail'
-
-}
+  name: 'ProductDetail',
+  components: { related }
+};
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>

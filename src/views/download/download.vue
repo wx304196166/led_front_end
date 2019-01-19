@@ -9,7 +9,7 @@
 export default {
   name: 'Download'
 
-}
+};
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>

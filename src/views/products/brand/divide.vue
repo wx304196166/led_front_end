@@ -14,10 +14,10 @@ export default {
   name: 'Products',
   data() {
     return {
-      brands: ['Barco', 'Analog Way', 'RGBLink', 'Magnimage', 'VDWALL', 'NovaStar']
-    }
-  },
-}
+      brands: ['brand1', 'brand2', 'brand3']
+    };
+  }
+};
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
