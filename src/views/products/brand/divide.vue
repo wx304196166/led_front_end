@@ -2,9 +2,9 @@
   <div class="productBrand">
     <!-- brand -->
     <span>Brand:</span>
-    <span v-for="(item,index) in brands" :key="index" class='brand'>{{item}}</span>
+    <span v-for="(item,index) in brands" :key="index" class="brand">{{ item }}</span>
     <!-- search -->
-    <input type="text" class='searchInput'>
+    <input type="text" class="searchInput">
   </div>
 </template>
 
