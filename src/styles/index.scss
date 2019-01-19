@@ -12,10 +12,6 @@ body {
   font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
 }
 
-label {
-  font-weight: 700;
-}
-
 html {
   height: 100%;
   box-sizing: border-box;
@@ -23,12 +19,6 @@ html {
 
 #app {
   height: 100%;
-}
-
-*,
-*:before,
-*:after {
-  box-sizing: inherit;
 }
 
 a,
@@ -57,6 +47,14 @@ a:hover {
   text-decoration: none;
 }
 
+ul,
+ol,
+li {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
 .clearfix {
   &:after {
     visibility: hidden;
@@ -66,13 +64,4 @@ a:hover {
     clear: both;
     height: 0;
   }
-}
-
-//main-container全局样式
-.app-main {
-  min-height: 100%
-}
-
-.app-container {
-  padding: 20px;
 }
