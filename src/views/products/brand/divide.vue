@@ -1,8 +1,8 @@
 <template>
-<div class="productBrand">
-        <span>brand:</span>
-        <span v-for="(item,index) in brands" :key="index">{{item}}</span>
-      </div>
+  <div class="productBrand">
+    <span>Brand:</span>
+    <span v-for="(item,index) in brands" :key="index" class='brand'>{{item}}</span>
+  </div>
 </template>
 
 <script>
@@ -11,7 +11,7 @@ export default {
   name: 'Products',
   data() {
     return {
-      brands: ['brand1', 'brand2', 'brand3']
+      brands: ['Barco', 'Analog Way', 'RGBLink', 'Magnimage', 'VDWALL', 'NovaStar']
     }
   },
 }
@@ -20,5 +20,8 @@ export default {
 <style rel="stylesheet/scss" lang="scss" scoped>
 .productBrand {
   margin: 0 auto;
+  .brand {
+    margin-right: 20px;
+  }
 }
 </style>
