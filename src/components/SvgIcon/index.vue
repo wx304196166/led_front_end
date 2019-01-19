@@ -19,17 +19,17 @@ export default {
   },
   computed: {
     iconName() {
-      return `#icon-${this.iconClass}`
+      return `#icon-${this.iconClass}`;
     },
     svgClass() {
       if (this.class) {
-        return 'svg-icon ' + this.class
+        return 'svg-icon ' + this.class;
       } else {
-        return 'svg-icon'
+        return 'svg-icon';
       }
     }
   }
-}
+};
 </script>
 
 <style scoped>

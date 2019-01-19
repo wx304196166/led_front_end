@@ -9,7 +9,7 @@
 export default {
   name: 'Dashboard'
 
-}
+};
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>

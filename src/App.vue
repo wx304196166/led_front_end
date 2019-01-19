@@ -22,14 +22,14 @@ export default {
     return {
       activeIndex: '1',
       activeIndex2: '1'
-    }
+    };
   },
   computed: {
     routes() {
-      return this.$router.options.routes
+      return this.$router.options.routes;
     }
   }
-}
+};
 </script>
 <style  rel="stylesheet/scss" lang="scss" scoped>
 .menu {
