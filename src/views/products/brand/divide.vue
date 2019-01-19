@@ -1,7 +1,10 @@
 <template>
   <div class="productBrand">
-    <span>brand:</span>
-    <span v-for="(item,index) in brands" :key="index" class="brand">{{ item }}</span>
+    <!-- brand -->
+    <span>Brand:</span>
+    <span v-for="(item,index) in brands" :key="index" class='brand'>{{item}}</span>
+    <!-- search -->
+    <input type="text" class='searchInput'>
   </div>
 </template>
 
@@ -22,6 +25,10 @@ export default {
   margin: 0 auto;
   .brand {
     margin-right: 20px;
+  }
+  .searchInput {
+    border-radius: 10px;
+    border: transparent;
   }
 }
 </style>
