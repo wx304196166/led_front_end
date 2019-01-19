@@ -1,27 +1,34 @@
-import request from '@/utils/request'
+import request from '../utils/request'
 
-export function login(username, password) {
+//登录
+export function loginPC(username, password, type = 1) {
   return request({
     url: '/user/login',
     method: 'post',
     data: {
       username,
-      password
+      password,
+      type
     }
   })
 }
-
-export function getInfo(token) {
+//检查用户名是否存在
+export function checkName(username, type = 1) {
   return request({
-    url: '/user/info',
-    method: 'get',
-    params: { token }
+    url: `/user/check/${username}/${type}`,
+    method: 'get'
   })
 }
-
-export function logout() {
+//注册
+export function registerCustom({username, password, name, phone}) {
   return request({
-    url: '/user/logout',
-    method: 'post'
+    url: `/user/createCustomer`,
+    method: 'post',
+    data: {
+      username,
+      password,
+      name,
+      phone
+    }
   })
 }

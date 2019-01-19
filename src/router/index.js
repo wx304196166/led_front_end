@@ -26,39 +26,39 @@ export const constantRouterMap = [
 
   // { path: '/login', component: () => import('@/views/login/index'), hidden: true },
   // { key: '/register', component: () => import('@/views/register/index'), hidden: true },
-  { path: '/productDetail', component: () => import('@/views/productDetail/index'), hidden: true },
+  { path: '/productDetail', component: () => import('@/views/productDetail/productDetail'), hidden: true },
   // 菜单相关路由
   { 
     path: '/dashboard', 
     name:'dashboard',
     meta:{title:'dashboard'}, 
-    component: () => import('@/views/dashboard/index')
+    component: () => import('@/views/dashboard/dashboard')
   },
   { 
     path: '/download', 
     name:'download',
     meta:{title:'download'}, 
-    component: () => import('@/views/download/index')
+    component: () => import('@/views/download/download')
   },
   { 
     path: '/products', 
     name:'products',
     meta:{title:'products'}, 
-    component: () => import('@/views/products/index')
+    component: () => import('@/views/products/products')
   },
   { 
     path: '/maintenance', 
     name:'maintenance',
     meta:{title:'maintenance'}, 
-    component: () => import('@/views/maintenance/index')
+    component: () => import('@/views/maintenance/maintenance')
   },
   { 
     path: '/integration', 
     name:'integration',
     meta:{title:'integration'}, 
-    component: () => import('@/views/integration/index')
+    component: () => import('@/views/integration/integration')
   }, 
-  { path: '*', redirect: '/404', hidden: true }
+  { path: '*', redirect: '/dashboard', hidden: true }
 ]
 
 export default new Router({
