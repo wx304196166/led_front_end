@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="productContainer">
+      <div class="photo" />
       <divide />
       <div class="productList">
         <single-product v-for="(item,index) in products" :key="index" :info="item" />
@@ -12,6 +13,7 @@
 <script>
 import SingleProduct from './singleProduct';
 import Divide from './brand/divide';
+// import { products } from './dummy';
 
 export default {
   name: 'Products',
@@ -19,11 +21,31 @@ export default {
   data() {
     return {
       products: [
-        { photo: '', title: 'led2', summary: '时代峰峻客户水电费' },
-        { photo: '', title: '啊目的', summary: 'sdfxcvsdf' },
-        { photo: '', title: 'led2', summary: '时代峰峻客户水电费' },
-        { photo: '', title: 'led2', summary: 'sdfxcvsdfwersdfsfxcv     sdfxvsdf' },
-        { photo: '', title: 'led2', summary: '时代峰峻客户水电费' }
+        {
+          photo: '',
+          title: 'led2',
+          summary: '时代峰峻客户水电费时代峰峻客户水电费时代峰峻客户水电费时代峰峻客户水电费时代峰峻客户水电费时代峰峻客户水电费时代峰峻客户水电费'
+        },
+        {
+          photo: '',
+          title: '啊目的',
+          summary: 'sdfxcvsdf'
+        },
+        {
+          photo: '',
+          title: 'led2',
+          summary: '时代峰峻客户水电费'
+        },
+        {
+          photo: '',
+          title: 'led2',
+          summary: 'sdfxcvsdfwersdfsfxcv     sdfxvsdf'
+        },
+        {
+          photo: '',
+          title: 'led2',
+          summary: '时代峰峻客户水电费'
+        }
       ]
     };
   }
@@ -35,15 +57,17 @@ export default {
 .productContainer {
   max-width: 1200px;
   margin: 0 auto;
+  .photo {
+    border: 1px solid #000;
+    height: 200px;
+    margin-bottom: 20px;
+  }
   .productList {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    width: 100%;
     .product {
-      position: relative;
-      width: 360px;
-      margin: 20px;
-      height: 200px;
       .productSummary {
         position: absolute;
         bottom: 0;
