@@ -1,83 +1,92 @@
 <template>
-  <ul class="page-container clearfix">
-    <li class="show-box clearfix">
-      <ul class="show clearfix">
-        <li class="title">Led Colourful HD Display</li>
-        <li class="img-box bg"></li>
-        <li class="title">Specifications: <span class="spec">200*300</span></li>
-        <li>
-          Curabitur auctor tristique lobortis. Quisque bibendum, ipsum in feugiat pharetra, odio libero malesuada turpis, tempus fermentum augue est sit amet magna. Vestibulum bibendum lectus non mauris porta, sed blandit purus scelerisque. Sed consequat mollis ornare. Sed laoreet id dolor vitae facilisis. Mauris varius orci sed turpis commodo mattis.
-        </li>
-      </ul>
-      <div class="blank"></div>
-      <ul class="operate clearfix">
-        <li class="adjust">
-          <ul v-for="item in adjust" :key="item.name" class="clearfix">
-            <li>{{ item.name }}&nbsp;:&emsp;</li>
-            <li class="slider">
-              <el-slider v-model="item.value"></el-slider>
-            </li>
-            <li>&emsp;{{ item.value + item.unit }}</li>
-          </ul>
-        </li>
-        <li class="screen-box">
-          <ul class="clearfix">
-            <li class="y">
+  <div>
+    <banner />
+
+    <ul class="page-container clearfix">
+      <li class="show-box clearfix">
+        <ul class="show clearfix">
+          <li class="title">Led Colourful HD Display</li>
+          <li class="img-box bg"></li>
+          <li class="title">Specifications:
+            <span class="spec">200*300</span>
+          </li>
+          <li>
+            Curabitur auctor tristique lobortis. Quisque bibendum, ipsum in feugiat pharetra, odio libero malesuada turpis, tempus fermentum augue est sit amet magna. Vestibulum bibendum lectus non mauris porta, sed blandit purus scelerisque. Sed consequat mollis ornare. Sed laoreet id dolor vitae facilisis. Mauris varius orci sed turpis commodo mattis.
+          </li>
+        </ul>
+        <div class="blank"></div>
+        <ul class="operate clearfix">
+          <li class="adjust">
+            <ul v-for="item in adjust" :key="item.name" class="clearfix">
+              <li>{{ item.name }}&nbsp;:&emsp;</li>
+              <li class="slider">
+                <el-slider v-model="item.value"></el-slider>
+              </li>
+              <li>&emsp;{{ item.value + item.unit }}</li>
+            </ul>
+          </li>
+          <li class="screen-box">
+            <ul class="clearfix">
+              <li class="y">
+                <div class="bar">
+                  <div />
+                </div>
+                <div class="number">900 CM</div>
+                <div class="bar">
+                  <div />
+                </div>
+              </li>
+              <li class="screen">
+                <div class="bg" v-for="item in 9" :key="item" />
+              </li>
+            </ul>
+            <div class="x clearfix">
               <div class="bar">
                 <div />
               </div>
-              <div class="number">900 CM</div>
+              <div class="number">
+                1000 CM
+              </div>
               <div class="bar">
                 <div />
               </div>
-            </li>
-            <li class="screen">
-              <div class="bg" v-for="item in 9" :key="item"/>
-            </li>
-          </ul>
-          <div class="x clearfix">
-            <div class="bar">
-              <div />
             </div>
-            <div class="number">
-              1000 CM
-            </div>
-            <div class="bar">
-              <div />
-            </div>
-          </div>
-        </li>
-      </ul>
-      <div class="blank"></div>
-      <div class="related">
-        <related />
-      </div>
-    </li>
-    <li class="parms-table">
-      <table>
-        <thead>
-          <tr>
-            <th>Classification</th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-          </tr>
-        </thead>
-      </table>
-    </li>
-    <li class="submit pointer">
-      <div>Submit</div>
-    </li>
-  </ul>
+          </li>
+        </ul>
+        <div class="blank"></div>
+        <div class="related">
+          <related />
+        </div>
+      </li>
+      <li class="parms-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Classification</th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+        </table>
+      </li>
+      <li class="submit pointer">
+        <div>Submit</div>
+      </li>
+    </ul>
+  </div>
+
 </template>
 
 <script>
-import related from '@/components/related/related';
+import related from '@/components/Related/related';
+import banner from '@/components/Banner/banner';
+
 export default {
   name: 'Integration',
-  components: { related },
+  components: { related, banner },
   data() {
     return {
       adjust: [
@@ -113,7 +122,7 @@ $bright: #fafafa;
     }
     .img-box {
       height: 14.2857rem;
-      background-image: url("../../assets/img/img_led01.png");      
+      background-image: url("../../assets/img/img_led01.png");
     }
     .spec {
       color: $bright;
@@ -133,7 +142,7 @@ $bright: #fafafa;
       > ul {
         flex: 1;
         display: flex;
-        justify-content:center;
+        justify-content: center;
       }
       .slider {
         width: 33%;
@@ -157,7 +166,7 @@ $bright: #fafafa;
         > div {
           width: (100% / 3);
           height: (100% / 3);
-          background-image: url('../../assets/img/img_led02.png');
+          background-image: url("../../assets/img/img_led02.png");
         }
       }
     }
@@ -217,16 +226,16 @@ $bright: #fafafa;
     width: 19%;
   }
 }
-.parms-table{
+.parms-table {
   // #e70088 粉色的字
 }
-.submit{
+.submit {
   text-align: center;
-  >div{
+  > div {
     display: inline-block;
     width: 14.2857rem;
     text-align: center;
-    background: linear-gradient(74deg, #49007c, #e70088); 
+    background: linear-gradient(74deg, #49007c, #e70088);
     color: $bright;
     height: 2.5rem;
     line-height: 2.5rem;

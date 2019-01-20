@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import related from '@/components/related/related';
+import related from '@/components/Related/related';
 export default {
   name: 'ProductDetail',
   components: { related },
