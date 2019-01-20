@@ -4,7 +4,9 @@
       <ul class="show clearfix">
         <li class="title">Led Colourful HD Display</li>
         <li class="img-box bg"></li>
-        <li class="title">Specifications: <span class="spec">200*300</span></li>
+        <li class="title">Specifications:
+          <span class="spec">200*300</span>
+        </li>
         <li>
           Curabitur auctor tristique lobortis. Quisque bibendum, ipsum in feugiat pharetra, odio libero malesuada turpis, tempus fermentum augue est sit amet magna. Vestibulum bibendum lectus non mauris porta, sed blandit purus scelerisque. Sed consequat mollis ornare. Sed laoreet id dolor vitae facilisis. Mauris varius orci sed turpis commodo mattis.
         </li>
@@ -32,7 +34,7 @@
               </div>
             </li>
             <li class="screen">
-              <div class="bg" v-for="item in 9" :key="item"/>
+              <div class="bg" v-for="item in 9" :key="item" />
             </li>
           </ul>
           <div class="x clearfix">
@@ -54,17 +56,77 @@
       </div>
     </li>
     <li class="parms-table">
-      <table>
+      <table border="1" cellspacing="0" cellpadding="0">
         <thead>
           <tr>
             <th>Classification</th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
+            <th>Name</th>
+            <th>Brand</th>
+            <th>Specifications</th>
+            <th>Number</th>
+            <th>Screen Size</th>
           </tr>
         </thead>
+        <tbody>
+          <tr>
+            <td class="firstLine">Monitor</td>
+            <td>Led Colorful HD Display</td>
+            <td>AMT</td>
+            <td>200*300</td>
+            <td>
+              <el-input-number v-model="num8" controls-position="right" size="mini" @change="handleChange" :min="1" :max="10">
+              </el-input-number>
+
+            </td>
+            <td rowspan="8" class="screenSize">1200*800</td>
+          </tr>
+          <tr>
+            <td rowspan="3" class="firstLine">Sensor</td>
+            <td>xxx</td>
+            <td>xxx</td>
+            <td>xxx</td>
+            <td>
+              <el-input-number v-model="num8" controls-position="right" size="mini" @change="handleChange" :min="1" :max="10">
+              </el-input-number>
+            </td>
+          </tr>
+          <tr>
+            <td>xxx</td>
+            <td>xxx</td>
+            <td>xxx</td>
+            <td>
+              <el-input-number v-model="num8" controls-position="right" size="mini" @change="handleChange" :min="1" :max="10">
+              </el-input-number>
+            </td>
+          </tr>
+          <tr>
+            <td>xxx</td>
+            <td>xxx</td>
+            <td>xxx</td>
+            <td>xxx</td>
+          </tr>
+          <tr>
+            <td rowspan="2" class="firstLine">Consumables</td>
+            <td>xxx</td>
+            <td>xxx</td>
+            <td>xxx</td>
+            <td>xxx</td>
+          </tr>
+          <tr>
+            <td>xxx</td>
+            <td>xxx</td>
+            <td>xxx</td>
+            <td>xxx</td>
+          </tr>
+          <tr>
+            <td class="firstLine">Scheme name</td>
+            <td colspan="4"></td>
+          </tr>
+          <tr>
+            <td class="firstLine">Remarks</td>
+            <td colspan="4"></td>
+          </tr>
+        </tbody>
       </table>
     </li>
     <li class="submit pointer">
@@ -80,12 +142,17 @@ export default {
   components: { related },
   data() {
     return {
+      num8: 1,
       adjust: [
         { name: 'clearnce', value: 10, unit: 'mm' },
         { name: 'level', value: 2, unit: '' },
         { name: 'vertical', value: 3, unit: '' }
       ]
     };
+  },
+  methods: {
+    handleChange(value) {
+    }
   }
 };
 </script>
@@ -113,7 +180,7 @@ $bright: #fafafa;
     }
     .img-box {
       height: 14.2857rem;
-      background-image: url("../../assets/img/img_led01.png");      
+      background-image: url("../../assets/img/img_led01.png");
     }
     .spec {
       color: $bright;
@@ -133,7 +200,7 @@ $bright: #fafafa;
       > ul {
         flex: 1;
         display: flex;
-        justify-content:center;
+        justify-content: center;
       }
       .slider {
         width: 33%;
@@ -157,7 +224,7 @@ $bright: #fafafa;
         > div {
           width: (100% / 3);
           height: (100% / 3);
-          background-image: url('../../assets/img/img_led02.png');
+          background-image: url("../../assets/img/img_led02.png");
         }
       }
     }
@@ -217,16 +284,38 @@ $bright: #fafafa;
     width: 19%;
   }
 }
-.parms-table{
+.parms-table {
   // #e70088 粉色的字
+  margin: 20px 0;
+  & > table {
+    width: 100%;
+    border-collapse: collapse;
+    td,
+    th {
+      padding: 10px;
+    }
+    td.screenSize {
+      color: #e70088;
+    }
+    .firstLine {
+      background-color: #f2f2f2;
+    }
+    th {
+      background-color: #000;
+      color: #fff;
+      opacity: 0.8;
+      font-size: 1.2rem;
+      font-weight: normal;
+    }
+  }
 }
-.submit{
+.submit {
   text-align: center;
-  >div{
+  > div {
     display: inline-block;
     width: 14.2857rem;
     text-align: center;
-    background: linear-gradient(74deg, #49007c, #e70088); 
+    background: linear-gradient(74deg, #49007c, #e70088);
     color: $bright;
     height: 2.5rem;
     line-height: 2.5rem;

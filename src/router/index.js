@@ -1,5 +1,12 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import err404 from '@/views/404';
+import productDetail from '@/views/productDetail/productDetail';
+import dashboard from '@/views/dashboard/dashboard';
+import products from '@/views/products/products';
+import integration from '@/views/integration/integration';
+import download from '@/views/download/download';
+import maintenance from '@/views/maintenance/maintenance';
 
 // in development-env not use lazy-loading, because lazy-loading too many pages will cause webpack hot update too slow. so only in production use lazy-loading;
 // detail: https://panjiachen.github.io/vue-element-admin-site/#/lazy-loading
@@ -10,7 +17,7 @@ export const constantRouterMap = [
   // 非菜单相关路由
   {
     path: '/404',
-    component: () => import('@/views/404'),
+    component: err404,
     hidden: true
   },
 
@@ -18,7 +25,7 @@ export const constantRouterMap = [
   // { key: '/register', component: () => import('@/views/register/index'), hidden: true },
   {
     path: '/productDetail',
-    component: () => import('@/views/productDetail/productDetail'),
+    component: productDetail,
     hidden: true
   },
   // 菜单相关路由
@@ -28,7 +35,7 @@ export const constantRouterMap = [
     meta: {
       title: 'dashboard'
     },
-    component: () => import('@/views/dashboard/dashboard')
+    component: dashboard
   },
   {
     path: '/products',
@@ -36,7 +43,7 @@ export const constantRouterMap = [
     meta: {
       title: 'products'
     },
-    component: () => import('@/views/products/products')
+    component: products
   },
   {
     path: '/integration',
@@ -44,7 +51,7 @@ export const constantRouterMap = [
     meta: {
       title: 'integration'
     },
-    component: () => import('@/views/integration/integration')
+    component: integration
   },
   {
     path: '/download',
@@ -52,7 +59,7 @@ export const constantRouterMap = [
     meta: {
       title: 'download'
     },
-    component: () => import('@/views/download/download')
+    component: download
   },
 
   {
@@ -61,7 +68,7 @@ export const constantRouterMap = [
     meta: {
       title: 'maintenance'
     },
-    component: () => import('@/views/maintenance/maintenance')
+    component: maintenance
   },
 
   {
