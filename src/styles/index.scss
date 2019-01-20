@@ -1,6 +1,5 @@
 @import './variables.scss';
 @import './transition.scss';
-
 body {
   height: 100%;
   -moz-osx-font-smoothing: grayscale;
@@ -13,9 +12,10 @@ html {
   height: 100%;
   font-size: 14px;
   color: #303133;
-  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
   box-sizing: border-box;
 }
+
 *,
 *:before,
 *:after {
@@ -71,21 +71,29 @@ li {
   }
 }
 
-.page-container{
+.page-container {
   margin: 0 6%;
   position: relative;
 }
-.bg{
+
+.bg {
   background-size: 100% auto;
   background-repeat: no-repeat;
   background-position: 0 0;
 }
-input {
+
+input,
+h1,
+h2,
+h3,
+h4,
+h5 {
   border: 0;
   padding: 0;
   margin: 0;
   outline: none;
 }
+
 .pointer {
   cursor: pointer;
 }
