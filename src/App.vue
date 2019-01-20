@@ -8,7 +8,7 @@
         </router-link>
       </li>
     </ul>
-    <div>
+    <div class="content">
       <router-view />
     </div>
     <div class="foot" />
@@ -47,5 +47,8 @@ export default {
 }
 .logo{
   font-size: 24px;
+}
+.content {
+  margin-top: 60px;
 }
 </style>
