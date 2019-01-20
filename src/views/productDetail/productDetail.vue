@@ -16,6 +16,10 @@
           <i class="collect" />
         </div>
         <ul class="specifications clearfix">
+          <li>Number:
+            <el-input-number v-model="num1" @change="handleChange" :min="0" :max="9999" size="mini">
+            </el-input-number>
+          </li>
           <li>Specifications:</li>
           <li />
         </ul>
@@ -45,7 +49,17 @@
 import related from '@/components/related/related';
 export default {
   name: 'ProductDetail',
-  components: { related }
+  components: { related },
+  data() {
+    return {
+      num1: 0
+    };
+  },
+  methods: {
+    handleChange(value) {
+
+    }
+  }
 };
 </script>
 
