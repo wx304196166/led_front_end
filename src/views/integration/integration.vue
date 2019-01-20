@@ -1,7 +1,6 @@
 <template>
   <div>
     <banner />
-
     <ul class="page-container clearfix">
       <li class="show-box clearfix">
         <ul class="show clearfix">
@@ -31,7 +30,9 @@
                 <div class="bar">
                   <div />
                 </div>
-                <div class="number">900 CM</div>
+                <div class="number">
+                  1000 CM
+                </div>
                 <div class="bar">
                   <div />
                 </div>
@@ -59,17 +60,77 @@
         </div>
       </li>
       <li class="parms-table">
-        <table>
+        <table border="1" cellspacing="0" cellpadding="0">
           <thead>
             <tr>
               <th>Classification</th>
-              <th></th>
-              <th></th>
-              <th></th>
-              <th></th>
-              <th></th>
+              <th>Name</th>
+              <th>Brand</th>
+              <th>Specifications</th>
+              <th>Number</th>
+              <th>Screen Size</th>
             </tr>
           </thead>
+          <tbody>
+            <tr>
+              <td class="firstLine">Monitor</td>
+              <td>Led Colorful HD Display</td>
+              <td>AMT</td>
+              <td>200*300</td>
+              <td>
+                <el-input-number v-model="num8" controls-position="right" size="mini" @change="handleChange" :min="1" :max="10">
+                </el-input-number>
+
+              </td>
+              <td rowspan="8" class="screenSize">1200*800</td>
+            </tr>
+            <tr>
+              <td rowspan="3" class="firstLine">Sensor</td>
+              <td>xxx</td>
+              <td>xxx</td>
+              <td>xxx</td>
+              <td>
+                <el-input-number v-model="num8" controls-position="right" size="mini" @change="handleChange" :min="1" :max="10">
+                </el-input-number>
+              </td>
+            </tr>
+            <tr>
+              <td>xxx</td>
+              <td>xxx</td>
+              <td>xxx</td>
+              <td>
+                <el-input-number v-model="num8" controls-position="right" size="mini" @change="handleChange" :min="1" :max="10">
+                </el-input-number>
+              </td>
+            </tr>
+            <tr>
+              <td>xxx</td>
+              <td>xxx</td>
+              <td>xxx</td>
+              <td>xxx</td>
+            </tr>
+            <tr>
+              <td rowspan="2" class="firstLine">Consumables</td>
+              <td>xxx</td>
+              <td>xxx</td>
+              <td>xxx</td>
+              <td>xxx</td>
+            </tr>
+            <tr>
+              <td>xxx</td>
+              <td>xxx</td>
+              <td>xxx</td>
+              <td>xxx</td>
+            </tr>
+            <tr>
+              <td class="firstLine">Scheme name</td>
+              <td colspan="4"></td>
+            </tr>
+            <tr>
+              <td class="firstLine">Remarks</td>
+              <td colspan="4"></td>
+            </tr>
+          </tbody>
         </table>
       </li>
       <li class="submit pointer">
@@ -89,12 +150,17 @@ export default {
   components: { related, banner },
   data() {
     return {
+      num8: 1,
       adjust: [
         { name: 'clearnce', value: 10, unit: 'mm' },
         { name: 'level', value: 2, unit: '' },
         { name: 'vertical', value: 3, unit: '' }
       ]
     };
+  },
+  methods: {
+    handleChange(value) {
+    }
   }
 };
 </script>
@@ -228,6 +294,28 @@ $bright: #fafafa;
 }
 .parms-table {
   // #e70088 粉色的字
+  margin: 20px 0;
+  & > table {
+    width: 100%;
+    border-collapse: collapse;
+    td,
+    th {
+      padding: 10px;
+    }
+    td.screenSize {
+      color: #e70088;
+    }
+    .firstLine {
+      background-color: #f2f2f2;
+    }
+    th {
+      background-color: #000;
+      color: #fff;
+      opacity: 0.8;
+      font-size: 1.2rem;
+      font-weight: normal;
+    }
+  }
 }
 .submit {
   text-align: center;

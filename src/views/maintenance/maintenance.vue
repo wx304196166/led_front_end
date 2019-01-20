@@ -1,6 +1,16 @@
 <template>
-  <div>
+  <div class="container">
     <input type="text" placeholder="please enter the serial number" class="searchInput">
+    <div class="thumbnail">
+
+    </div>
+    <div class="serialNumber">
+      <div>Led Colorful HD Display</div>
+      <span>serial number : 1245654687s</span>
+    </div>
+    <div>
+      Essential infomation
+    </div>
   </div>
 </template>
 
@@ -13,6 +23,12 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
+.thumbnail {
+  width: 200px;
+  height: 200px;
+  margin: 50px auto 0;
+  border: 1px solid #000;
+}
 .searchInput {
   border-radius: 10px;
   background-color: #eee;
@@ -22,5 +38,8 @@ export default {
   margin-right: 10px;
   margin: 0 auto;
   display: block;
+}
+.serialNumber {
+  text-align: center;
 }
 </style>
