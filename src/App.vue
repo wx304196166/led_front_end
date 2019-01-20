@@ -1,9 +1,9 @@
 <template>
   <div id="app">
-    <ul class="menu clearfix">
-
+    <ul class="menu page-container clearfix">
+      <li class="logo"></li>
       <li v-for="link in routes" :key="link.path" class="menu-item">
-        <router-link v-if="!link.hidden" :to="link.path">
+        <router-link :to="link.path">
           {{ link.name }}
         </router-link>
       </li>
@@ -26,7 +26,7 @@ export default {
   },
   computed: {
     routes() {
-      return this.$router.options.routes;
+      return this.$router.options.routes.filter(item=>!item.hidden);
     }
   }
 };
@@ -35,8 +35,17 @@ export default {
 .menu {
   width: 100%;
   display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  height: 4.2857rem;
+  line-height: 4.2857rem;
+  background: rgba($color: #000000, $alpha: 0.78);
+  font-size: 1.1429rem;
+  color: #fff;
 }
-.menu-item {
-  flex: 1;
+.logo{
+  font-size: 24px;
 }
 </style>

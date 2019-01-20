@@ -53,7 +53,20 @@
         <related />
       </div>
     </li>
-    <li class="parms-table"></li>
+    <li class="parms-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Classification</th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+      </table>
+    </li>
     <li class="submit pointer">
       <div>Submit</div>
     </li>
@@ -204,13 +217,16 @@ $bright: #fafafa;
     width: 19%;
   }
 }
+.parms-table{
+  // #e70088 粉色的字
+}
 .submit{
   text-align: center;
   >div{
     display: inline-block;
-    width: 7.1429rem;
+    width: 14.2857rem;
     text-align: center;
-    background-color: palevioletred; 
+    background: linear-gradient(74deg, #49007c, #e70088); 
     color: $bright;
     height: 2.5rem;
     line-height: 2.5rem;
