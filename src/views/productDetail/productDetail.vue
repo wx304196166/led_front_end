@@ -1,55 +1,64 @@
 <template>
   <div>
-    <ul class="intro clearfix">
-      <li class="show-box">
-        <div />
-        <ul class="spec-list">
-          <li />
-          <li />
-          <li />
-        </ul>
-      </li>
-      <li class="blank" />
-      <li class="describe-box">
-        <div class="title">
-          Led Colourful HD Display
-          <i class="collect" />
-        </div>
-        <ul class="specifications clearfix">
-          <li>Number:
-            <el-input-number v-model="num1" @change="handleChange" :min="0" :max="9999" size="mini">
-            </el-input-number>
-          </li>
-          <li>Specifications:</li>
-          <li />
-        </ul>
-        <p class="describe">
-          Curabitur auctor tristique lobortis. Quisque bibendum, ipsum in feugiat pharetra, odio libero malesuada turpis, tempus fermentum augue est sit amet magna. Vestibulum bibendum lectus non mauris porta, sed blandit purus scelerisque. Sed consequat mollis ornare. Sed laoreet id dolor vitae facilisis. Mauris varius orci sed turpis commodo mattis.
-        </p>
+    <banner />
+    <div class="page-container">
+      <ul class="intro clearfix">
+        <li class="show-box">
+          <div />
+          <ul class="img-list">
+            <li />
+            <li>
+              <ul class="img-box">
+                <li></li>
+              </ul>
+            </li>
+            <li />
+          </ul>
+        </li>
+        <li class="blank" />
+        <li class="describe-box">
+          <div class="title">
+            Led Colourful HD Display
+            <i class="collect" />
+          </div>
+          <ul class="specifications clearfix">
+            <!-- <li>Number:
+              <el-input-number v-model="num1" @change="handleChange" :min="0" :max="9999" size="mini">
+              </el-input-number>
+            </li> -->
+            <li>Specifications:</li>
+            <li />
+          </ul>
+          <p class="describe">
+            Curabitur auctor tristique lobortis. Quisque bibendum, ipsum in feugiat pharetra, odio libero malesuada turpis, tempus fermentum augue est sit amet magna. Vestibulum bibendum lectus non mauris porta, sed blandit purus scelerisque. Sed consequat mollis ornare. Sed laoreet id dolor vitae facilisis. Mauris varius orci sed turpis commodo mattis.
+          </p>
 
-      </li>
-    </ul>
-    <ul class="detail-box clearfix">
-      <li class="related">
-        <div class="title">Related products</div>
-        <related />
-      </li>
-      <li class="blank">&emsp;</li>
-      <li class="detail">
-        <div class="tab">Commodity introduction</div>
-        <div class="content">
-          Curabitur auctor tristique lobortis. Quisque bibendum, ipsum in feugiat pharetra, odio libero malesuada turpis, tempus fermentum augue est sit amet magna. Vestibulum bibendum lectus non mauris porta, sed blandit purus scelerisque. Sed consequat mollis ornare. Sed laoreet id dolor vitae facilisis. Mauris varius orci sed turpis commodo mattis. Cras vel nibh scelerisque urna tincidunt vestibulum accumsan pharetra ex. Proin ullamcorper eros non justo tincidunt lobortis. Ut sapien nisi, bibendum tempor efficitur ultricies, pellentesque interdum diam. Aliquam commodo felis eu urna consectetur, ut semper diam tempor. Etiam eu maximus sapien, a tristique tortor.
-        </div>
-      </li>
-    </ul>
+        </li>
+      </ul>
+      <ul class="detail-box clearfix">
+        <li class="related">
+          <related />
+        </li>
+        <li class="blank">&emsp;</li>
+        <li class="detail">
+          <div class="tab">Commodity introduction</div>
+          <div class="content">
+            Curabitur auctor tristique lobortis. Quisque bibendum, ipsum in feugiat pharetra, odio libero malesuada turpis, tempus fermentum augue est sit amet magna. Vestibulum bibendum lectus non mauris porta, sed blandit purus scelerisque. Sed consequat mollis ornare. Sed laoreet id dolor vitae facilisis. Mauris varius orci sed turpis commodo mattis. Cras vel nibh scelerisque urna tincidunt vestibulum accumsan pharetra ex. Proin ullamcorper eros non justo tincidunt lobortis. Ut sapien nisi, bibendum tempor efficitur ultricies, pellentesque interdum diam. Aliquam commodo felis eu urna consectetur, ut semper diam tempor. Etiam eu maximus sapien, a tristique tortor.
+          </div>
+        </li>
+      </ul>
+    </div>
   </div>
+
 </template>
 
 <script>
 import related from '@/components/Related/related';
+import banner from '@/components/Banner/banner';
+
 export default {
   name: 'ProductDetail',
-  components: { related },
+  components: { related, banner },
   data() {
     return {
       num1: 0
@@ -73,7 +82,7 @@ export default {
 }
 .intro {
   height: 500px;
-  border: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
 
   > li {
     float: left;
@@ -88,23 +97,37 @@ export default {
       border: 1px solid #000;
     }
 
-    .spec-list {
+    .img-list {
       height: 80px;
 
       > li {
         float: left;
         height: 100%;
         width: calc(100% - 44px);
+        overflow: hidden;
       }
 
-      > li:first-child,
-      > li:last-child {
+      > li:nth-child(1),
+      > li:nth-child(3) {
         width: 22px;
-        background: url("../../assets/img/next.png") no-repeat center center;
+        background-image: url("../../assets/img/next.png");
+        background-repeat: no-repeat;
+        background-position: center center;
       }
-
-      > li:first-child {
+      > li.has:nth-child(1),
+      > li.has:nth-child(3) {
+        background-image: url("../../assets/img/hover_next.png");
+      }
+      > li:nth-child(1) {
         transform: scale(-1, 1);
+      }
+    }
+    .img-box{
+      height: 100%;
+      >li{
+        float: left;
+        height: 100%;
+        
       }
     }
   }
