@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="integration">
     <banner />
     <ul class="page-container clearfix">
       <li class="show-box clearfix">
@@ -328,6 +328,25 @@ $bright: #fafafa;
     height: 2.5rem;
     line-height: 2.5rem;
     border-radius: 1.7857rem;
+  }
+}
+</style>
+<style rel="stylesheet/scss" lang="scss">
+.integration {
+  .el-slider__runway {
+    height: 3px;
+    margin: 18px 0 0;
+  }
+  .el-slider__bar {
+    background-color: rgba(0, 0, 0, 0.4);
+    height: 3px;
+  }
+  .el-slider__button {
+    background: url("../../assets/img/slide.png") no-repeat 0 0;
+    border: none;
+    width: 8px;
+    height: 15px;
+    border-radius: 0;
   }
 }
 </style>
