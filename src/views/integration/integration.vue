@@ -16,12 +16,12 @@
         <div class="blank"></div>
         <ul class="operate clearfix">
           <li class="adjust">
-            <ul v-for="item in adjust" :key="item.name" class="clearfix">
-              <li>{{ item.name }}&nbsp;:&emsp;</li>
+            <ul v-for="(item,key) in adjust" :key="key" class="clearfix">
+              <li>{{ key }}&nbsp;:&emsp;</li>
               <li class="slider">
-                <el-slider v-model="item.value"></el-slider>
+                <el-slider v-model="item.val"></el-slider>
               </li>
-              <li>&emsp;{{ item.value + item.unit }}</li>
+              <li>&emsp;{{ item.val + item.unit }}</li>
             </ul>
           </li>
           <li class="screen-box">
@@ -151,11 +151,11 @@ export default {
   data() {
     return {
       num8: 1,
-      adjust: [
-        { name: 'clearnce', value: 10, unit: 'mm' },
-        { name: 'level', value: 2, unit: '' },
-        { name: 'vertical', value: 3, unit: '' }
-      ]
+      adjust: {
+        clearnce: { val: 10, unit: 'mm' },
+        level: { val: 10, unit: '' },
+        vertical: { val: 10, unit: '' }
+      }
     };
   },
   methods: {
@@ -171,7 +171,7 @@ export default {
           return [0, 0];
         }
       }
-    },
+    }
   }
 };
 </script>
@@ -241,8 +241,6 @@ $bright: #fafafa;
         width: calc(100% - 3.5714rem);
         height: 100%;
         > div {
-          width: (100% / 3);
-          height: (100% / 3);
           background-image: url("../../assets/img/img_led02.png");
         }
       }
@@ -353,7 +351,7 @@ $bright: #fafafa;
     height: 3px;
   }
   .el-slider__button {
-    // background: url("../../assets/img/slide.png") no-repeat 0 0;
+    background: url("../../assets/img/slide.png") no-repeat 0 0;
     border: none;
     width: 8px;
     height: 15px;
