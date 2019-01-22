@@ -78,7 +78,7 @@
               <td>AMT</td>
               <td>200*300</td>
               <td>
-                <el-input-number v-model="num8" controls-position="right" size="mini" @change="handleChange" :min="1" :max="10">
+                <el-input-number v-model="num8" controls-position="right" size="mini" @change="numberChange" :min="1" :max="10">
                 </el-input-number>
 
               </td>
@@ -90,7 +90,7 @@
               <td>xxx</td>
               <td>xxx</td>
               <td>
-                <el-input-number v-model="num8" controls-position="right" size="mini" @change="handleChange" :min="1" :max="10">
+                <el-input-number v-model="num8" controls-position="right" size="mini" @change="numberChange" :min="1" :max="10">
                 </el-input-number>
               </td>
             </tr>
@@ -99,7 +99,7 @@
               <td>xxx</td>
               <td>xxx</td>
               <td>
-                <el-input-number v-model="num8" controls-position="right" size="mini" @change="handleChange" :min="1" :max="10">
+                <el-input-number v-model="num8" controls-position="right" size="mini" @change="numberChange" :min="1" :max="10">
                 </el-input-number>
               </td>
             </tr>
@@ -159,8 +159,19 @@ export default {
     };
   },
   methods: {
-    handleChange(value) {
-    }
+    // 产品数量改变时
+    numberChange(value) {
+    },
+    // 条件合并行或列
+    arraySpanMethod({ row, column, rowIndex, columnIndex }) {
+      if (rowIndex % 2 === 0) {
+        if (columnIndex === 0) {
+          return [1, 2];
+        } else if (columnIndex === 1) {
+          return [0, 0];
+        }
+      }
+    },
   }
 };
 </script>
@@ -342,7 +353,7 @@ $bright: #fafafa;
     height: 3px;
   }
   .el-slider__button {
-    background: url("../../assets/img/slide.png") no-repeat 0 0;
+    // background: url("../../assets/img/slide.png") no-repeat 0 0;
     border: none;
     width: 8px;
     height: 15px;

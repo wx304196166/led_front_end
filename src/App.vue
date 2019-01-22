@@ -38,7 +38,7 @@ export default {
 <style  rel="stylesheet/scss" lang="scss" scoped>
 .gradient-font {
   color: transparent;
-  background: linear-gradient(to top, #49007c, #e70088);
+  background: linear-gradient(to top, #ca0090, #ff0096);
   background-clip: text;
   -webkit-background-clip: text;
   -moz-background-clip: text;
@@ -72,6 +72,6 @@ export default {
   right: 11.7857rem;
   top: 0.5rem;
   font-size: 1rem;
-  line-height: 1rem;
+  line-height: 1.15rem;
 }
 </style>
