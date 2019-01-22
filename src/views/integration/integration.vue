@@ -7,7 +7,7 @@
           <li class="title">Led Colourful HD Display</li>
           <li class="img-box bg"></li>
           <li class="title">Specifications:
-            <span class="spec">200*300</span>
+            <span class="spec">{{specifications[0]}}*{{specifications[1]}}</span>
           </li>
           <li>
             Curabitur auctor tristique lobortis. Quisque bibendum, ipsum in feugiat pharetra, odio libero malesuada turpis, tempus fermentum augue est sit amet magna. Vestibulum bibendum lectus non mauris porta, sed blandit purus scelerisque. Sed consequat mollis ornare. Sed laoreet id dolor vitae facilisis. Mauris varius orci sed turpis commodo mattis.
@@ -19,7 +19,7 @@
             <ul v-for="(item,key) in adjust" :key="key" class="clearfix">
               <li>{{ key }}&nbsp;:&emsp;</li>
               <li class="slider">
-                <el-slider v-model="item.val"></el-slider>
+                <el-slider v-model="item.val" :min="1" :max="20"></el-slider>
               </li>
               <li>&emsp;{{ item.val + item.unit }}</li>
             </ul>
@@ -31,14 +31,14 @@
                   <div />
                 </div>
                 <div class="number">
-                  1000 CM
+                  {{specifications[1]*screenCol}} CM
                 </div>
                 <div class="bar">
                   <div />
                 </div>
               </li>
               <li class="screen">
-                <div class="bg" v-for="item in 9" :key="item" />
+                <div class="cover" :style="{width:`${100/screenCol}%`,height:`${100/screenRow}%`}" v-for="item in screenTotal" :key="item" />
               </li>
             </ul>
             <div class="x clearfix">
@@ -46,7 +46,7 @@
                 <div />
               </div>
               <div class="number">
-                1000 CM
+                {{specifications[0]*screenCol}} CM
               </div>
               <div class="bar">
                 <div />
@@ -60,78 +60,24 @@
         </div>
       </li>
       <li class="parms-table">
-        <table border="1" cellspacing="0" cellpadding="0">
-          <thead>
-            <tr>
-              <th>Classification</th>
-              <th>Name</th>
-              <th>Brand</th>
-              <th>Specifications</th>
-              <th>Number</th>
-              <th>Screen Size</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="firstLine">Monitor</td>
-              <td>Led Colorful HD Display</td>
-              <td>AMT</td>
-              <td>200*300</td>
-              <td>
-                <el-input-number v-model="num8" controls-position="right" size="mini" @change="numberChange" :min="1" :max="10">
-                </el-input-number>
+        <el-table :data="table" :span-method="arraySpanMethod" border style="width: 100%" header-row-class-name="table-head">
+          <el-table-column prop="classification" label="Classification" />
+          <el-table-column prop="name" label="Name" />
+          <el-table-column prop="brand" label="Brand" />
+          <el-table-column prop="specifications" label="Specifications">
+            <template slot-scope="scope">
+              <span>{{scope.row.specifications[0]}}&nbsp;*&nbsp;{{scope.row.specifications[1]}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="number" label="Number" />
 
-              </td>
-              <td rowspan="8" class="screenSize">1200*800</td>
-            </tr>
-            <tr>
-              <td rowspan="3" class="firstLine">Sensor</td>
-              <td>xxx</td>
-              <td>xxx</td>
-              <td>xxx</td>
-              <td>
-                <el-input-number v-model="num8" controls-position="right" size="mini" @change="numberChange" :min="1" :max="10">
-                </el-input-number>
-              </td>
-            </tr>
-            <tr>
-              <td>xxx</td>
-              <td>xxx</td>
-              <td>xxx</td>
-              <td>
-                <el-input-number v-model="num8" controls-position="right" size="mini" @change="numberChange" :min="1" :max="10">
-                </el-input-number>
-              </td>
-            </tr>
-            <tr>
-              <td>xxx</td>
-              <td>xxx</td>
-              <td>xxx</td>
-              <td>xxx</td>
-            </tr>
-            <tr>
-              <td rowspan="2" class="firstLine">Consumables</td>
-              <td>xxx</td>
-              <td>xxx</td>
-              <td>xxx</td>
-              <td>xxx</td>
-            </tr>
-            <tr>
-              <td>xxx</td>
-              <td>xxx</td>
-              <td>xxx</td>
-              <td>xxx</td>
-            </tr>
-            <tr>
-              <td class="firstLine">Scheme name</td>
-              <td colspan="4"></td>
-            </tr>
-            <tr>
-              <td class="firstLine">Remarks</td>
-              <td colspan="4"></td>
-            </tr>
-          </tbody>
-        </table>
+          <el-table-column prop="isSize" label="Screen Size" align="center">
+            <template slot-scope="scope">
+              <span class="size">{{scope.row.specifications[0]*screenCol}}&nbsp;*&nbsp;{{scope.row.specifications[1]*screenCol}}</span>
+            </template>
+          </el-table-column>
+
+        </el-table>
       </li>
       <li class="submit pointer">
         <div>Submit</div>
@@ -144,19 +90,32 @@
 <script>
 import related from '@/components/Related/related';
 import banner from '@/components/Banner/banner';
-
+import table from './tableData'
 export default {
   name: 'Integration',
   components: { related, banner },
   data() {
     return {
-      num8: 1,
+      specifications: [300, 200],
       adjust: {
-        clearnce: { val: 10, unit: 'mm' },
-        level: { val: 10, unit: '' },
-        vertical: { val: 10, unit: '' }
-      }
+        // clearnce: { val: 10, unit: 'mm' },
+        level: { val: 3, unit: '' },
+        vertical: { val: 2, unit: '' }
+      },
+      table,
+      lastRow: null
     };
+  },
+  computed: {
+    screenTotal() {
+      return this.adjust.level.val * this.adjust.vertical.val
+    },
+    screenRow() {
+      return this.adjust.vertical.val
+    },
+    screenCol() {
+      return this.adjust.level.val
+    }
   },
   methods: {
     // 产品数量改变时
@@ -164,13 +123,30 @@ export default {
     },
     // 条件合并行或列
     arraySpanMethod({ row, column, rowIndex, columnIndex }) {
-      if (rowIndex % 2 === 0) {
-        if (columnIndex === 0) {
-          return [1, 2];
-        } else if (columnIndex === 1) {
-          return [0, 0];
+      if (row.isMain) {
+        if (column.property === 'isSize') {
+          return [this.table.length, 1];
         }
+        return [1, 1];
       }
+      if (row.isInput) {
+        if (column.property === 'classification') {
+          return [1, 1];
+        } else if (column.property === 'name') {
+          console.log('isInput')
+          return [1, 4];
+        }
+        return [0, 0]
+      }
+      /* if (this.lastRow && this.lastRow.classification === row.classification) {
+
+      }else{
+        return 
+      } */
+      if (column.property === 'isSize') {
+        return [0, 0]
+      }
+      return [1, 1]
     }
   }
 };
@@ -304,26 +280,17 @@ $bright: #fafafa;
 .parms-table {
   // #e70088 粉色的字
   margin: 20px 0;
-  & > table {
-    width: 100%;
-    border-collapse: collapse;
-    td,
-    th {
-      padding: 10px;
-    }
-    td.screenSize {
-      color: #e70088;
-    }
-    .firstLine {
-      background-color: #f2f2f2;
-    }
-    th {
-      background-color: #000;
-      color: #fff;
-      opacity: 0.8;
-      font-size: 1.2rem;
-      font-weight: normal;
-    }
+  .table-head {
+    background-color: #000;
+    color: #fff;
+    opacity: 0.8;
+    font-size: 1.2rem;
+    font-weight: normal;
+    border: none;
+  }
+  .size {
+    color: #e70088;
+    font-size: 1.2rem;
   }
 }
 .submit {
