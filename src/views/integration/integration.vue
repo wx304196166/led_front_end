@@ -16,12 +16,12 @@
         <div class="blank"></div>
         <ul class="operate clearfix">
           <li class="adjust">
-            <ul v-for="item in adjust" :key="item.name" class="clearfix">
-              <li>{{ item.name }}&nbsp;:&emsp;</li>
+            <ul v-for="(item,key) in adjust" :key="key" class="clearfix">
+              <li>{{ key }}&nbsp;:&emsp;</li>
               <li class="slider">
-                <el-slider v-model="item.value"></el-slider>
+                <el-slider v-model="item.val"></el-slider>
               </li>
-              <li>&emsp;{{ item.value + item.unit }}</li>
+              <li>&emsp;{{ item.val + item.unit }}</li>
             </ul>
           </li>
           <li class="screen-box">
@@ -78,7 +78,7 @@
               <td>AMT</td>
               <td>200*300</td>
               <td>
-                <el-input-number v-model="num8" controls-position="right" size="mini" @change="handleChange" :min="1" :max="10">
+                <el-input-number v-model="num8" controls-position="right" size="mini" @change="numberChange" :min="1" :max="10">
                 </el-input-number>
 
               </td>
@@ -90,7 +90,7 @@
               <td>xxx</td>
               <td>xxx</td>
               <td>
-                <el-input-number v-model="num8" controls-position="right" size="mini" @change="handleChange" :min="1" :max="10">
+                <el-input-number v-model="num8" controls-position="right" size="mini" @change="numberChange" :min="1" :max="10">
                 </el-input-number>
               </td>
             </tr>
@@ -99,7 +99,7 @@
               <td>xxx</td>
               <td>xxx</td>
               <td>
-                <el-input-number v-model="num8" controls-position="right" size="mini" @change="handleChange" :min="1" :max="10">
+                <el-input-number v-model="num8" controls-position="right" size="mini" @change="numberChange" :min="1" :max="10">
                 </el-input-number>
               </td>
             </tr>
@@ -151,15 +151,26 @@ export default {
   data() {
     return {
       num8: 1,
-      adjust: [
-        { name: 'clearnce', value: 10, unit: 'mm' },
-        { name: 'level', value: 2, unit: '' },
-        { name: 'vertical', value: 3, unit: '' }
-      ]
+      adjust: {
+        clearnce: { val: 10, unit: 'mm' },
+        level: { val: 10, unit: '' },
+        vertical: { val: 10, unit: '' }
+      }
     };
   },
   methods: {
-    handleChange(value) {
+    // 产品数量改变时
+    numberChange(value) {
+    },
+    // 条件合并行或列
+    arraySpanMethod({ row, column, rowIndex, columnIndex }) {
+      if (rowIndex % 2 === 0) {
+        if (columnIndex === 0) {
+          return [1, 2];
+        } else if (columnIndex === 1) {
+          return [0, 0];
+        }
+      }
     }
   }
 };
@@ -230,8 +241,6 @@ $bright: #fafafa;
         width: calc(100% - 3.5714rem);
         height: 100%;
         > div {
-          width: (100% / 3);
-          height: (100% / 3);
           background-image: url("../../assets/img/img_led02.png");
         }
       }
