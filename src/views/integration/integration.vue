@@ -133,16 +133,10 @@ export default {
         if (column.property === 'classification') {
           return [1, 1];
         } else if (column.property === 'name') {
-          console.log('isInput')
           return [1, 4];
         }
         return [0, 0]
-      }
-      /* if (this.lastRow && this.lastRow.classification === row.classification) {
-
-      }else{
-        return 
-      } */
+      }      
       if (column.property === 'isSize') {
         return [0, 0]
       }

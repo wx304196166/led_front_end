@@ -1,19 +1,21 @@
 @import './variables.scss';
 @import './transition.scss';
+@import './font.scss';
+
+html {
+  height: 100%;
+  font-size: 14px;
+  color: #303133;
+  font-family: "ProximaNovaRegular", "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  box-sizing: border-box;
+}
+
 body {
   height: 100%;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
-}
-
-html {
-  height: 100%;
-  font-size: 14px;
-  color: #303133;
-  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
-  box-sizing: border-box;
 }
 
 *,
@@ -71,7 +73,7 @@ li {
   }
 }
 
-.page-container{
+.page-container {
   padding: 0 6%;
   position: relative;
 }
@@ -81,11 +83,13 @@ li {
   background-repeat: no-repeat;
   background-position: 0 0;
 }
-.cover{
+
+.cover {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: 0 0;
 }
+
 input,
 h1,
 h2,

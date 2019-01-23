@@ -41,7 +41,7 @@
       </div>
     </el-dialog>
     <ul class="menu page-container clearfix">
-      <li class="logo gradient-font">VisualArtisan</li>
+      <li class="logo bg" :style="{backgroundImage:`url(${logo})`}"></li>
       <li v-for="(link,index) in routes" :key="link.path" class="link">
         <router-link :to="link.path">
           <span v-if="index===routes.length-1" class="login-box gradient-font pointer" @click.stop="loginDialog=true">
@@ -87,11 +87,13 @@ import Foot2 from '@/assets/img/home/foot2.png';
 import Foot3 from '@/assets/img/home/foot3.png';
 import Foot4 from '@/assets/img/home/foot4.png';
 import Foot5 from '@/assets/img/home/foot5.png';
+import logo from '@/assets/img/logo.png';
 export default {
   name: 'App',
   data() {
     return {
       Foot1, Foot2, Foot3, Foot4, Foot5,
+      logo,
       loginDialog: false,
       registerDialog: false,
       formLabelWidth: '100px',
@@ -176,9 +178,7 @@ export default {
   color: #fafafa;
 }
 .logo {
-  font-size: 2rem;
-  width: 12.8571rem;
-  font-weight: 700;
+  width: 12.8571rem;  
 }
 .link {
   flex: 1;
