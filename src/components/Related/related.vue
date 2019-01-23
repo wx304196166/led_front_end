@@ -2,18 +2,28 @@
   <div style="height:100%">
     <div class="title">Related products</div>
     <ul class="list">
-      <li class="item">
+      <li class="item pointer" v-for="item in list" :key="item.id" @click="returnItem(item)">
         <div>图片</div>
-        <p>Product name</p>
+        <p>{{item.name}}</p>
       </li>
     </ul>
   </div>
 </template>
 
 <script>
-
 export default {
-  name: 'Related'
+  name: 'Related',
+  props: {
+    list: {
+      type: Array,
+      default: () => []
+    }
+  },
+  methods: {
+    returnItem(item) {
+      this.$emit('get-item', item)
+    }
+  }
 
 };
 </script>
@@ -30,6 +40,7 @@ export default {
 .list {
   background: #f5f5f5;
   height: calc(100% - 2.5rem);
+  overflow-y: auto;
   .item {
     padding: 1.4286rem 1.0714rem;
     > div {

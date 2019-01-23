@@ -56,11 +56,13 @@
         </ul>
         <div class="blank"></div>
         <div class="related">
-          <related />
+          <related :list="list" @get-item="getItem" />
         </div>
       </li>
       <li class="parms-table">
         <el-table :data="table" :span-method="arraySpanMethod" border style="width: 100%" header-row-class-name="table-head">
+          <!-- <el-table :data="table" border style="width: 100%" header-row-class-name="table-head"> -->
+
           <el-table-column prop="classification" label="Classification" />
           <el-table-column prop="name" label="Name" />
           <el-table-column prop="brand" label="Brand" />
@@ -90,7 +92,10 @@
 <script>
 import related from '@/components/Related/related';
 import banner from '@/components/Banner/banner';
-import table from './tableData'
+
+import main from './tableData'
+import list from './related';
+
 export default {
   name: 'Integration',
   components: { related, banner },
@@ -102,8 +107,22 @@ export default {
         level: { val: 3, unit: '' },
         vertical: { val: 2, unit: '' }
       },
-      table,
-      lastRow: null
+      relatedListMap: {},
+      lastClassification: '',
+      table: [],
+      schemeName: {
+        classification: 'Scheme name',
+        name: '',
+        isInput: true
+      },
+      remarks: {
+        classification: 'Remarks',
+        name: '',
+        isInput: true
+      },
+      relatedList: [],
+      main,
+      list
     };
   },
   computed: {
@@ -117,7 +136,56 @@ export default {
       return this.adjust.level.val
     }
   },
+  created() {
+    /* for (const item of this.list) {
+      this.setRelatedListMap(item.classification);
+      
+      this.relatedList.push(this.setItem(item))
+    } */
+    this.setTable()
+  },
   methods: {
+    setRelatedListMap(classification) {
+      if (this.relatedListMap[classification]) {
+        this.relatedListMap[classification]++
+      } else {
+        this.relatedListMap[classification] = 1
+      }
+    },
+    // 组装表格数据
+    setTable() {
+      let arr = [];
+      arr.push(this.main);
+
+      this.relatedList.sort((a, b) => a.classification > b.classification);
+      arr = arr.concat(this.relatedList);
+      arr.push(this.schemeName);
+      arr.push(this.remarks);
+      this.table = arr.concat();
+      arr = null;
+    },
+    // 获取相关产品
+    getItem(item) {
+      let flag = true;
+
+      for (const pro of this.relatedList) {
+        if (pro.id === item.id) {
+          pro.number++;
+          flag = false;
+          break;
+        }
+      }
+      if (flag) {
+        this.setRelatedListMap(item.classification);
+        this.relatedList.push(this.setItem(item));
+        this.setTable();
+      }
+    },
+    setItem(item) {
+      const obj = Object.assign({}, item);
+      obj.number = 1;
+      return obj;
+    },
     // 产品数量改变时
     numberChange(value) {
     },
@@ -127,26 +195,23 @@ export default {
         if (column.property === 'isSize') {
           return [this.table.length, 1];
         }
-        return [1, 1];
-      }
-      if (row.isInput) {
+      } else if (row.isInput) {
         if (column.property === 'classification') {
           return [1, 1];
         } else if (column.property === 'name') {
-          console.log('isInput')
           return [1, 4];
         }
-        return [0, 0]
-      }
-      /* if (this.lastRow && this.lastRow.classification === row.classification) {
-
-      }else{
-        return 
+        return [0, 0];
+      }/*  else {
+        if (column.property === 'classification') {
+          if (this.lastClassification === row.classification) {
+            return [0, 0];
+          }
+          this.lastClassification = row.classification;
+          return [this.relatedListMap[row.classification], 1];
+        }
+        return [1, 1]
       } */
-      if (column.property === 'isSize') {
-        return [0, 0]
-      }
-      return [1, 1]
     }
   }
 };
@@ -155,6 +220,11 @@ export default {
 <style rel="stylesheet/scss" lang="scss" scoped>
 $dark: #333;
 $bright: #fafafa;
+.integration {
+  > ul {
+    margin: 1.4286rem 0;
+  }
+}
 .show-box {
   height: 35.7143rem;
   > ul,

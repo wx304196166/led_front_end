@@ -5,11 +5,11 @@
 </template>
 
 <script>
-import banner from '@/assets/img/banner.png'
+import banner from '@/assets/img/banner.png';
 export default {
   name: 'Banner',
   data() {
-    return { banner }
+    return { banner };
   }
 };
 </script>
