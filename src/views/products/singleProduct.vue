@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import productPng from '@/assets/img/product.png';
+import productPng from '@/assets/img/products/VX2S.png';
 export default {
   name: 'SingleProduct',
   props: {
@@ -33,6 +33,9 @@ export default {
   width: 33.3%;
   border: 1px solid transparent;
   overflow: hidden;
+  img {
+    transform: scale(0.8);
+  }
   &:hover {
     border: 1px solid #000;
     box-shadow: none;

@@ -78,6 +78,8 @@ export default {
   flex-direction: row;
   span {
     width: 33.3%;
+    // 因图片大小不一的临时方案
+    background-color: #000; 
   }
 }
 .submit {

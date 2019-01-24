@@ -4,12 +4,12 @@
     <div class="page-container">
       <ul class="intro clearfix">
         <li class="show-box">
-          <div />
+          <div><img :src="product1" /></div>
           <ul class="img-list">
             <li />
             <li>
               <ul class="img-box">
-                <li></li>
+                <li><img :src="product1" /></li>
               </ul>
             </li>
             <li />
@@ -44,6 +44,7 @@
           <div class="tab">Commodity introduction</div>
           <div class="content">
             Curabitur auctor tristique lobortis. Quisque bibendum, ipsum in feugiat pharetra, odio libero malesuada turpis, tempus fermentum augue est sit amet magna. Vestibulum bibendum lectus non mauris porta, sed blandit purus scelerisque. Sed consequat mollis ornare. Sed laoreet id dolor vitae facilisis. Mauris varius orci sed turpis commodo mattis. Cras vel nibh scelerisque urna tincidunt vestibulum accumsan pharetra ex. Proin ullamcorper eros non justo tincidunt lobortis. Ut sapien nisi, bibendum tempor efficitur ultricies, pellentesque interdum diam. Aliquam commodo felis eu urna consectetur, ut semper diam tempor. Etiam eu maximus sapien, a tristique tortor.
+            <img :src="product1" alt="">
           </div>
         </li>
       </ul>
@@ -55,13 +56,15 @@
 <script>
 import related from '@/components/Related/related';
 import banner from '@/components/Banner/banner';
+import product1 from '@/assets/img/products/MCTRL4K.png';
 
 export default {
   name: 'ProductDetail',
   components: { related, banner },
   data() {
     return {
-      num1: 0
+      num1: 0,
+      product1
     };
   },
   methods: {
@@ -91,10 +94,18 @@ export default {
 
   .show-box {
     width: 36.5%;
-
     > div {
+      position: relative;
       height: calc(100% - 80px);
       border: 1px solid #000;
+      img {
+        width: 100%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        height: auto;
+      }
     }
 
     .img-list {
@@ -122,12 +133,25 @@ export default {
         transform: scale(-1, 1);
       }
     }
-    .img-box{
+    .img-box {
       height: 100%;
-      >li{
+      > li {
         float: left;
         height: 100%;
-        
+        width: 62px;
+        text-align: center;
+        position: relative;
+        float: left;
+        > img {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%,-50%);
+          width: 50px;
+          height: 50px;
+          padding: 1px;
+          border: 1px solid #cecfce;
+        }
       }
     }
   }
