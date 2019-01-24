@@ -212,8 +212,10 @@ export default {
             this.lastRow = Object.assign({}, row);
           }
           return [this.relatedListMap[row.classification], 1];
+        } else if (column.property === 'isSize') {
+          return [0, 0];
         }
-        return [1, 1]
+        return [1, 1];
       }
     }
   }
