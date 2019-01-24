@@ -1,7 +1,8 @@
 <template>
   <div>
-    <div class="productContainer">
-      <div class="photo" />
+    <banner />
+
+    <div class="page-container">
       <divide />
       <div class="productList">
         <single-product v-for="(item,index) in products" :key="index" :info="item" />
@@ -13,11 +14,11 @@
 <script>
 import SingleProduct from './singleProduct';
 import Divide from './brand/divide';
-// import { products } from './dummy';
+import banner from '@/components/Banner/banner';
 
 export default {
   name: 'Products',
-  components: { SingleProduct, Divide },
+  components: { SingleProduct, Divide ,banner},
   data() {
     return {
       products: [
@@ -54,34 +55,30 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.productContainer {
-  max-width: 1200px;
-  margin: 0 auto;
-  .photo {
-    border: 1px solid #000;
-    height: 200px;
-    margin-bottom: 20px;
-  }
-  .productList {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    width: 100%;
-    .product {
-      .productSummary {
-        position: absolute;
-        bottom: 0;
-        height: 50%;
-        width: 100%;
-        background-color: #eee;
-      }
-      i,
-      img {
-        display: inline-block;
-        width: 100%;
-        height: 100%;
-        // background: url("../../style/imgs/product.png") no-repeat 0 0;
-      }
+.photo {
+  border: 1px solid #000;
+  height: 200px;
+  margin-bottom: 20px;
+}
+.productList {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  .product {
+    .productSummary {
+      position: absolute;
+      bottom: 0;
+      height: 50%;
+      width: 100%;
+      background-color: #eee;
+    }
+    i,
+    img {
+      display: inline-block;
+      width: 100%;
+      height: 100%;
+      // background: url("../../style/imgs/product.png") no-repeat 0 0;
     }
   }
 }

@@ -61,7 +61,6 @@
       </li>
       <li class="parms-table">
         <el-table :data="table" :span-method="arraySpanMethod" border style="width: 100%" header-row-class-name="table-head">
-          <!-- <el-table :data="table" border style="width: 100%" header-row-class-name="table-head"> -->
 
           <el-table-column prop="classification" label="Classification" />
           <el-table-column prop="name" label="Name" />
@@ -71,7 +70,11 @@
               <span>{{scope.row.specifications[0]}}&nbsp;*&nbsp;{{scope.row.specifications[1]}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="number" label="Number" />
+          <el-table-column prop="number" label="Number">
+            <!-- <template slot-scope="scope">
+              <span class="size">{{scope.row.specifications[0]*screenCol}}&nbsp;*&nbsp;{{scope.row.specifications[1]*screenCol}}</span>
+            </template> -->
+          </el-table-column>
 
           <el-table-column prop="isSize" label="Screen Size" align="center">
             <template slot-scope="scope">
@@ -137,11 +140,6 @@ export default {
     }
   },
   created() {
-    /* for (const item of this.list) {
-      this.setRelatedListMap(item.classification);
-      
-      this.relatedList.push(this.setItem(item))
-    } */
     this.setTable()
   },
   methods: {
