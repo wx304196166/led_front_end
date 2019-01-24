@@ -108,7 +108,7 @@ export default {
         vertical: { val: 2, unit: '' }
       },
       relatedListMap: {},
-      lastClassification: '',
+      lastRow: {},
       table: [],
       schemeName: {
         classification: 'Scheme name',
@@ -202,16 +202,19 @@ export default {
           return [1, 4];
         }
         return [0, 0];
-      }/*  else {
+      } else {
         if (column.property === 'classification') {
-          if (this.lastClassification === row.classification) {
-            return [0, 0];
+
+          if (this.lastRow.id !== row.id) {
+            if (this.lastRow.classification === row.classification) {
+              return [0, 0];
+            }
+            this.lastRow = Object.assign({}, row);
           }
-          this.lastClassification = row.classification;
           return [this.relatedListMap[row.classification], 1];
         }
         return [1, 1]
-      } */
+      }
     }
   }
 };
