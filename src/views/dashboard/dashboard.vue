@@ -1,6 +1,10 @@
 <template>
-  <div>
-    <img :src="Banner">
+  <div style="height:100%">
+    <el-carousel :interval="4000" :height="screenHeight">
+      <el-carousel-item v-for="item in imgList" :key="item">
+        <img :src="item">
+      </el-carousel-item>
+    </el-carousel>
     <div class="bg about" :style="{backgroundImage:`url(${About})`}">
       <div>
         <h1>About us!</h1>
@@ -44,7 +48,9 @@
 </template>
 
 <script>
-import Banner from '@/assets/img/home/banner.png';
+import Banner1 from '@/assets/img/home/banner1.jpg';
+import Banner2 from '@/assets/img/home/banner2.jpg';
+import Banner3 from '@/assets/img/home/banner3.jpg';
 import About from '@/assets/img/home/aboutBg.png';
 import Case1 from '@/assets/img/home/case1.png';
 import Case2 from '@/assets/img/home/case2.png';
@@ -57,8 +63,11 @@ import About4 from '@/assets/img/home/about4.png';
 export default {
   name: 'Dashboard',
   data() {
-    return { Banner, About, Case1, Case2, Case3, About1, About2, About3, About4 };
-  }
+    return {
+      imgList: [Banner1, Banner2, Banner3,],
+      screenHeight: window.innerHeight+'px',
+      About, Case1, Case2, Case3, About1, About2, About3, About4    };
+  },
 
 };
 </script>
@@ -79,7 +88,7 @@ export default {
   height: 2.5rem;
   line-height: 2.5rem;
   border-radius: 1.7857rem;
-  margin:50px auto 0;
+  margin: 50px auto 0;
 }
 .about {
   height: 42.2857rem;
