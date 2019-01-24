@@ -10,10 +10,10 @@
           <el-input v-model="form.passord" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
-      <span class="register" @click.stop="registerDialog=true">register</span>
+      <span class="register" @click.stop="registerDialog=true;loginDialog = false">register</span>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">login</el-button>
-        <el-button @click="dialogFormVisible = false">cancel</el-button>
+        <el-button @click="loginDialog = false">login</el-button>
+        <el-button @click="loginDialog = false">cancel</el-button>
       </div>
     </el-dialog>
     <!-- regist -->
@@ -36,19 +36,21 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">regist</el-button>
-        <el-button @click="dialogFormVisible = false">cancel</el-button>
+        <el-button @click="registerDialog = false">regist</el-button>
+        <el-button @click="registerDialog = false">cancel</el-button>
       </div>
     </el-dialog>
     <ul class="menu page-container clearfix">
       <li class="logo bg" :style="{backgroundImage:`url(${logo})`}"></li>
       <li v-for="(link,index) in routes" :key="link.path" class="link">
-        <router-link :to="link.path">
+        <span>
           <span v-if="index===routes.length-1" class="login-box gradient-font pointer" @click.stop="loginDialog=true">
             Log In / Sign Up
           </span>
-          {{ link.name }}
-        </router-link>
+          <router-link :to="link.path">
+            {{ link.name }}
+          </router-link>
+        </span>
       </li>
     </ul>
 
@@ -135,7 +137,6 @@ export default {
   }
   .linkOther {
     float: right;
-    display: inline-block;
     font-size: 0;
     margin-top: 6px;
     li img {
@@ -178,12 +179,12 @@ export default {
   color: #fafafa;
 }
 .logo {
-  width: 12.8571rem;  
+  width: 12.8571rem;
 }
 .link {
   flex: 1;
   text-align: center;
-  > a {
+  > span {
     position: relative;
   }
 }

@@ -3,7 +3,7 @@
     <div class="title">Related products</div>
     <ul class="list">
       <li class="item pointer" v-for="item in list" :key="item.id" @click="returnItem(item)">
-        <div>图片</div>
+        <img :src="item.imgUrl" alt="">
         <p>{{item.name}}</p>
       </li>
     </ul>
@@ -19,6 +19,9 @@ export default {
       default: () => []
     }
   },
+  data(){
+    return {path:'./products/'}
+  },
   methods: {
     returnItem(item) {
       this.$emit('get-item', item)
@@ -32,25 +35,28 @@ export default {
 .title {
   font-size: 1.2857rem;
   font-weight: 700;
-  line-height: 2.5rem;
+  height: 3.5714rem;
+  line-height: 3.5714rem;
   color: #fefefe;
   background: #949494;
   text-align: center;
 }
 .list {
   background: #f5f5f5;
-  height: calc(100% - 2.5rem);
+  height: calc(100% - 3.5714rem);
   overflow-y: auto;
   .item {
+    width: 100%;
     padding: 1.4286rem 1.0714rem;
-    > div {
+    > img {
       width: 100%;
-      height: 12.1429rem;
-      border: 1px solid #000;
+      height: auto;
     }
     > p {
       font-size: 1.1429rem;
       line-height: 1.4286rem;
+      text-align: center;
+      font-weight: 700;
     }
   }
 }
