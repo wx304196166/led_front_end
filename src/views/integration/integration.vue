@@ -63,7 +63,12 @@
         <el-table :data="table" :span-method="arraySpanMethod" border style="width: 100%" header-row-class-name="table-head">
 
           <el-table-column prop="classification" label="Classification" />
-          <el-table-column prop="name" label="Name" />
+          <el-table-column prop="name" label="name">
+            <template slot-scope="scope">
+              <el-input v-if="scope.row.isInput" v-model="scope.row.name"></el-input>
+              <span v-else>{{scope.row.name}}</span>
+            </template>
+          </el-table-column>
           <el-table-column prop="brand" label="Brand" />
           <el-table-column prop="specifications" label="Specifications">
             <template slot-scope="scope">
@@ -71,9 +76,10 @@
             </template>
           </el-table-column>
           <el-table-column prop="number" label="Number">
-            <!-- <template slot-scope="scope">
-              <span class="size">{{scope.row.specifications[0]*screenCol}}&nbsp;*&nbsp;{{scope.row.specifications[1]*screenCol}}</span>
-            </template> -->
+            <template slot-scope="scope">
+              <el-input-number v-if="!(scope.row.isMain||scope.row.isInput)" size="small" v-model="scope.row.number" controls-position="right" :min="1"></el-input-number>
+              <span v-else>{{scope.row.number}}</span>
+            </template>
           </el-table-column>
 
           <el-table-column prop="isSize" label="Screen Size" align="center">
@@ -95,9 +101,14 @@
 <script>
 import related from '@/components/Related/related';
 import banner from '@/components/Banner/banner';
+// 调试用
+import main from './tableData';
+import cardA8s from '@/assets/img/products/cardA8s.png';
+import CVT4KS from '@/assets/img/products/CVT4K-S.png';
+import MCTRL4K from '@/assets/img/products/MCTRL4K.png';
+import VX4S from '@/assets/img/products/VX4S.png';
+import MCTRLR5 from '@/assets/img/products/MCTRLR5.png';
 
-import main from './tableData'
-import list from './related';
 
 export default {
   name: 'Integration',
@@ -125,7 +136,46 @@ export default {
       },
       relatedList: [],
       main,
-      list
+      list: [{
+        id: 'cardA8s',
+        name: 'cardA8s',
+        classification: 'Sensor',
+        brand: 'Card',
+        imgUrl: cardA8s,
+        specifications: [200, 400]
+      },
+      {
+        id: 'CVT4K-S',
+        name: 'CVT4K-S',
+        classification: 'Sensor',
+        brand: 'CVT4K',
+        imgUrl: CVT4KS,
+        specifications: [300, 400]
+      },
+      {
+        id: 'MCTRL4K',
+        name: 'MCTRL4K',
+        classification: 'Sensor',
+        imgUrl: MCTRL4K,
+        brand: 'MCTRL',
+        specifications: [200, 400]
+      },
+      {
+        id: 'VX4S',
+        name: 'all-in-one VX4S',
+        classification: 'Consumables',
+        imgUrl: VX4S,
+        brand: 'all-in-one',
+        specifications: [300, 400]
+      },
+      {
+        id: 'MCTRLR5',
+        name: 'MCTRLR5',
+        classification: 'Consumables',
+        imgUrl: MCTRLR5,
+        brand: 'MCTRL',
+        specifications: [200, 400]
+      }]
     };
   },
   computed: {
@@ -249,6 +299,8 @@ $bright: #fafafa;
     .img-box {
       height: 14.2857rem;
       background-image: url("../../assets/img/img_led01.png");
+      position: relative;
+      left: -0.5rem;
     }
     .spec {
       color: $bright;
