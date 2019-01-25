@@ -19,7 +19,7 @@
         <li class="describe-box">
           <div class="title">
             Led Colourful HD Display
-            <i class="collect" />
+            <!-- <i class="collect" /> -->
           </div>
           <ul class="specifications clearfix">
             <!-- <li>Number:
@@ -37,7 +37,7 @@
       </ul>
       <ul class="detail-box clearfix">
         <li class="related">
-          <related />
+          <related :list="list" />
         </li>
         <li class="blank">&emsp;</li>
         <li class="detail">
@@ -57,14 +57,52 @@
 import related from '@/components/Related/related';
 import banner from '@/components/Banner/banner';
 import product1 from '@/assets/img/products/MCTRL4K.png';
-
+// 调试用
+import cardA8s from '@/assets/img/products/cardA8s.png';
+import CVT4KS from '@/assets/img/products/CVT4K-S.png';
+import VX4S from '@/assets/img/products/VX4S.png';
+import MCTRLR5 from '@/assets/img/products/MCTRLR5.png';
 export default {
   name: 'ProductDetail',
   components: { related, banner },
   data() {
     return {
       num1: 0,
-      product1
+      product1,
+      list: [
+        {
+          id: 'cardA8s',
+          name: 'cardA8s',
+          classification: 'Sensor',
+          brand: 'Card',
+          imgUrl: cardA8s,
+          specifications: [200, 400]
+        },
+        {
+          id: 'CVT4K-S',
+          name: 'CVT4K-S',
+          classification: 'Sensor',
+          brand: 'CVT4K',
+          imgUrl: CVT4KS,
+          specifications: [300, 400]
+        },        
+        {
+          id: 'VX4S',
+          name: 'all-in-one VX4S',
+          classification: 'Consumables',
+          imgUrl: VX4S,
+          brand: 'all-in-one',
+          specifications: [300, 400]
+        },
+        {
+          id: 'MCTRLR5',
+          name: 'MCTRLR5',
+          classification: 'Consumables',
+          imgUrl: MCTRLR5,
+          brand: 'MCTRL',
+          specifications: [200, 400]
+        }
+      ]
     };
   },
   methods: {

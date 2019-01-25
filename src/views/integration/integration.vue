@@ -5,7 +5,7 @@
       <li class="show-box clearfix">
         <ul class="show clearfix">
           <li class="title">Led Colourful HD Display</li>
-          <li class="img-box bg"></li>
+          <li class="img-box bg" :style="{backgroundImage:`url(${led01})`}"></li>
           <li class="title">Specifications:
             <span class="spec">{{specifications[0]}}*{{specifications[1]}}</span>
           </li>
@@ -38,7 +38,7 @@
                 </div>
               </li>
               <li class="screen">
-                <div class="cover" :style="{width:`${100/screenCol}%`,height:`${100/screenRow}%`}" v-for="item in screenTotal" :key="item" />
+                <div class="cover" :style="{width:`${100/screenCol}%`,height:`${100/screenRow}%`,backgroundImage:`url(${led02})`}" v-for="item in screenTotal" :key="item" />
               </li>
             </ul>
             <div class="x clearfix">
@@ -109,6 +109,8 @@ import MCTRL4K from '@/assets/img/products/MCTRL4K.png';
 import VX4S from '@/assets/img/products/VX4S.png';
 import MCTRLR5 from '@/assets/img/products/MCTRLR5.png';
 
+import led01 from '@/assets/img/img_led01.png'
+import led02 from '@/assets/img/img_led02.png'
 
 export default {
   name: 'Integration',
@@ -136,46 +138,50 @@ export default {
       },
       relatedList: [],
       main,
-      list: [{
-        id: 'cardA8s',
-        name: 'cardA8s',
-        classification: 'Sensor',
-        brand: 'Card',
-        imgUrl: cardA8s,
-        specifications: [200, 400]
-      },
-      {
-        id: 'CVT4K-S',
-        name: 'CVT4K-S',
-        classification: 'Sensor',
-        brand: 'CVT4K',
-        imgUrl: CVT4KS,
-        specifications: [300, 400]
-      },
-      {
-        id: 'MCTRL4K',
-        name: 'MCTRL4K',
-        classification: 'Sensor',
-        imgUrl: MCTRL4K,
-        brand: 'MCTRL',
-        specifications: [200, 400]
-      },
-      {
-        id: 'VX4S',
-        name: 'all-in-one VX4S',
-        classification: 'Consumables',
-        imgUrl: VX4S,
-        brand: 'all-in-one',
-        specifications: [300, 400]
-      },
-      {
-        id: 'MCTRLR5',
-        name: 'MCTRLR5',
-        classification: 'Consumables',
-        imgUrl: MCTRLR5,
-        brand: 'MCTRL',
-        specifications: [200, 400]
-      }]
+      led01,
+      led02,
+      list: [
+        {
+          id: 'cardA8s',
+          name: 'cardA8s',
+          classification: 'Sensor',
+          brand: 'Card',
+          imgUrl: cardA8s,
+          specifications: [200, 400]
+        },
+        {
+          id: 'CVT4K-S',
+          name: 'CVT4K-S',
+          classification: 'Sensor',
+          brand: 'CVT4K',
+          imgUrl: CVT4KS,
+          specifications: [300, 400]
+        },
+        {
+          id: 'MCTRL4K',
+          name: 'MCTRL4K',
+          classification: 'Sensor',
+          imgUrl: MCTRL4K,
+          brand: 'MCTRL',
+          specifications: [200, 400]
+        },
+        {
+          id: 'VX4S',
+          name: 'all-in-one VX4S',
+          classification: 'Consumables',
+          imgUrl: VX4S,
+          brand: 'all-in-one',
+          specifications: [300, 400]
+        },
+        {
+          id: 'MCTRLR5',
+          name: 'MCTRLR5',
+          classification: 'Consumables',
+          imgUrl: MCTRLR5,
+          brand: 'MCTRL',
+          specifications: [200, 400]
+        }
+      ]
     };
   },
   computed: {
@@ -298,7 +304,7 @@ $bright: #fafafa;
     }
     .img-box {
       height: 14.2857rem;
-      background-image: url("../../assets/img/img_led01.png");
+      // background-image: url("../../assets/img/img_led01.png");
       position: relative;
       left: -0.5rem;
     }
@@ -341,9 +347,6 @@ $bright: #fafafa;
         flex-wrap: wrap;
         width: calc(100% - 3.5714rem);
         height: 100%;
-        > div {
-          background-image: url("../../assets/img/img_led02.png");
-        }
       }
     }
     .bar {

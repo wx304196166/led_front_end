@@ -5,7 +5,7 @@
     <div class="page-container">
       <divide />
       <div class="productList">
-        <single-product v-for="(item,index) in products" :key="index" :info="item" />
+          <single-product v-for="(item,index) in products" :key="index" :info="item" />
       </div>
     </div>
   </div>
@@ -18,34 +18,39 @@ import banner from '@/components/Banner/banner';
 
 export default {
   name: 'Products',
-  components: { SingleProduct, Divide ,banner},
+  components: { SingleProduct, Divide, banner },
   data() {
     return {
       products: [
         {
           photo: '',
-          title: 'led2',
-          summary: '时代峰峻客户水电费时代峰峻客户水电费时代峰峻客户水电费时代峰峻客户水电费时代峰峻客户水电费时代峰峻客户水电费时代峰峻客户水电费'
+          title: 'Product Name',
+          summary: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Numquam perspiciatis, dicta necessitatibus laborum velit repudiandae nisi officiis labore est architecto quasi cupiditate odit? Minima est voluptatum minus vel. Nisi, autem.'
         },
         {
           photo: '',
-          title: '啊目的',
-          summary: 'sdfxcvsdf'
+          title: 'Product Name',
+          summary: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Numquam perspiciatis, dicta necessitatibus laborum velit repudiandae nisi officiis labore est architecto quasi cupiditate odit? Minima est voluptatum minus vel. Nisi, autem.'
         },
         {
           photo: '',
-          title: 'led2',
-          summary: '时代峰峻客户水电费'
+          title: 'Product Name',
+          summary: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Numquam perspiciatis, dicta necessitatibus laborum velit repudiandae nisi officiis labore est architecto quasi cupiditate odit? Minima est voluptatum minus vel. Nisi, autem.'
         },
         {
           photo: '',
-          title: 'led2',
-          summary: 'sdfxcvsdfwersdfsfxcv     sdfxvsdf'
+          title: 'Product Name',
+          summary: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Numquam perspiciatis, dicta necessitatibus laborum velit repudiandae nisi officiis labore est architecto quasi cupiditate odit? Minima est voluptatum minus vel. Nisi, autem.'
         },
         {
           photo: '',
-          title: 'led2',
-          summary: '时代峰峻客户水电费'
+          title: 'Product Name',
+          summary: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Numquam perspiciatis, dicta necessitatibus laborum velit repudiandae nisi officiis labore est architecto quasi cupiditate odit? Minima est voluptatum minus vel. Nisi, autem.'
+        },
+        {
+          photo: '',
+          title: 'Product Name',
+          summary: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Numquam perspiciatis, dicta necessitatibus laborum velit repudiandae nisi officiis labore est architecto quasi cupiditate odit? Minima est voluptatum minus vel. Nisi, autem.'
         }
       ]
     };
@@ -65,21 +70,5 @@ export default {
   flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
-  .product {
-    .productSummary {
-      position: absolute;
-      bottom: 0;
-      height: 50%;
-      width: 100%;
-      background-color: #eee;
-    }
-    i,
-    img {
-      display: inline-block;
-      width: 100%;
-      height: 100%;
-      // background: url("../../style/imgs/product.png") no-repeat 0 0;
-    }
-  }
 }
 </style>
