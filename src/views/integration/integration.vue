@@ -13,7 +13,6 @@
             Curabitur auctor tristique lobortis. Quisque bibendum, ipsum in feugiat pharetra, odio libero malesuada turpis, tempus fermentum augue est sit amet magna. Vestibulum bibendum lectus non mauris porta, sed blandit purus scelerisque. Sed consequat mollis ornare. Sed laoreet id dolor vitae facilisis. Mauris varius orci sed turpis commodo mattis.
           </li>
         </ul>
-        <div class="blank"></div>
         <ul class="operate clearfix">
           <li class="adjust">
             <ul v-for="(item,key) in adjust" :key="key" class="clearfix">
@@ -54,7 +53,6 @@
             </div>
           </li>
         </ul>
-        <div class="blank"></div>
         <div class="related">
           <related :list="list" @get-item="getItem" />
         </div>
@@ -285,17 +283,14 @@ $bright: #fafafa;
   }
 }
 .show-box {
-  height: 35.7143rem;
+  height: 550px;
   > ul,
   > div {
     float: left;
     height: 100%;
   }
-  .blank {
-    width: 1.5%;
-  }
   .show {
-    width: 21%;
+    width: 20%;
     .title {
       font-size: 1.2857rem;
       font-weight: 700;
@@ -315,7 +310,8 @@ $bright: #fafafa;
     }
   }
   .operate {
-    width: 57%;
+    width: 65%;
+    padding: 3.5714rem 4% 0 2%;
     padding-top: 3.5714rem;
     .adjust {
       display: flex;
@@ -402,7 +398,7 @@ $bright: #fafafa;
     }
   }
   .related {
-    width: 19%;
+    width: 15%;
   }
 }
 .parms-table {
@@ -452,5 +448,32 @@ $bright: #fafafa;
     height: 15px;
     border-radius: 0;
   }
+  .el-table_1_column_1 {
+    background-color: #f2f2f2;
+  }
+  .table-head th {
+    background-color: #000;
+    color: #fafafa;
+    font-weight: normal;
+    border-color: #000;
+  }
+  .el-table--enable-row-hover
+    .el-table__body
+    tr:hover
+    > td:not(.el-table_1_column_1) {
+    background-color: transparent;
+  }
+  .el-table--enable-row-hover
+    .el-table__body
+    tr:hover
+    > td.el-table_1_column_1 {
+    background-color: #f2f2f2;
+  }
+  // .has-gutter {
+  //   background-color: #000;
+  //   .table-head {
+  //     background-color: #000;
+  //   }
+  // }
 }
 </style>
