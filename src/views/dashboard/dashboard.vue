@@ -8,7 +8,13 @@
     <div class="bg about" :style="{backgroundImage:`url(${About})`}">
       <div>
         <h1>About us!</h1>
-        <div class="aboutUs">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Asperiores pariatur nesciunt unde quod sapiente perferendis magnam, fugiat totam id corporis eveniet odio eos ad distinctio, mollitia dignissimos commodi alias sed excepturi tempore. Eveniet doloribus nemo suscipit porro, ipsam doloremque quae maiores impedit provident nobis, exercitationem eius voluptatibus assumenda quia velit.</div>
+        <div class="aboutUs">
+          <el-carousel :interval="4000" height="150px" arrow="never">
+            <el-carousel-item v-for="item in aboutUsLIst" :key="item">
+              {{item}}
+            </el-carousel-item>
+          </el-carousel>
+        </div>
         <div class="aboutbox">
           <div class="divide">
             <h1>MAJOR</h1>
@@ -35,7 +41,7 @@
             <div class="describe">hundreds of well-known strategic partners in the industry</div>
           </div>
         </div>
-        <div class="submit">Watch more</div>
+        <!-- <div class="submit">Watch more</div> -->
       </div>
 
     </div>
@@ -65,7 +71,10 @@ export default {
   data() {
     return {
       imgList: [Banner1, Banner2, Banner3,],
-      screenHeight: window.innerHeight+'px',
+      aboutUsLIst: [
+        'Lorem ipsum, dolor sit amet consectetur adipisicing elit. totam id corporis eveniet odio eos ad distinctio, mollitia dignissimos commodi alias sed excepturi tempore. Eveniet doloribus nemo suscipit porro, ipsam doloremque quae maiores impedit provident nobis, exercitationem eius voluptatibus assumenda quia velit.',
+        'unde quod sapiente perferendis magnam, fugiat totam id corporis eveniet odio eos ad distinctio, mollitia dignissimos commodi alias sed excepturi tempore. Eveniet doloribus nemo suscipit porro, ipsam doloremque quae maiores impedit provident nobis, quia velit.'],
+      screenHeight: window.innerHeight + 'px',
       About, Case1, Case2, Case3, About1, About2, About3, About4    };
   },
 
@@ -79,7 +88,7 @@ export default {
   span {
     width: 33.3%;
     // 因图片大小不一的临时方案
-    background-color: #000; 
+    background-color: #000;
   }
 }
 .submit {
@@ -105,6 +114,7 @@ export default {
   }
   .aboutUs {
     opacity: 0.6;
+    line-height: 30px;
   }
   .aboutbox {
     display: flex;
@@ -134,5 +144,17 @@ img {
   width: 100%;
   height: auto;
   vertical-align: top;
+}
+</style>
+<style rel="stylesheet/scss" lang="scss">
+.aboutUs {
+  .el-carousel__indicator {
+    padding: 0 10px;
+    .el-carousel__button {
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+    }
+  }
 }
 </style>
