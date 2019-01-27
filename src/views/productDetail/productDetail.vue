@@ -4,15 +4,18 @@
     <div class="page-container">
       <ul class="intro clearfix">
         <li class="show-box">
-          <div><img :src="product1" /></div>
+          <div class="img-main">
+            <img :src="product1" />
+  
+          </div>
           <ul class="img-list">
-            <li />
+            <li :class="{disabled:moveDisabled||preDisabled}" @click="move('left')" />
             <li>
-              <ul class="img-box">
-                <li><img :src="product1" /></li>
+              <ul :style="{transform:`translateX(${distanse*6.3714}rem)`}" class="img-box">
+                <li v-for="(item,index) in productImgList" :key="index"><img :src="product1" /></li>
               </ul>
             </li>
-            <li />
+            <li :class="{disabled:moveDisabled||nextDisabled}" @click="move('right')" />
           </ul>
         </li>
         <li class="blank" />
@@ -41,7 +44,7 @@
         </li>
         <li class="blank">&emsp;</li>
         <li class="detail">
-          <div class="tab">Commodity introduction</div>
+          <div class="tab">Commodity Introduction</div>
           <div class="content">
             Curabitur auctor tristique lobortis. Quisque bibendum, ipsum in feugiat pharetra, odio libero malesuada turpis, tempus fermentum augue est sit amet magna. Vestibulum bibendum lectus non mauris porta, sed blandit purus scelerisque. Sed consequat mollis ornare. Sed laoreet id dolor vitae facilisis. Mauris varius orci sed turpis commodo mattis. Cras vel nibh scelerisque urna tincidunt vestibulum accumsan pharetra ex. Proin ullamcorper eros non justo tincidunt lobortis. Ut sapien nisi, bibendum tempor efficitur ultricies, pellentesque interdum diam. Aliquam commodo felis eu urna consectetur, ut semper diam tempor. Etiam eu maximus sapien, a tristique tortor.
             <img :src="product1" alt="">
@@ -69,6 +72,11 @@ export default {
     return {
       num1: 0,
       product1,
+      productImgList: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+      distanse: 0,
+      preDisabled: true,
+      nextDisabled: false,
+
       list: [
         {
           id: 'cardA8s',
@@ -85,7 +93,7 @@ export default {
           brand: 'CVT4K',
           imgUrl: CVT4KS,
           specifications: [300, 400]
-        },        
+        },
         {
           id: 'VX4S',
           name: 'all-in-one VX4S',
@@ -105,9 +113,43 @@ export default {
       ]
     };
   },
+  computed: {
+    moveDisabled() {
+      return this.productImgList.length < 5;
+    }
+  },
   methods: {
     handleChange(value) {
 
+    },
+    move(direction) {
+      if (this.moveDisabled) { return }
+      switch (direction) {
+        case 'left':
+          if (Math.abs(this.distanse) > 0) {
+            this.distanse++;
+            if (Math.abs(this.distanse) > 0) {
+              this.preDisabled = false;
+              this.nextDisabled = true;
+            } else {
+              this.preDisabled = true;
+              this.nextDisabled = false;
+            }
+          }
+          break;
+        case 'right':
+          if (this.productImgList.length - Math.abs(this.distanse) >= 5) {
+            this.distanse--;
+            if (this.productImgList.length - Math.abs(this.distanse) >= 5) {
+              this.nextDisabled = false;
+              this.preDisabled = true;
+            } else {
+              this.nextDisabled = true;
+              this.preDisabled = false;
+            }
+          }
+          break;
+      }
     }
   }
 };
@@ -131,8 +173,8 @@ export default {
   }
 
   .show-box {
-    width: 36.5%;
-    > div {
+    width: 35rem;
+    .img-main {
       position: relative;
       height: calc(100% - 80px);
       border: 1px solid #000;
@@ -154,6 +196,7 @@ export default {
         height: 100%;
         width: calc(100% - 44px);
         overflow: hidden;
+        position: relative;
       }
 
       > li:nth-child(1),
@@ -162,10 +205,16 @@ export default {
         background-image: url("../../assets/img/next.png");
         background-repeat: no-repeat;
         background-position: center center;
+        cursor: pointer;
+        &:hover {
+          background-image: url("../../assets/img/hover_next.png");
+        }
       }
-      > li.has:nth-child(1),
-      > li.has:nth-child(3) {
-        background-image: url("../../assets/img/hover_next.png");
+      > li:nth-child(1),
+      > li:nth-child(3) {
+        &.disabled {
+          background-image: url("../../assets/img/next.png");
+        }
       }
       > li:nth-child(1) {
         transform: scale(-1, 1);
@@ -173,29 +222,35 @@ export default {
     }
     .img-box {
       height: 100%;
+      transition: transform 0.38s ease;
+      white-space: nowrap;
       > li {
-        float: left;
+        display: inline-block;
         height: 100%;
-        width: 62px;
-        text-align: center;
+        width: 6.3714rem;
         position: relative;
-        float: left;
+
         > img {
           position: absolute;
+          cursor: pointer;
           top: 50%;
           left: 50%;
-          transform: translate(-50%,-50%);
-          width: 50px;
-          height: 50px;
+          transform: translate(-50%, -50%);
+          width: 3.9286rem;
+          height: 3.5714rem;
           padding: 1px;
           border: 1px solid #cecfce;
+          &:hover,
+          &.active {
+            border-color: #000;
+          }
         }
       }
     }
   }
 
   .describe-box {
-    width: 59%;
+    width: calc(93% - 35rem);
 
     .title {
       font-size: 28px;
