@@ -34,16 +34,18 @@ export default {
   margin-bottom: 1.4286rem;
   box-sizing: border-box;
   width: 33.3%;
+  padding:5% 0;
   border: 1px solid transparent;
   overflow: hidden;
   img {
     transform: scale(0.8);
   }
   &:hover {
-    border: 1px solid #000;
+    border: 1px solid #a549a5;
     box-shadow: none;
+    color: #fff;
     .productSummary {
-      background-color: #e3158c;
+      background: linear-gradient(to top, #6f007c, #e70088);;
       transform: translateY(-100%);
     }
   }

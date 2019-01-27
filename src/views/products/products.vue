@@ -25,7 +25,7 @@ export default {
         {
           photo: '',
           title: 'Product Name',
-          summary: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Numquam perspiciatis, dicta necessitatibus laborum velit repudiandae nisi officiis labore est architecto quasi cupiditate odit? Minima est voluptatum minus vel. Nisi, autem.'
+          summary: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Numquam perspiciatis.'
         },
         {
           photo: '',

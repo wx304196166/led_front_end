@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="page-container ">
     <input type="text" placeholder="please enter the serial number" class="searchInput">
     <div class="thumbnail">
 
@@ -8,9 +8,13 @@
       <div>Led Colorful HD Display</div>
       <span>serial number : 1245654687s</span>
     </div>
-    <div>
-      Essential infomation
-    </div>
+    <ul class="maintenanceUl">
+      <li>Product type: xxxxxxxxx</li>
+      <li>Contract number: xxxxxxxxx</li>
+      <li>Date of purchase: xxxxxxxxx</li>
+      <li>Warranty date: xxxxxxxxx</li>
+      <li>Warranty period: xxxxxxxxx</li>
+    </ul>
   </div>
 </template>
 
@@ -41,5 +45,8 @@ export default {
 }
 .serialNumber {
   text-align: center;
+}
+.maintenanceUl li{
+  padding: 13px 0;
 }
 </style>

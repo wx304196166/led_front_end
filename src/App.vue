@@ -41,7 +41,10 @@
       </div>
     </el-dialog>
     <ul class="menu page-container clearfix">
-      <li class="logo bg" :style="{backgroundImage:`url(${logo})`}"></li>
+      <li class="logo bg" :style="{backgroundImage:`url(${logo})`}">
+        <router-link to="/dashboard">
+        </router-link>
+      </li>
       <li v-for="(link,index) in routes" :key="link.path" class="link">
         <span>
           <span v-if="index===routes.length-1" class="login-box gradient-font pointer" @click.stop="loginDialog=true">
@@ -180,6 +183,12 @@ export default {
 }
 .logo {
   width: 12.8571rem;
+  cursor: pointer;
+  a {
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+  }
 }
 .link {
   flex: 1;
