@@ -36,9 +36,15 @@
 
     </div>
     <div class="case">
-      <span><img :src="Case1"></span>
-      <span><img :src="Case2"></span>
-      <span><img :src="Case3"></span>
+      <div @mouseenter="control=true" @mouseleave="control=false">
+        <img :src="Case1" :class="{'img-hover':control}">
+        <div class="mask cover" :style="{backgroundImage:`url(${mask})`}"  :class="{'mask-hover':control}">
+          <span class="title">This is a classic case</span>
+          <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Omnis, asperiores assumenda! Inventore labore officia possimus consequuntur eveniet! Quasi, quod aliquam quo dolor perspiciatis ducimus vero consequuntur, odio natus iure illum.</p>
+        </div>
+      </div>
+      <div><img :src="Case2"></div>
+      <div><img :src="Case3"></div>
     </div>
   </div>
 </template>
@@ -53,11 +59,11 @@ import About1 from '@/assets/img/home/about1.png';
 import About2 from '@/assets/img/home/about2.png';
 import About3 from '@/assets/img/home/about3.png';
 import About4 from '@/assets/img/home/about4.png';
-
+import mask from '@/assets/img/home/mask.png';
 export default {
   name: 'Dashboard',
   data() {
-    return { Banner, About, Case1, Case2, Case3, About1, About2, About3, About4 };
+    return { Banner, About, Case1, Case2, Case3, About1, About2, About3, About4, mask,control:false };
   }
 
 };
@@ -67,8 +73,15 @@ export default {
 .case {
   display: flex;
   flex-direction: row;
-  span {
-    width: 33.3%;
+  img {
+    transform: scale(1, 1);
+    transition: all 0.36s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+  }
+  > div {
+    width: 100% / 3;
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
   }
 }
 .submit {
@@ -79,14 +92,15 @@ export default {
   height: 2.5rem;
   line-height: 2.5rem;
   border-radius: 1.7857rem;
-  margin:50px auto 0;
+  margin: 50px auto 0;
 }
 .about {
   height: 42.2857rem;
   color: #fff;
-  & > div {
+  > div {
     margin: 0 auto;
     width: 60%;
+    overflow: hidden;
   }
   h1 {
     text-align: center;
@@ -123,5 +137,38 @@ img {
   width: 100%;
   height: auto;
   vertical-align: top;
+}
+.mask {
+  position: absolute;
+  bottom: 120px;
+  transform: translateY(100%);
+  left: 0;
+  width: 100%;
+  text-align: center;
+  padding-bottom: 20px;
+  padding-top: 70px;
+  transition: all 0.36s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+  color: #fff;
+  .title {
+    font-size: 1.4286rem;
+    line-height: 40px;
+    font-weight: 700;
+  }
+  p {
+    text-align: left;
+
+    padding: 0 0.7143rem;
+    font-size: 1.1429rem;
+    line-height: 25px;
+  }
+}
+.case {
+  .img-hover {
+    transform: scale(1.2, 1.2);
+  }
+  .mask-hover {
+    bottom: 0;
+    transform: translateY(0);
+  }
 }
 </style>
