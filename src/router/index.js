@@ -5,7 +5,6 @@ import productDetail from '@/views/productDetail/productDetail';
 import dashboard from '@/views/dashboard/dashboard';
 import products from '@/views/products/products';
 import integration from '@/views/integration/integration';
-import download from '@/views/download/download';
 import maintenance from '@/views/maintenance/maintenance';
 
 // in development-env not use lazy-loading, because lazy-loading too many pages will cause webpack hot update too slow. so only in production use lazy-loading;
@@ -53,15 +52,6 @@ export const constantRouterMap = [
     },
     component: integration
   },
-  {
-    path: '/download',
-    name: 'Download',
-    meta: {
-      title: 'download'
-    },
-    component: download
-  },
-
   {
     path: '/maintenance',
     name: 'Maintenance',

@@ -1,10 +1,20 @@
 <template>
-  <div>
-    <img :src="Banner">
+  <div style="height:100%">
+    <el-carousel :interval="4000" :height="screenHeight">
+      <el-carousel-item v-for="item in imgList" :key="item">
+        <img :src="item">
+      </el-carousel-item>
+    </el-carousel>
     <div class="bg about" :style="{backgroundImage:`url(${About})`}">
       <div>
         <h1>About us!</h1>
-        <div class="aboutUs">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Asperiores pariatur nesciunt unde quod sapiente perferendis magnam, fugiat totam id corporis eveniet odio eos ad distinctio, mollitia dignissimos commodi alias sed excepturi tempore. Eveniet doloribus nemo suscipit porro, ipsam doloremque quae maiores impedit provident nobis, exercitationem eius voluptatibus assumenda quia velit.</div>
+        <div class="aboutUs">
+          <el-carousel :interval="4000" height="150px" arrow="never">
+            <el-carousel-item v-for="item in aboutUsLIst" :key="item">
+              {{item}}
+            </el-carousel-item>
+          </el-carousel>
+        </div>
         <div class="aboutbox">
           <div class="divide">
             <h1>MAJOR</h1>
@@ -31,14 +41,14 @@
             <div class="describe">hundreds of well-known strategic partners in the industry</div>
           </div>
         </div>
-        <div class="submit">Watch more</div>
+        <!-- <div class="submit">Watch more</div> -->
       </div>
 
     </div>
     <div class="case">
       <div @mouseenter="control=true" @mouseleave="control=false">
         <img :src="Case1" :class="{'img-hover':control}">
-        <div class="mask cover" :style="{backgroundImage:`url(${mask})`}"  :class="{'mask-hover':control}">
+        <div class="mask cover" :style="{backgroundImage:`url(${mask})`}" :class="{'mask-hover':control}">
           <span class="title">This is a classic case</span>
           <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Omnis, asperiores assumenda! Inventore labore officia possimus consequuntur eveniet! Quasi, quod aliquam quo dolor perspiciatis ducimus vero consequuntur, odio natus iure illum.</p>
         </div>
@@ -50,7 +60,9 @@
 </template>
 
 <script>
-import Banner from '@/assets/img/home/banner.png';
+import Banner1 from '@/assets/img/home/banner1.jpg';
+import Banner2 from '@/assets/img/home/banner2.jpg';
+import Banner3 from '@/assets/img/home/banner3.jpg';
 import About from '@/assets/img/home/aboutBg.png';
 import Case1 from '@/assets/img/home/case1.png';
 import Case2 from '@/assets/img/home/case2.png';
@@ -63,8 +75,17 @@ import mask from '@/assets/img/home/mask.png';
 export default {
   name: 'Dashboard',
   data() {
-    return { Banner, About, Case1, Case2, Case3, About1, About2, About3, About4, mask,control:false };
-  }
+    return {
+      imgList: [Banner1, Banner2, Banner3,],
+      aboutUsLIst: [
+        'Lorem ipsum, dolor sit amet consectetur adipisicing elit. totam id corporis eveniet odio eos ad distinctio, mollitia dignissimos commodi alias sed excepturi tempore. Eveniet doloribus nemo suscipit porro, ipsam doloremque quae maiores impedit provident nobis, exercitationem eius voluptatibus assumenda quia velit.',
+        'unde quod sapiente perferendis magnam, fugiat totam id corporis eveniet odio eos ad distinctio, mollitia dignissimos commodi alias sed excepturi tempore. Eveniet doloribus nemo suscipit porro, ipsam doloremque quae maiores impedit provident nobis, quia velit.'],
+      screenHeight: window.innerHeight + 'px',
+      About, Case1, Case2, Case3, About1, About2, About3, About4,
+      mask,
+      control: false
+    };
+  },
 
 };
 </script>
@@ -82,6 +103,7 @@ export default {
     position: relative;
     cursor: pointer;
     overflow: hidden;
+    background-color: #000;
   }
 }
 .submit {
@@ -108,6 +130,7 @@ export default {
   }
   .aboutUs {
     opacity: 0.6;
+    line-height: 30px;
   }
   .aboutbox {
     display: flex;
@@ -169,6 +192,18 @@ img {
   .mask-hover {
     bottom: 0;
     transform: translateY(0);
+  }
+}
+</style>
+<style rel="stylesheet/scss" lang="scss">
+.aboutUs {
+  .el-carousel__indicator {
+    padding: 0 10px;
+    .el-carousel__button {
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+    }
   }
 }
 </style>

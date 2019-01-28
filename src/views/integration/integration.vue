@@ -5,7 +5,7 @@
       <li class="show-box clearfix">
         <ul class="show clearfix">
           <li class="title">Led Colourful HD Display</li>
-          <li class="img-box bg"></li>
+          <li class="img-box bg" :style="{backgroundImage:`url(${led01})`}"></li>
           <li class="title">Specifications:
             <span class="spec">{{specifications[0]}}*{{specifications[1]}}</span>
           </li>
@@ -13,7 +13,6 @@
             Curabitur auctor tristique lobortis. Quisque bibendum, ipsum in feugiat pharetra, odio libero malesuada turpis, tempus fermentum augue est sit amet magna. Vestibulum bibendum lectus non mauris porta, sed blandit purus scelerisque. Sed consequat mollis ornare. Sed laoreet id dolor vitae facilisis. Mauris varius orci sed turpis commodo mattis.
           </li>
         </ul>
-        <div class="blank"></div>
         <ul class="operate clearfix">
           <li class="adjust">
             <ul v-for="(item,key) in adjust" :key="key" class="clearfix">
@@ -38,7 +37,7 @@
                 </div>
               </li>
               <li class="screen">
-                <div class="cover" :style="{width:`${100/screenCol}%`,height:`${100/screenRow}%`}" v-for="item in screenTotal" :key="item" />
+                <div class="cover" :style="{width:`${100/screenCol}%`,height:`${100/screenRow}%`,backgroundImage:`url(${led02})`}" v-for="item in screenTotal" :key="item" />
               </li>
             </ul>
             <div class="x clearfix">
@@ -54,7 +53,6 @@
             </div>
           </li>
         </ul>
-        <div class="blank"></div>
         <div class="related">
           <related :list="list" @get-item="getItem" />
         </div>
@@ -109,6 +107,8 @@ import MCTRL4K from '@/assets/img/products/MCTRL4K.png';
 import VX4S from '@/assets/img/products/VX4S.png';
 import MCTRLR5 from '@/assets/img/products/MCTRLR5.png';
 
+import led01 from '@/assets/img/img_led01.png'
+import led02 from '@/assets/img/img_led02.png'
 
 export default {
   name: 'Integration',
@@ -136,46 +136,50 @@ export default {
       },
       relatedList: [],
       main,
-      list: [{
-        id: 'cardA8s',
-        name: 'cardA8s',
-        classification: 'Sensor',
-        brand: 'Card',
-        imgUrl: cardA8s,
-        specifications: [200, 400]
-      },
-      {
-        id: 'CVT4K-S',
-        name: 'CVT4K-S',
-        classification: 'Sensor',
-        brand: 'CVT4K',
-        imgUrl: CVT4KS,
-        specifications: [300, 400]
-      },
-      {
-        id: 'MCTRL4K',
-        name: 'MCTRL4K',
-        classification: 'Sensor',
-        imgUrl: MCTRL4K,
-        brand: 'MCTRL',
-        specifications: [200, 400]
-      },
-      {
-        id: 'VX4S',
-        name: 'all-in-one VX4S',
-        classification: 'Consumables',
-        imgUrl: VX4S,
-        brand: 'all-in-one',
-        specifications: [300, 400]
-      },
-      {
-        id: 'MCTRLR5',
-        name: 'MCTRLR5',
-        classification: 'Consumables',
-        imgUrl: MCTRLR5,
-        brand: 'MCTRL',
-        specifications: [200, 400]
-      }]
+      led01,
+      led02,
+      list: [
+        {
+          id: 'cardA8s',
+          name: 'cardA8s',
+          classification: 'Sensor',
+          brand: 'Card',
+          imgUrl: cardA8s,
+          specifications: [200, 400]
+        },
+        {
+          id: 'CVT4K-S',
+          name: 'CVT4K-S',
+          classification: 'Sensor',
+          brand: 'CVT4K',
+          imgUrl: CVT4KS,
+          specifications: [300, 400]
+        },
+        {
+          id: 'MCTRL4K',
+          name: 'MCTRL4K',
+          classification: 'Sensor',
+          imgUrl: MCTRL4K,
+          brand: 'MCTRL',
+          specifications: [200, 400]
+        },
+        {
+          id: 'VX4S',
+          name: 'all-in-one VX4S',
+          classification: 'Consumables',
+          imgUrl: VX4S,
+          brand: 'all-in-one',
+          specifications: [300, 400]
+        },
+        {
+          id: 'MCTRLR5',
+          name: 'MCTRLR5',
+          classification: 'Consumables',
+          imgUrl: MCTRLR5,
+          brand: 'MCTRL',
+          specifications: [200, 400]
+        }
+      ]
     };
   },
   computed: {
@@ -279,17 +283,14 @@ $bright: #fafafa;
   }
 }
 .show-box {
-  height: 35.7143rem;
+  height: 550px;
   > ul,
   > div {
     float: left;
     height: 100%;
   }
-  .blank {
-    width: 1.5%;
-  }
   .show {
-    width: 21%;
+    width: 20%;
     .title {
       font-size: 1.2857rem;
       font-weight: 700;
@@ -298,7 +299,7 @@ $bright: #fafafa;
     }
     .img-box {
       height: 14.2857rem;
-      background-image: url("../../assets/img/img_led01.png");
+      // background-image: url("../../assets/img/img_led01.png");
       position: relative;
       left: -0.5rem;
     }
@@ -309,7 +310,8 @@ $bright: #fafafa;
     }
   }
   .operate {
-    width: 57%;
+    width: 65%;
+    padding: 3.5714rem 4% 0 2%;
     padding-top: 3.5714rem;
     .adjust {
       display: flex;
@@ -341,9 +343,6 @@ $bright: #fafafa;
         flex-wrap: wrap;
         width: calc(100% - 3.5714rem);
         height: 100%;
-        > div {
-          background-image: url("../../assets/img/img_led02.png");
-        }
       }
     }
     .bar {
@@ -399,7 +398,7 @@ $bright: #fafafa;
     }
   }
   .related {
-    width: 19%;
+    width: 15%;
   }
 }
 .parms-table {
@@ -449,5 +448,32 @@ $bright: #fafafa;
     height: 15px;
     border-radius: 0;
   }
+  .el-table_1_column_1 {
+    background-color: #f2f2f2;
+  }
+  .table-head th {
+    background-color: #000;
+    color: #fafafa;
+    font-weight: normal;
+    border-color: #000;
+  }
+  .el-table--enable-row-hover
+    .el-table__body
+    tr:hover
+    > td:not(.el-table_1_column_1) {
+    background-color: transparent;
+  }
+  .el-table--enable-row-hover
+    .el-table__body
+    tr:hover
+    > td.el-table_1_column_1 {
+    background-color: #f2f2f2;
+  }
+  // .has-gutter {
+  //   background-color: #000;
+  //   .table-head {
+  //     background-color: #000;
+  //   }
+  // }
 }
 </style>
