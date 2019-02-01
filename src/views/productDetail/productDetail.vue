@@ -6,7 +6,7 @@
         <li class="show-box">
           <div class="img-main">
             <img :src="product1" />
-  
+
           </div>
           <ul class="img-list">
             <li :class="{disabled:moveDisabled||preDisabled}" @click="move('left')" />
@@ -25,12 +25,12 @@
             <!-- <i class="collect" /> -->
           </div>
           <ul class="specifications clearfix">
-            <!-- <li>Number:
-              <el-input-number v-model="num1" @change="handleChange" :min="0" :max="9999" size="mini">
-              </el-input-number>
-            </li> -->
-            <li>Specifications:</li>
-            <li />
+            <li>
+              Specifications:
+            </li>
+            <li>
+              <span v-for="(item, index) in specList" :key="index" :class="{active:item.active}" @click="sel(index)">{{item.spec}}</span>
+            </li>
           </ul>
           <p class="describe">
             Curabitur auctor tristique lobortis. Quisque bibendum, ipsum in feugiat pharetra, odio libero malesuada turpis, tempus fermentum augue est sit amet magna. Vestibulum bibendum lectus non mauris porta, sed blandit purus scelerisque. Sed consequat mollis ornare. Sed laoreet id dolor vitae facilisis. Mauris varius orci sed turpis commodo mattis.
@@ -76,7 +76,8 @@ export default {
       distanse: 0,
       preDisabled: true,
       nextDisabled: false,
-
+      specList: ['200*300', '300*400', '400*500', '500*400', '400*300', '300*200'],
+      curSpec: null,
       list: [
         {
           id: 'cardA8s',
@@ -118,9 +119,26 @@ export default {
       return this.productImgList.length < 5;
     }
   },
+  created() {
+    this.specList = this.specList.map(item => {
+      const obj = { spec: item };
+      this.$set(obj, 'active', false);
+      return obj;
+    });
+  },
   methods: {
     handleChange(value) {
 
+    },
+    sel(index) {
+      this.specList.forEach((item, i) => {
+        if (i === index) {
+          item.active = true;
+          this.curSpec = item.spec;
+        } else {
+          item.active = false;
+        }
+      })
     },
     move(direction) {
       if (this.moveDisabled) { return }
@@ -268,28 +286,41 @@ export default {
         height: 100%;
       }
     }
-
-    .specifications,
-    .describe {
-      margin-top: 25px;
-    }
-
     .specifications {
+      font-size: 16px;
+      margin-top: 20px;
       > li {
         float: left;
       }
 
       > li:first-child {
-        width: 80px;
+        width: 125px;
+        font-weight: 700;
       }
 
-      > li:first-child {
-        width: calc(100% - 80px);
+      > li:last-child {
+        width: calc(100% - 125px);
+        > span {
+          float: left;
+          font-size: 14px;
+          margin-right: 15px;
+          margin-bottom: 15px;
+          border: 1px solid #000;
+          padding: 3px 8px;
+          border-radius: 1px;
+          cursor: pointer;
+          &:hover,
+          &.active {
+            color: #fafafa;
+            background: #000;
+          }
+        }
       }
     }
 
     .describe {
       text-indent: 2em;
+      margin-top: 10px;
     }
   }
 }
