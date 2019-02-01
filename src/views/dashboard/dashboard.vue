@@ -35,7 +35,7 @@
             <div class="describe">hundreds of well-known strategic partners in the industry</div>
           </div>
         </div>
-        <div class="submit">Watch more</div>
+        <!-- <div class="submit">Watch more</div> -->
       </div>
 
     </div>

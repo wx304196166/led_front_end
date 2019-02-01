@@ -1,27 +1,31 @@
 <template>
-  <div class="page-container ">
-    <input type="text" placeholder="please enter the serial number" class="searchInput">
-    <div class="thumbnail">
+  <div>
+    <banner />
+    <div class="page-container ">
+      <input type="text" placeholder="please enter the serial number" class="searchInput">
+      <div class="thumbnail">
 
+      </div>
+      <div class="serialNumber">
+        <div>Led Colorful HD Display</div>
+        <span>serial number : 1245654687s</span>
+      </div>
+      <ul class="maintenanceUl">
+        <li>Product type: xxxxxxxxx</li>
+        <li>Contract number: xxxxxxxxx</li>
+        <li>Date of purchase: xxxxxxxxx</li>
+        <li>Warranty date: xxxxxxxxx</li>
+        <li>Warranty period: xxxxxxxxx</li>
+      </ul>
     </div>
-    <div class="serialNumber">
-      <div>Led Colorful HD Display</div>
-      <span>serial number : 1245654687s</span>
-    </div>
-    <ul class="maintenanceUl">
-      <li>Product type: xxxxxxxxx</li>
-      <li>Contract number: xxxxxxxxx</li>
-      <li>Date of purchase: xxxxxxxxx</li>
-      <li>Warranty date: xxxxxxxxx</li>
-      <li>Warranty period: xxxxxxxxx</li>
-    </ul>
   </div>
 </template>
 
 <script>
-
+import banner from '@/components/Banner/banner';
 export default {
-  name: 'Maintenance'
+  name: 'Maintenance',
+  components: { banner },
 
 };
 </script>
@@ -46,7 +50,10 @@ export default {
 .serialNumber {
   text-align: center;
 }
-.maintenanceUl li{
+.maintenanceUl {
+  padding: 0 5%;
+}
+.maintenanceUl li {
   padding: 13px 0;
 }
 </style>
