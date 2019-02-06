@@ -2,41 +2,41 @@
   <div id="app">
     <!-- login -->
     <el-dialog :visible.sync="loginDialog" width="500px">
-      <el-form :model="form">
+      <el-form ref="loginForm" :model="loginForm">
         <el-form-item label="Login name:" :label-width="formLabelWidth">
-          <el-input v-model="form.username" autocomplete="off"></el-input>
+          <el-input v-model="loginForm.username" auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item label="Passord:" :label-width="formLabelWidth">
-          <el-input v-model="form.passord" autocomplete="off"></el-input>
+        <el-form-item label="password:" :label-width="formLabelWidth">
+          <el-input v-model="loginForm.password" @keyup.enter.native="handleLogin" auto-complete="off"></el-input>
         </el-form-item>
       </el-form>
       <span class="register" @click.stop="registerDialog=true;loginDialog = false">register</span>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="loginDialog = false">login</el-button>
+        <el-button @click.native.prevent="handleLogin" :loading="loading">login</el-button>
         <el-button @click="loginDialog = false">cancel</el-button>
       </div>
     </el-dialog>
     <!-- regist -->
     <el-dialog :visible.sync="registerDialog" width="450px">
-      <el-form :model="form">
+      <el-form ref="loginForm" :model="loginForm">
         <el-form-item label="Login name:" :label-width="formLabelWidth">
-          <el-input v-model="form.username" autocomplete="off"></el-input>
+          <el-input v-model="loginForm.username" auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item label="Passord:" :label-width="formLabelWidth">
-          <el-input v-model="form.passord" autocomplete="off"></el-input>
+        <el-form-item label="Password:" :label-width="formLabelWidth">
+          <el-input v-model="loginForm.password" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="Name:" :label-width="formLabelWidth">
-          <el-input v-model="form.username" autocomplete="off"></el-input>
+          <el-input v-model="loginForm.realName" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="Phone:" :label-width="formLabelWidth">
-          <el-input v-model="form.passord" autocomplete="off"></el-input>
+          <el-input v-model="loginForm.phone" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="Email:" :label-width="formLabelWidth">
-          <el-input v-model="form.passord" autocomplete="off"></el-input>
+          <el-input v-model="loginForm.email" auto-complete="off"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="registerDialog = false">regist</el-button>
+        <el-button @click="regist">regist</el-button>
         <el-button @click="registerDialog = false">cancel</el-button>
       </div>
     </el-dialog>
@@ -86,6 +86,7 @@
 </template>
 
 <script>
+import { registerCustom } from '@/api/login';
 
 import Foot1 from '@/assets/img/home/foot1.png';
 import Foot2 from '@/assets/img/home/foot2.png';
@@ -96,15 +97,38 @@ import logo from '@/assets/img/logo.png';
 export default {
   name: 'App',
   data() {
+    const validateUsername = (rule, value, callback) => {
+      if (!isvalidUsername(value)) {
+        callback(new Error('请输入正确的用户名'))
+      } else {
+        callback()
+      }
+    }
+    const validatePass = (rule, value, callback) => {
+      if (value.length < 5) {
+        callback(new Error('密码不能小于5位'))
+      } else {
+        callback()
+      }
+    }
     return {
       Foot1, Foot2, Foot3, Foot4, Foot5,
       logo,
+      // 登录部分
       loginDialog: false,
       registerDialog: false,
       formLabelWidth: '100px',
-      form: {
+      loading: false,
+      loginForm: {
         username: '',
-        password: ''
+        password: '',
+        realName: '',
+        phone: '',
+        email: ''
+      },
+      loginRules: {
+        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+        password: [{ required: true, trigger: 'blur', validator: validatePass }]
       }
     };
   },
@@ -112,6 +136,43 @@ export default {
     routes() {
       return this.$router.options.routes.filter(item => !item.hidden);
     }
+  },
+  methods: {
+    handleLogin() {
+      this.$refs.loginForm.validate(valid => {
+        if (valid) {
+          this.loading = true;
+          this.$store.dispatch('Login', this.loginForm).then(() => {
+            this.loading = false;
+            this.loginDialog = false;
+          }).catch(() => {
+            this.loading = false;
+            this.loginDialog = false;
+          })
+
+        } else {
+          // console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    regist() {
+      this.$refs.loginForm.validate(valid => {
+        if (valid) {
+          registerCustom(this.loginForm).then(res => {
+            if (res.code === 0) {
+              this.$message.success('Regist Success');
+            } else {
+              this.$message.error(res.message);
+            }
+            this.registerDialog = false;
+          })
+        } else {
+          // console.log('error submit!!')
+          return false
+        }
+      })
+    },
   }
 };
 </script>

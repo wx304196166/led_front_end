@@ -256,7 +256,6 @@ export default {
         return [0, 0];
       } else {
         if (column.property === 'classification') {
-
           if (this.lastRow.id !== row.id) {
             if (this.lastRow.classification === row.classification) {
               return [0, 0];

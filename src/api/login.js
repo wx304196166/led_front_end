@@ -1,34 +1,56 @@
-import request from '../utils/request'
+import request from '@/utils/request';
 
 //登录
-export function loginPC(username, password, type = 1) {
+export function login(username, password, type = 1) {
   return request({
-    url: '/user/login',
+    url: '/common/login',
     method: 'post',
     data: {
       username,
       password,
       type
     }
-  })
-}
-//检查用户名是否存在
+  });
+};
+// 获取用户信息
+export function getUserInfo(token, type = 1) {
+  return request({
+    url: '/common/getUserInfo',
+    method: 'post',
+    data: {
+      token,
+      type
+    }
+  });
+};
+// 检查用户名是否存在
 export function checkName(username, type = 1) {
   return request({
-    url: `/user/check/${username}/${type}`,
-    method: 'get'
-  })
-}
-//注册
-export function registerCustom({username, password, name, phone}) {
+    url: '/common/check',
+    method: 'get',
+    params: {
+      username,
+      type
+    }
+  });
+};
+// 注册
+export function registerCustom({
+  username,
+  password,
+  realName,
+  phone,
+  email
+}) {
   return request({
-    url: `/user/createCustomer`,
+    url: '/common/createCustomer',
     method: 'post',
     data: {
       username,
       password,
-      name,
-      phone
+      realName,
+      phone,
+      email
     }
-  })
-}
+  });
+};
