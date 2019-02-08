@@ -51,7 +51,7 @@
       <li v-for="(link,index) in routes" :key="link.path" class="link">
         <span>
           <span v-if="index===routes.length-1" class="login-box gradient-font pointer">
-            <span v-if="user.info&&user.info.realName">Welcome, {{user.info.realName}}!</span>
+            <span v-if="username">Welcome, {{username}}!</span>
             <span v-else  @click.stop="loginDialog=true">Log In / Sign Up</span>
           </span>
           <router-link :to="link.path">
@@ -155,8 +155,8 @@ export default {
     routes() {
       return this.$router.options.routes.filter(item => !item.hidden);
     },
-    user(){
-      return this.$store.getters.userInfo;
+    username(){
+      return this.$store.getters.username;
     }
   },
   methods: {

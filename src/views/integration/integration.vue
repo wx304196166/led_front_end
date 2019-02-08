@@ -88,8 +88,8 @@
 
         </el-table>
       </li>
-      <li class="submit pointer">
-        <div @click="submitScheme">Submit</div>
+      <li class="submit">
+        <div @click="submitScheme" class="pointer">Submit</div>
       </li>
     </ul>
   </div>
@@ -206,6 +206,12 @@ export default {
         this.relatedListMap[classification] = 1;
       }
     },
+    reset() {
+      this.relatedList = [];
+      this.schemeName.name = '';
+      this.remarks.name = '';
+      this.setTable();
+    },
     // 组装表格数据
     setTable() {
       let arr = [];
@@ -271,11 +277,48 @@ export default {
         return [1, 1];
       }
     },
-    submitScheme(){
-      submit(this.table).then(res=>{
-        if(res.code===0){
+    submitScheme() {
+      const token = this.$store.getters.token;
+      if (!token) {
+        this.$message.warning('Please login first!');
+        return;
+      }
+      const sendData = { related_list: [] };
+      for (const row of this.table) {
+        switch (row.classification) {
+          case 'Scheme name': sendData.name = row.name; break;
+          case 'Remarks': sendData.remark = row.name; break;
+          default:
+            if (row.isMain) {
+              sendData.main_id = row.id;
+              sendData.main_specification = row.specifications.join(',');
+              sendData.main_level = this.screenCol;
+              sendData.main_vertical = this.screenRow;
+              sendData.main_clearnce = 0;
+            } else {
+              sendData.related_list.push(
+                {
+                  id: row.id,
+                  number: row.number
+                }
+              )
+            }
+            break;
+        }
+      }
+      if (!sendData.name) {
+        this.$message.warning('Scheme name can not be empty!');
+        return;
+      }
+      sendData.related_list = JSON.stringify(sendData.related_list);
+      sendData.modification_user_type = 1;
+      sendData.modification_user_id = token;
+
+      submit(sendData).then(res => {
+        if (res.code === 0) {
           this.$message.success('Submit success!');
-        }else{
+          this.reset();
+        } else {
           this.$message.error(res.message);
         }
       })

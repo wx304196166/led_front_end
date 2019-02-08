@@ -13,7 +13,9 @@ import {
 const user = {
   state: {
     token: getToken(),
-    userInfo: {}
+    userInfo: {},
+    username: '',
+    realName: ''
     /* avatar: '',
     roles: [] */
   },
@@ -22,9 +24,15 @@ const user = {
     SET_TOKEN: (state, token) => {
       state.token = token;
     },
+    SET_USERNAME: (state, username) => {
+      state.username = username;
+    },
+    SET_REAL_NAME: (state, realName) => {
+      state.realName = realName;
+    },
     SET_USER_INFO: (state, info) => {
       state.userInfo = info;
-    },
+    }
     /* SET_AVATAR: (state, avatar) => {
       state.avatar = avatar
     } */
@@ -47,6 +55,9 @@ const user = {
             setToken(data.token);
             commit('SET_TOKEN', data.token);
             commit('SET_USER_INFO', data.info);
+            commit('SET_USERNAME', data.info.username);
+            commit('SET_REAL_NAME', data.info.realName);
+
             resolve();
           } else {
             err(response.message);
@@ -67,7 +78,11 @@ const user = {
       return new Promise((resolve, reject) => {
         getUserInfo(state.token).then(response => {
           if (response.code === 0) {
-            commit('SET_USER_INFO', response.data);
+            const data =response.data;
+            commit('SET_TOKEN', data.token);
+            commit('SET_USER_INFO', data);
+            commit('SET_USERNAME', data.info.username);
+            commit('SET_REAL_NAME', data.info.realName);
             resolve(response);
           } else {
             err(response.message);
