@@ -2,12 +2,12 @@
   <div id="app">
     <!-- login -->
     <el-dialog :visible.sync="loginDialog" width="500px">
-      <el-form ref="loginForm" :model="loginForm">
-        <el-form-item label="Login name:" :label-width="formLabelWidth">
-          <el-input v-model="loginForm.username" auto-complete="off"></el-input>
+      <el-form ref="loginForm" :model="loginForm" :rules="loginRules">
+        <el-form-item label="Login name" prop="username" :label-width="formLabelWidth">
+          <el-input v-model="loginForm.username"></el-input>
         </el-form-item>
-        <el-form-item label="password:" :label-width="formLabelWidth">
-          <el-input v-model="loginForm.password" @keyup.enter.native="handleLogin" auto-complete="off"></el-input>
+        <el-form-item label="password" prop="password" :label-width="formLabelWidth">
+          <el-input v-model="loginForm.password" type="password" @keyup.enter.native="handleLogin"></el-input>
         </el-form-item>
       </el-form>
       <span class="register" @click.stop="registerDialog=true;loginDialog = false">register</span>
@@ -18,21 +18,24 @@
     </el-dialog>
     <!-- regist -->
     <el-dialog :visible.sync="registerDialog" width="450px">
-      <el-form ref="loginForm" :model="loginForm">
-        <el-form-item label="Login name:" :label-width="formLabelWidth">
-          <el-input v-model="loginForm.username" auto-complete="off"></el-input>
+      <el-form ref="loginForm" :model="loginForm" :rules="registRules">
+        <el-form-item label="Login name" prop="username" :label-width="formLabelWidth">
+          <el-input v-model="loginForm.username"></el-input>
         </el-form-item>
-        <el-form-item label="Password:" :label-width="formLabelWidth">
-          <el-input v-model="loginForm.password" auto-complete="off"></el-input>
+        <el-form-item label="Password" prop="password" :label-width="formLabelWidth">
+          <el-input v-model="loginForm.password" type="password"></el-input>
         </el-form-item>
-        <el-form-item label="Name:" :label-width="formLabelWidth">
-          <el-input v-model="loginForm.realName" auto-complete="off"></el-input>
+        <el-form-item label="Confirm" prop="confirm" :label-width="formLabelWidth">
+          <el-input v-model="loginForm.confirm" type="password"></el-input>
         </el-form-item>
-        <el-form-item label="Phone:" :label-width="formLabelWidth">
-          <el-input v-model="loginForm.phone" auto-complete="off"></el-input>
+        <el-form-item label="Name" prop="realName" :label-width="formLabelWidth">
+          <el-input v-model="loginForm.realName"></el-input>
         </el-form-item>
-        <el-form-item label="Email:" :label-width="formLabelWidth">
-          <el-input v-model="loginForm.email" auto-complete="off"></el-input>
+        <el-form-item label="Phone" prop="Phone" :label-width="formLabelWidth">
+          <el-input v-model="loginForm.phone"></el-input>
+        </el-form-item>
+        <el-form-item label="Email" :label-width="formLabelWidth">
+          <el-input v-model="loginForm.email"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -47,8 +50,9 @@
       </li>
       <li v-for="(link,index) in routes" :key="link.path" class="link">
         <span>
-          <span v-if="index===routes.length-1" class="login-box gradient-font pointer" @click.stop="loginDialog=true">
-            Log In / Sign Up
+          <span v-if="index===routes.length-1" class="login-box gradient-font pointer">
+            <span v-if="user.info.realName">Welcome, {{user.info.realName}}!</span>
+            <span v-else  @click.stop="loginDialog=true">Log In / Sign Up</span>
           </span>
           <router-link :to="link.path">
             {{ link.name }}
@@ -98,15 +102,22 @@ export default {
   name: 'App',
   data() {
     const validateUsername = (rule, value, callback) => {
-      if (!isvalidUsername(value)) {
-        callback(new Error('请输入正确的用户名'))
+      if (!value) {
+        callback(new Error('username can not be empty'))
       } else {
         callback()
       }
     }
     const validatePass = (rule, value, callback) => {
       if (value.length < 5) {
-        callback(new Error('密码不能小于5位'))
+        callback(new Error('password can not be less than 5'))
+      } else {
+        callback()
+      }
+    }
+    const validateConfirm = (rule, value, callback) => {
+      if (value!=this.loginForm.password) {
+        callback(new Error('password and confirm must be consistent'))
       } else {
         callback()
       }
@@ -123,18 +134,29 @@ export default {
         username: '',
         password: '',
         realName: '',
+        confirm: '',
         phone: '',
         email: ''
       },
-      loginRules: {
+      loginRules:{
+        username: [{ required: false, trigger: 'blur', validator: validateUsername }],
+        password: [{ required: false, trigger: 'blur', validator: validatePass }]      
+      },
+      registRules:{
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePass }]
+        password: [{ required: true, trigger: 'blur', validator: validatePass }],
+        confirm: [{ required: true, trigger: 'blur', validator: validateConfirm }],
+        realName: [{ required: true, trigger: 'blur' }],
+        phone: [{ required: true, trigger: 'blur' }]
       }
     };
   },
   computed: {
     routes() {
       return this.$router.options.routes.filter(item => !item.hidden);
+    },
+    user(){
+      return this.$store.getters.userInfo;
     }
   },
   methods: {
@@ -149,7 +171,6 @@ export default {
             this.loading = false;
             this.loginDialog = false;
           })
-
         } else {
           // console.log('error submit!!')
           return false

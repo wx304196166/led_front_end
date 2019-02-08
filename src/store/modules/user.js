@@ -51,7 +51,6 @@ const user = {
           } else {
             err(response.message);
             reject();
-
           }
 
         }).catch(error => {
@@ -68,12 +67,12 @@ const user = {
       return new Promise((resolve, reject) => {
         getUserInfo(state.token).then(response => {
           if (response.code === 0) {
-            commit('SET_USER_INFO', response.data.data);
+            commit('SET_USER_INFO', response.data);
             resolve(response);
           } else {
-            err(response.data.message)
+            err(response.message);
+            reject();
           }
-          err(response.message);
           reject();
         }).catch(error => {
           reject(error);

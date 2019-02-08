@@ -64,32 +64,32 @@
           <el-table-column prop="name" label="name">
             <template slot-scope="scope">
               <el-input v-if="scope.row.isInput" v-model="scope.row.name"></el-input>
-              <span v-else>{{scope.row.name}}</span>
+              <span v-else>{{ scope.row.name }}</span>
             </template>
           </el-table-column>
           <el-table-column prop="brand" label="Brand" />
           <el-table-column prop="specifications" label="Specifications">
             <template slot-scope="scope">
-              <span>{{scope.row.specifications[0]}}&nbsp;*&nbsp;{{scope.row.specifications[1]}}</span>
+              <span>{{scope.row.specifications[0]}}&nbsp;*&nbsp;{{ scope.row.specifications[1] }}</span>
             </template>
           </el-table-column>
           <el-table-column prop="number" label="Number">
             <template slot-scope="scope">
-              <el-input-number v-if="!(scope.row.isMain||scope.row.isInput)" size="small" v-model="scope.row.number" controls-position="right" :min="1"></el-input-number>
-              <span v-else>{{scope.row.number}}</span>
+              <el-input-number v-if="!(scope.row.isMain||scope.row.isInput)" v-model="scope.row.number" :min="1" controls-position="right" size="small"></el-input-number>
+              <span v-else>{{ scope.row.number }}</span>
             </template>
           </el-table-column>
 
           <el-table-column prop="isSize" label="Screen Size" align="center">
             <template slot-scope="scope">
-              <span class="size">{{scope.row.specifications[0]*screenCol}}&nbsp;*&nbsp;{{scope.row.specifications[1]*screenCol}}</span>
+              <span class="size">{{ scope.row.specifications[0]*screenCol }}&nbsp;*&nbsp;{{ scope.row.specifications[1]*screenCol }}</span>
             </template>
           </el-table-column>
 
         </el-table>
       </li>
       <li class="submit pointer">
-        <div>Submit</div>
+        <div @click="submitScheme">Submit</div>
       </li>
     </ul>
   </div>
@@ -99,6 +99,8 @@
 <script>
 import related from '@/components/Related/related';
 import banner from '@/components/Banner/banner';
+
+import { submit } from '@/api/integration'
 // 调试用
 import main from './tableData';
 import cardA8s from '@/assets/img/products/cardA8s.png';
@@ -107,8 +109,8 @@ import MCTRL4K from '@/assets/img/products/MCTRL4K.png';
 import VX4S from '@/assets/img/products/VX4S.png';
 import MCTRLR5 from '@/assets/img/products/MCTRLR5.png';
 
-import led01 from '@/assets/img/img_led01.png'
-import led02 from '@/assets/img/img_led02.png'
+import led01 from '@/assets/img/img_led01.png';
+import led02 from '@/assets/img/img_led02.png';
 
 export default {
   name: 'Integration',
@@ -184,24 +186,24 @@ export default {
   },
   computed: {
     screenTotal() {
-      return this.adjust.level.val * this.adjust.vertical.val
+      return this.adjust.level.val * this.adjust.vertical.val;
     },
     screenRow() {
-      return this.adjust.vertical.val
+      return this.adjust.vertical.val;
     },
     screenCol() {
-      return this.adjust.level.val
+      return this.adjust.level.val;
     }
   },
   created() {
-    this.setTable()
+    this.setTable();
   },
   methods: {
     setRelatedListMap(classification) {
       if (this.relatedListMap[classification]) {
-        this.relatedListMap[classification]++
+        this.relatedListMap[classification]++;
       } else {
-        this.relatedListMap[classification] = 1
+        this.relatedListMap[classification] = 1;
       }
     },
     // 组装表格数据
@@ -268,6 +270,15 @@ export default {
         }
         return [1, 1];
       }
+    },
+    submitScheme(){
+      submit(this.table).then(res=>{
+        if(res.code===0){
+          this.$message.success('Submit success!');
+        }else{
+          this.$message.error(res.message);
+        }
+      })
     }
   }
 };

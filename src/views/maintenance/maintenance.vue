@@ -3,9 +3,7 @@
     <banner />
     <div class="page-container ">
       <input type="text" placeholder="please enter the serial number" class="searchInput">
-      <div class="thumbnail">
-
-      </div>
+      <div class="thumbnail" />
       <div class="serialNumber">
         <div>Led Colorful HD Display</div>
         <span>serial number : 1245654687s</span>
@@ -25,8 +23,7 @@
 import banner from '@/components/Banner/banner';
 export default {
   name: 'Maintenance',
-  components: { banner },
-
+  components: { banner }
 };
 </script>
 
