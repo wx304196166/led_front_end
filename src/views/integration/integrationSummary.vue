@@ -2,7 +2,9 @@
   <div class="integration">
     <banner />
     <div class="page-container">
-      <span class="add">+</span>
+      <router-link to="/integration">
+        <span class="add">+</span>
+      </router-link>
       <ul class="integrationList">
         <li>
           <div class="integrationName">name</div>
