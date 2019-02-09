@@ -37,6 +37,12 @@
         <el-form-item label="Email" :label-width="formLabelWidth">
           <el-input v-model="loginForm.email"></el-input>
         </el-form-item>
+        <el-form-item label="Code" :label-width="formLabelWidth">
+          <input type="text" class="idetify" v-model="userInputCode">
+          <div class="code" @click="refreshCode">
+            <s-identify :identifyCode="identifyCode"></s-identify>
+          </div>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="regist">regist</el-button>
@@ -52,7 +58,7 @@
         <span>
           <span v-if="index===routes.length-1" class="login-box gradient-font pointer">
             <span v-if="username">Welcome, {{username}}!</span>
-            <span v-else  @click.stop="loginDialog=true">Log In / Sign Up</span>
+            <span v-else @click.stop="loginDialog=true">Log In / Sign Up</span>
           </span>
           <router-link :to="link.path">
             {{ link.name }}
@@ -98,8 +104,10 @@ import Foot3 from '@/assets/img/home/foot3.png';
 import Foot4 from '@/assets/img/home/foot4.png';
 import Foot5 from '@/assets/img/home/foot5.png';
 import logo from '@/assets/img/logo.png';
+import sIdentify from './components/Validate/identify';
 export default {
   name: 'App',
+  components: { sIdentify },
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!value) {
@@ -116,7 +124,7 @@ export default {
       }
     }
     const validateConfirm = (rule, value, callback) => {
-      if (value!=this.loginForm.password) {
+      if (value != this.loginForm.password) {
         callback(new Error('password and confirm must be consistent'))
       } else {
         callback()
@@ -125,8 +133,11 @@ export default {
     return {
       Foot1, Foot2, Foot3, Foot4, Foot5,
       logo,
+      identifyCodes: "1234567890",
+      identifyCode: "",
       // 登录部分
       loginDialog: false,
+      userInputCode: '',
       registerDialog: false,
       formLabelWidth: '100px',
       loading: false,
@@ -138,11 +149,11 @@ export default {
         phone: '',
         email: ''
       },
-      loginRules:{
+      loginRules: {
         username: [{ required: false, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: false, trigger: 'blur', validator: validatePass }]      
+        password: [{ required: false, trigger: 'blur', validator: validatePass }]
       },
-      registRules:{
+      registRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
         password: [{ required: true, trigger: 'blur', validator: validatePass }],
         confirm: [{ required: true, trigger: 'blur', validator: validateConfirm }],
@@ -151,15 +162,34 @@ export default {
       }
     };
   },
+  mounted() {
+    this.identifyCode = "";
+    this.makeCode(this.identifyCodes, 4);
+  },
   computed: {
     routes() {
       return this.$router.options.routes.filter(item => !item.hidden);
     },
-    username(){
+    username() {
       return this.$store.getters.username;
     }
   },
   methods: {
+    randomNum(min, max) {
+      return Math.floor(Math.random() * (max - min) + min);
+    },
+    refreshCode() {
+      this.identifyCode = "";
+      this.makeCode(this.identifyCodes, 4);
+    },
+    makeCode(o, l) {
+      for (let i = 0; i < l; i++) {
+        this.identifyCode += this.identifyCodes[
+          this.randomNum(0, this.identifyCodes.length)
+        ];
+      }
+      console.log(this.identifyCode);
+    },
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
@@ -173,26 +203,31 @@ export default {
           })
         } else {
           // console.log('error submit!!')
-          return false
+          return false;
         }
       })
     },
     regist() {
-      this.$refs.loginForm.validate(valid => {
-        if (valid) {
-          registerCustom(this.loginForm).then(res => {
-            if (res.code === 0) {
-              this.$message.success('Regist Success');
-            } else {
-              this.$message.error(res.message);
-            }
-            this.registerDialog = false;
-          })
-        } else {
-          // console.log('error submit!!')
-          return false
-        }
-      })
+      // 校验验证码
+      if (this.identifyCode === this.userInputCode) {
+        this.$refs.loginForm.validate(valid => {
+          if (valid) {
+            registerCustom(this.loginForm).then(res => {
+              if (res.code === 0) {
+                this.$message.success('Regist Success');
+              } else {
+                this.$message.error(res.message);
+              }
+              this.registerDialog = false;
+            })
+          } else {
+            // console.log('error submit!!')
+            return false;
+          }
+        })
+      } else {
+        this.$message.error("please check code");
+      }
     },
   }
 };
@@ -200,6 +235,18 @@ export default {
 <style  rel="stylesheet/scss" lang="scss" scoped>
 .content {
   min-height: calc(100% - 150px);
+}
+.idetify {
+  vertical-align: top;
+  border: 1px solid #dcdfe6;
+  height: 40px;
+  line-height: 40px;
+  border-radius: 4px;
+}
+.code {
+  display: inline-block;
+  width: 114px;
+  height: 40px;
 }
 .foot {
   background-color: #010101;
