@@ -4,6 +4,7 @@ import err404 from '@/views/404';
 import productDetail from '@/views/productDetail/productDetail';
 import dashboard from '@/views/dashboard/dashboard';
 import products from '@/views/products/products';
+import integrationSummary from '@/views/integration/integrationSummary';
 import integration from '@/views/integration/integration';
 import maintenance from '@/views/maintenance/maintenance';
 
@@ -50,7 +51,16 @@ export const constantRouterMap = [
     meta: {
       title: 'integration'
     },
+    hidden: true,
     component: integration
+  },
+  {
+    path: '/integrationSummary',
+    name: 'Integration',
+    meta: {
+      title: 'integrationSummary'
+    },
+    component: integrationSummary
   },
   {
     path: '/maintenance',
