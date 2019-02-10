@@ -63,6 +63,12 @@
           <router-link :to="link.path">
             {{ link.name }}
           </router-link>
+          <ul v-if="link.name==='Products'" class="subMenu">
+            <li>abc</li>
+            <li>abc1sdfjhxkjcvhskdnfkhjksndfkjhjsnkcjsdhfjhsjkdhsjkfhkjhjksd</li>
+            <li>abc12</li>
+            <li>abc123</li>
+          </ul>
         </span>
       </li>
     </ul>
@@ -97,7 +103,7 @@
 
 <script>
 import { registerCustom } from '@/api/login';
-
+import { queryAll } from '@/api/common';
 import Foot1 from '@/assets/img/home/foot1.png';
 import Foot2 from '@/assets/img/home/foot2.png';
 import Foot3 from '@/assets/img/home/foot3.png';
@@ -161,6 +167,50 @@ export default {
         phone: [{ required: true, trigger: 'blur' }]
       }
     };
+  },
+  async created() {
+    let res = await queryAll('classification');
+    if (res.code === 0) {
+      res.data.forEach(item => {
+        this.map.classification_id[item.id] = item.name;
+      });
+    } else {
+      this.$message.error(res.message);
+    }
+
+    res = await queryAll('customer_user');
+    if (res.code === 0) {
+      res.data.forEach(item => {
+        this.map.modification_user_id[item.id] = item.username;
+      });
+    } else {
+      this.$message.error(res.message);
+    }
+    res = await queryAll('brand');
+    if (res.code === 0) {
+      res.data.forEach(item => {
+        this.map.brand_id[item.id] = item.name;
+      });
+    } else {
+      this.$message.error(res.message);
+    }
+    res = await queryAll('product');
+    if (res.code === 0) {
+      res.data.forEach(item => {
+        this.map.product_id[item.id] = item.name;
+      });
+    } else {
+      this.$message.error(res.message);
+    }
+    res = await queryAll('label');
+    if (res.code === 0) {
+      res.data.forEach(item => {
+        this.map.label_id[item.id] = item.name;
+      });
+    } else {
+      this.$message.error(res.message);
+    }
+    sessionStorage.setItem('map', JSON.stringify(this.map));
   },
   mounted() {
     this.identifyCode = "";
@@ -230,9 +280,22 @@ export default {
       }
     },
   }
+
 };
 </script>
 <style  rel="stylesheet/scss" lang="scss" scoped>
+.subMenu {
+  background-color: rgba(0, 0, 0, 0.78);
+  line-height: 50px;
+  width: 50%;
+  min-width: 100px;
+  margin: 0 auto;
+  > li {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    padding: 0 15px;
+  }
+}
 .content {
   min-height: calc(100% - 150px);
 }
