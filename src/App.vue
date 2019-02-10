@@ -60,15 +60,15 @@
             <span v-if="username">Welcome, {{username}}!</span>
             <span v-else @click.stop="loginDialog=true">Log In / Sign Up</span>
           </span>
-          <router-link :to="link.path">
+          <span v-if="link.name==='Products'" class="pointer" @mouseover="submenu=true">
+            {{ link.name }}
+            <ul class="subMenu" :visible.sync="submenu">
+              <li @click.stop="jump(link.path)" v-for="(link) in map.classification_id" :key="link.id">{{link.name}}</li>
+            </ul>
+          </span>
+          <router-link v-else :to="link.path">
             {{ link.name }}
           </router-link>
-          <ul v-if="link.name==='Products'" class="subMenu">
-            <li>abc</li>
-            <li>abc1sdfjhxkjcvhskdnfkhjksndfkjhjsnkcjsdhfjhsjkdhsjkfhkjhjksd</li>
-            <li>abc12</li>
-            <li>abc123</li>
-          </ul>
         </span>
       </li>
     </ul>
@@ -138,6 +138,12 @@ export default {
     }
     return {
       Foot1, Foot2, Foot3, Foot4, Foot5,
+      map: {
+        classification_id: {},
+        brand_id: {},
+        label_id: {},
+        product_id: {}
+      },
       logo,
       identifyCodes: "1234567890",
       identifyCode: "",
@@ -145,6 +151,7 @@ export default {
       loginDialog: false,
       userInputCode: '',
       registerDialog: false,
+      submenu:false,
       formLabelWidth: '100px',
       loading: false,
       loginForm: {
@@ -178,14 +185,6 @@ export default {
       this.$message.error(res.message);
     }
 
-    res = await queryAll('customer_user');
-    if (res.code === 0) {
-      res.data.forEach(item => {
-        this.map.modification_user_id[item.id] = item.username;
-      });
-    } else {
-      this.$message.error(res.message);
-    }
     res = await queryAll('brand');
     if (res.code === 0) {
       res.data.forEach(item => {
@@ -225,6 +224,9 @@ export default {
     }
   },
   methods: {
+    jump(path) {
+      this.$router.push({ path })
+    },
     randomNum(min, max) {
       return Math.floor(Math.random() * (max - min) + min);
     },
@@ -294,6 +296,7 @@ export default {
     text-overflow: ellipsis;
     overflow: hidden;
     padding: 0 15px;
+    cursor: pointer;
   }
 }
 .content {
