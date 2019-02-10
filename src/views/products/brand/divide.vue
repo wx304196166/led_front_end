@@ -15,9 +15,10 @@
 </template>
 
 <script>
-
+import search from '@/components/Search/search';
 export default {
   name: 'Products',
+  components: { search },
   data() {
     return {
       toggle: true,
@@ -62,7 +63,7 @@ export default {
       position: absolute;
       transform: scale(0.6);
       top: -3px;
-      left:5px;
+      left: 5px;
       width: 22px;
       height: 22px;
       background: url("../../../assets/img/icon_search.png") no-repeat 0 0;

@@ -1,8 +1,11 @@
 <template>
-  <div>
+  <div class="maintenance">
     <banner />
     <div class="page-container ">
-      <input type="text" placeholder="please enter the serial number" class="searchInput">
+      <div class="searchBox">
+        <search/>
+        <i class="searchIcon" />
+      </div>
       <div class="thumbnail" />
       <div class="serialNumber">
         <div>Led Colorful HD Display</div>
@@ -21,13 +24,29 @@
 
 <script>
 import banner from '@/components/Banner/banner';
+import search from '@/components/Search/search';
 export default {
   name: 'Maintenance',
-  components: { banner }
+  components: { banner, search }
 };
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
+.searchBox {
+  position: relative;
+  width: 50%;
+  margin: 40px auto 20px;
+  text-align: center;
+  .searchIcon {
+    position: absolute;
+    transform: scale(0.6);
+    top: 5px;
+    left: 5px;
+    width: 40px;
+    height: 40px;
+    background: url("../../assets/img/icon_search.png") no-repeat 0 0;
+  }
+}
 .thumbnail {
   width: 200px;
   height: 200px;
@@ -37,20 +56,31 @@ export default {
 .searchInput {
   border-radius: 10px;
   background-color: #eee;
-  height: 20px;
-  width: 50%;
+  height: 40px;
+  width: 60%;
   padding-left: 10px;
-  margin-right: 10px;
-  margin: 0 auto;
+  margin: 20px auto;
   display: block;
 }
 .serialNumber {
+  line-height: 30px;
   text-align: center;
 }
 .maintenanceUl {
+  margin-left: 10%;
   padding: 0 5%;
 }
 .maintenanceUl li {
   padding: 13px 0;
+}
+</style>
+<style rel="stylesheet/scss" lang="scss">
+.maintenance {
+  .el-select {
+    width: 100%;
+  }
+  .el-input__inner {
+    padding-left: 40px;
+  }
 }
 </style>

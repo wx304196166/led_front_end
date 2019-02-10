@@ -303,7 +303,7 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1500;
+  z-index: 3000;
   height: 5rem;
   line-height: 5rem;
   background: rgba($color: #000000, $alpha: 0.78);
