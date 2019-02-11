@@ -4,13 +4,7 @@
     <div class="page-container">
       <ul class="intro clearfix">
         <li class="show-box">
-          <div class="pic-img">
-            <div class="img-container" @mousemove="!moveEvent && mouseMove($event)" @mouseleave="!leaveEvent && mouseLeave($event)">
-              <img ref="img" @load="imgLoaded" :src="product1" style="width:100%" />
-              <div v-if="!hideZoom && imgLoadedFlag" :class="['img-selector',{'circle':type === 'circle'}]" :style="[imgSelectorSize,imgSelectorPosition,!outShow && imgSelectorBg ,!outShow && imgBgPosition]"> </div>
-              <div v-if="outShow" v-show="!hideOutShow" class="img-out-show" :style="[imgOutShowSize,imgSelectorBg,imgBgPosition]"></div>
-            </div>
-          </div>
+          <img :src="product1" alt="">
           <ul class="img-list">
             <li :class="{disabled:moveDisabled||preDisabled}" @click="move('left')" />
             <li>
@@ -231,7 +225,7 @@ export default {
     moveDisabled() {
       return this.productImgList.length < 5;
     },
-    map(){
+    map() {
       return this.$store.getters.map;
     }
   },
@@ -240,7 +234,7 @@ export default {
       const obj = { spec: item };
       this.$set(obj, 'active', false);
       return obj;
-    });    
+    });
   },
   methods: {
     imgLoaded() {
@@ -266,128 +260,45 @@ export default {
         bgTop: 0
       });
     },
-    mouseMove(e) {
-      if (!this.hideZoom && this.imgLoadedFlag) {
-        this.imgLoaded();   //防止img位置变化
-        let { pageX, pageY } = e;
-        let { scale, selector } = this;
-        let {
-          halfWidth,
-          absoluteLeft,
-          absoluteTop,
-          rightBound,
-          bottomBound
-        } = selector;
-        let x = pageX - absoluteLeft; // 选择器的x坐标 相对于图片
-        let y = pageY - absoluteTop; // 选择器的y坐标
-        if (this.outShow) {
-          halfWidth = 0;
-          this.hideOutShow = false;
+
+    sel(index) {
+      this.specList.forEach((item, i) => {
+        if (i === index) {
+          item.active = true;
+          this.curSpec = item.spec;
+        } else {
+          item.active = false;
         }
-        selector.top = y > 0 ? (y < bottomBound ? y : bottomBound) : 0;
-        selector.left = x > 0 ? (x < rightBound ? x : rightBound) : 0;
-        selector.bgLeft = halfWidth - (halfWidth + x) * scale; // 选择器图片的坐标位置
-        selector.bgTop = halfWidth - (halfWidth + y) * scale;
-      }
+      })
     },
-    mouseLeave() {
-      if (this.outShow) {
-        this.hideOutShow = true;
-      }
-    },
-    mouseMovePic(evt) {
-      const pic_div = document.getElementsByClassName('full-pic');//拿到整个大的div
-      const normal_pic = document.getElementsByClassName('normalPic');//拿到div中的图片
-      const span_move = document.getElementsByClassName('pic-span');//拿到显示当前图片位置的span
-      const big_div = document.getElementsByClassName('big-pic');//拿到右边放置放大图片的div
-      const pic_move = document.getElementsByClassName('bigPic');//拿到右侧放大的图片本身
-      // 获取事件
-      const e = evt || window.event;
-      // 获取大图和小图之间的倍数     
-      const bigSize = pic_move.offsetHeight;
-      const littleSize = normal_pic.offsetHeight;
-      const n = bigSize / littleSize;
-      //获取pic对于页面的绝对位置
-      const pic_x = normal_pic.getBoundingClientRect().left;
-      const pic_y = normal_pic.getBoundingClientRect().top + document.documentElement.scrollTop;
-      // 获取鼠标相对full-pic的位置
-      const mouse_x = e.pageX - pic_x;
-      const mouse_y = e.pageY - pic_y;
-      //将两个div的设置为显示
-      big_div.style.display = 'block';
-      span_move.style.display = 'block';
-      span_move.style.width = normal_pic.offsetWidth / 2 + 'px';
-      span_move.style.height = normal_pic.offsetWidth / 2 + 'px';
-      //设置边际以及图片移动的算法
-      if (mouse_x <= span_move.offsetWidth / 2) {
-        //在最左侧不发生移动的情况
-        pic_move.style.left = '0px';//右边大图位置为0px
-        span_move.style.left = normal_pic.offsetLeft + 'px';//span始终和图片左端对齐
-      } else if (mouse_x > span_move.offsetWidth / 2 && mouse_x < normal_pic.offsetWidth - span_move.offsetWidth / 2) {
-        const tempX = mouse_x - span_move.offsetWidth / 2;
-        pic_move.style.left = -n * (tempX) + 'px';//控制右侧大图的移动
-        span_move.style.left = tempX + normal_pic.offsetLeft + 'px';//控制span位置的移动
-      } else {
-        //当移动到最右端的时候，停止span的移动，大图也移动到相应的最右端，此时可以通过一个n来控制大图的移动了
-        pic_move.style.left = -n * (normal_pic.offsetWidth - span_move.offsetWidth) + 'px';
-        span_move.style.left = normal_pic.offsetLeft + normal_pic.offsetWidth - span_move.offsetWidth + 'px';
-      }
-      if (mouse_y <= span_move.offsetWidth / 2) {
-        pic_move.style.top = '0px';
-        span_move.style.top = '0px';
-      } else if (mouse_y > span_move.offsetHeight / 2 && mouse_y < normal_pic.offsetHeight - span_move.offsetHeight / 2) {
-        var tempY = mouse_y - span_move.offsetHeight / 2;
-        pic_move.style.top = - n * tempY + 'px';
-        span_move.style.top = tempY + 'px';
-      } else {
-        pic_move.style.top = -(n - 1) * normal_pic.offsetHeight + 'px';
-        span_move.style.top = normal_pic.offsetHeight - span_move.offsetHeight + 'px';
-      }
-    }
-  },
-  mouseOutPic() {
-    const span_move = document.getElementsByClassName('pic-span');//拿到显示当前图片位置的spanF
-    const big_div = document.getElementsByClassName('big-pic');//拿到右边放置放大图片的div
-    span_move.style.display = 'none';
-    big_div.style.display = 'none';
-  },
-  sel(index) {
-    this.specList.forEach((item, i) => {
-      if (i === index) {
-        item.active = true;
-        this.curSpec = item.spec;
-      } else {
-        item.active = false;
-      }
-    })
-  },
-  move(direction) {
-    if (this.moveDisabled) { return }
-    switch (direction) {
-      case 'left':
-        if (Math.abs(this.distanse) > 0) {
-          this.distanse++;
+    move(direction) {
+      if (this.moveDisabled) { return }
+      switch (direction) {
+        case 'left':
           if (Math.abs(this.distanse) > 0) {
-            this.preDisabled = false;
-            this.nextDisabled = true;
-          } else {
-            this.preDisabled = true;
-            this.nextDisabled = false;
+            this.distanse++;
+            if (Math.abs(this.distanse) > 0) {
+              this.preDisabled = false;
+              this.nextDisabled = true;
+            } else {
+              this.preDisabled = true;
+              this.nextDisabled = false;
+            }
           }
-        }
-        break;
-      case 'right':
-        if (this.productImgList.length - Math.abs(this.distanse) >= 5) {
-          this.distanse--;
+          break;
+        case 'right':
           if (this.productImgList.length - Math.abs(this.distanse) >= 5) {
-            this.nextDisabled = false;
-            this.preDisabled = true;
-          } else {
-            this.nextDisabled = true;
-            this.preDisabled = false;
+            this.distanse--;
+            if (this.productImgList.length - Math.abs(this.distanse) >= 5) {
+              this.nextDisabled = false;
+              this.preDisabled = true;
+            } else {
+              this.nextDisabled = true;
+              this.preDisabled = false;
+            }
           }
-        }
-        break;
+          break;
+      }
     }
   }
 };
