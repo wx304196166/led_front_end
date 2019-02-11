@@ -55,21 +55,21 @@
         </router-link>
       </li>
       <li v-for="(link,index) in routes" :key="link.path" class="link">
-        <span>
+        <div>
           <span v-if="index===routes.length-1" class="login-box gradient-font pointer">
             <span v-if="username">Welcome, {{username}}!</span>
             <span v-else @click.stop="loginDialog=true">Log In / Sign Up</span>
           </span>
-          <span v-if="link.name==='Products'" class="pointer" @mouseover="submenu=true">
+          <span v-if="link.name==='Products'" class="pointer submenu-father">
             {{ link.name }}
-            <ul class="subMenu" :visible.sync="submenu">
-              <li @click.stop="jump(link.path)" v-for="(link) in map.classification_id" :key="link.id">{{link.name}}</li>
+            <ul class="subMenu">
+              <li @click.stop="jump(link.path,key)" v-for="(val,key) in map.classification_id" :key="key">{{val}}</li>
             </ul>
           </span>
           <router-link v-else :to="link.path">
             {{ link.name }}
           </router-link>
-        </span>
+        </div>
       </li>
     </ul>
 
@@ -138,20 +138,14 @@ export default {
     }
     return {
       Foot1, Foot2, Foot3, Foot4, Foot5,
-      map: {
-        classification_id: {},
-        brand_id: {},
-        label_id: {},
-        product_id: {}
-      },
       logo,
+      // 登录部分
       identifyCodes: "1234567890",
       identifyCode: "",
-      // 登录部分
       loginDialog: false,
       userInputCode: '',
       registerDialog: false,
-      submenu:false,
+      submenu: false,
       formLabelWidth: '100px',
       loading: false,
       loginForm: {
@@ -175,57 +169,26 @@ export default {
       }
     };
   },
-  async created() {
-    let res = await queryAll('classification');
-    if (res.code === 0) {
-      res.data.forEach(item => {
-        this.map.classification_id[item.id] = item.name;
-      });
-    } else {
-      this.$message.error(res.message);
-    }
-
-    res = await queryAll('brand');
-    if (res.code === 0) {
-      res.data.forEach(item => {
-        this.map.brand_id[item.id] = item.name;
-      });
-    } else {
-      this.$message.error(res.message);
-    }
-    res = await queryAll('product');
-    if (res.code === 0) {
-      res.data.forEach(item => {
-        this.map.product_id[item.id] = item.name;
-      });
-    } else {
-      this.$message.error(res.message);
-    }
-    res = await queryAll('label');
-    if (res.code === 0) {
-      res.data.forEach(item => {
-        this.map.label_id[item.id] = item.name;
-      });
-    } else {
-      this.$message.error(res.message);
-    }
-    sessionStorage.setItem('map', JSON.stringify(this.map));
-  },
-  mounted() {
-    this.identifyCode = "";
-    this.makeCode(this.identifyCodes, 4);
-  },
   computed: {
     routes() {
       return this.$router.options.routes.filter(item => !item.hidden);
     },
     username() {
       return this.$store.getters.username;
+    },
+    map() {
+      return this.$store.getters.map;
     }
   },
+  mounted() {
+    this.identifyCode = "";
+    this.makeCode(this.identifyCodes, 4);
+  },
+
   methods: {
-    jump(path) {
-      this.$router.push({ path })
+    jump(path, id) {
+      this.$store.dispatch('SetClassification', id);
+      this.$router.push({ path });
     },
     randomNum(min, max) {
       return Math.floor(Math.random() * (max - min) + min);
@@ -240,7 +203,6 @@ export default {
           this.randomNum(0, this.identifyCodes.length)
         ];
       }
-      console.log(this.identifyCode);
     },
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
@@ -289,14 +251,29 @@ export default {
 .subMenu {
   background-color: rgba(0, 0, 0, 0.78);
   line-height: 50px;
-  width: 50%;
-  min-width: 100px;
+  width: 100%;
+  min-width: 120px;
   margin: 0 auto;
+  visibility: hidden;
+  opacity: 0;
+  height: 0;
+  transition: all 0.35s;
+  overflow: hidden;
   > li {
     text-overflow: ellipsis;
     overflow: hidden;
     padding: 0 15px;
     cursor: pointer;
+  }
+}
+.submenu-father {
+  display: inline-block;
+  &:hover {
+    .subMenu {
+      visibility: visible;
+      opacity: 1;
+      height: auto;
+    }
   }
 }
 .content {

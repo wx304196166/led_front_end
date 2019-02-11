@@ -62,7 +62,6 @@
 <script>
 import related from '@/components/Related/related';
 import banner from '@/components/Banner/banner';
-import { queryAll } from '@/api/common';
 import product1 from '@/assets/img/products/MCTRL4K.png';
 // 调试用
 import cardA8s from '@/assets/img/products/cardA8s.png';
@@ -231,6 +230,9 @@ export default {
     },
     moveDisabled() {
       return this.productImgList.length < 5;
+    },
+    map(){
+      return this.$store.getters.map;
     }
   },
   created() {
@@ -238,41 +240,7 @@ export default {
       const obj = { spec: item };
       this.$set(obj, 'active', false);
       return obj;
-    });
-    const map = sessionStorage.getItem('map');
-    if (map) {
-      this.map = JSON.parse(map);
-    }
-    queryAll('classification').then(res => {
-      if (res.code === 0) {
-        res.data.forEach(item => {
-          const obj = {
-            brand_id: [],
-            label_id: []
-          }
-          let arr = item.brand_id.split(',');
-          arr.forEach(id => {
-            obj.brand_id.push(
-              {
-                id,
-                name: this.map.brand_id[id]
-              }
-            )
-          })
-
-          arr = item.label_id.split(',');
-          arr.forEach(id => {
-            obj.label_id.push(
-              {
-                id,
-                name: this.map.label_id[id]
-              }
-            )
-          })
-          this.classificationMap[item.id] = obj;
-        })
-      }
-    })
+    });    
   },
   methods: {
     imgLoaded() {

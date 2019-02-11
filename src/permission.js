@@ -26,8 +26,13 @@ router.beforeEach((to, from, next) => {
     } else {
       next()
     }
-  } else {
-    next()
+  } else if (Object.keys(store.getters.map).length === 0) {
+    store.dispatch('SetMap').then(id => {
+      store.dispatch('SetClassification', id);
+      next();
+    })
+  }else{
+    next();
   }
 })
 
