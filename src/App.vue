@@ -55,7 +55,7 @@
         </router-link>
       </li>
       <li v-for="(link,index) in routes" :key="link.path" class="link">
-        <div>
+        <span>
           <span v-if="index===routes.length-1" class="login-box gradient-font pointer">
             <span v-if="username">Welcome, {{username}}!</span>
             <span v-else @click.stop="loginDialog=true">Log In / Sign Up</span>
@@ -69,7 +69,7 @@
           <router-link v-else :to="link.path">
             {{ link.name }}
           </router-link>
-        </div>
+        </span>
       </li>
     </ul>
 

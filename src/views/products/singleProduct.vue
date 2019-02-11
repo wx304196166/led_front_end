@@ -1,12 +1,10 @@
 <template>
-  <div class="product pointer">
-    <router-link to="/productDetail">
-      <img :src="productPng" alt="">
+  <div class="product pointer" @click.stop="jump('/productDetail',info.id)">
+      <img :src="`/upload/product/${info.thumbnail}`" alt="">
       <div class="productSummary">
-        <p class="title">{{ info.title }}</p>
-        <p class="content">{{ info.summary }}</p>
+        <p class="title">{{ info.name }}</p>
+        <p class="content">{{ info.intro }}</p>
       </div>
-    </router-link>
   </div>
 </template>
 
@@ -24,6 +22,12 @@ export default {
     return {
       productPng
     };
+  },
+  methods:{
+    jump(path,id){
+      sessionStorage.setItem('curProductId',id);
+      this.$router.push({path});
+    }
   }
 };
 </script>
@@ -38,6 +42,7 @@ export default {
   border: 1px solid transparent;
   overflow: hidden;
   img {
+    width: 100%;
     transform: scale(0.8);
   }
   &:hover {
