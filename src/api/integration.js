@@ -3,7 +3,7 @@ import request from '@/utils/request';
 // 提交集成方案
 export function submit(data) {
   return request({
-    url: '/customer/integration/submit',
+    url: '/api/v1/customer/integration/submit',
     method: 'post',
     data
   });
@@ -11,7 +11,7 @@ export function submit(data) {
 // 获取用户信息
 export function getUserInfo(token, type = 1) {
   return request({
-    url: '/common/getUserInfo',
+    url: '/api/v1/common/getUserInfo',
     method: 'post',
     data: {
       token,
@@ -22,7 +22,7 @@ export function getUserInfo(token, type = 1) {
 // 检查用户名是否存在
 export function checkName(username, type = 1) {
   return request({
-    url: '/common/check',
+    url: '/api/v1/common/check',
     method: 'get',
     params: {
       username,
@@ -39,7 +39,7 @@ export function registerCustom({
   email
 }) {
   return request({
-    url: '/common/createCustomer',
+    url: '/api/v1/common/createCustomer',
     method: 'post',
     data: {
       username,
