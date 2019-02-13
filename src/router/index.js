@@ -56,9 +56,9 @@ export const constantRouterMap = [
   },
   {
     path: '/integrationSummary',
-    name: 'Integration',
+    name: 'integrationSummary',
     meta: {
-      title: 'integrationSummary'
+      title: 'integration'
     },
     component: integrationSummary
   },
