@@ -1,6 +1,6 @@
 <template>
-  <div style="height:100%" class="dashboard">
-    <div id="myCarousel" style="position:relative;height:100%">
+  <div class="dashboard">
+    <div id="myCarousel" style="position:relative">
       <ul class="html5zoo-slides" style="display:none;">
         <li v-for="item in imgList" :key="item"><img :src="item" /></li>
       </ul>
@@ -89,7 +89,7 @@ export default {
   mounted() {
     jQuery("#myCarousel").html5zoo({
       // jsfolder:'jsFolder',
-      height: '100%',
+      width: '100%',
       skinsfoldername: "",
       loadimageondemand: false,
       isresponsive: false,
