@@ -22,17 +22,30 @@
 
 <script>
 import banner from '@/components/Banner/banner';
-
+import { queryAllByCondition } from '@/api/common'
 export default {
   name: 'Integration',
   components: { banner },
   data() {
     return {
+      list: []
     };
   },
   computed: {
+    token() {
+      return this.$store.getters.token;
+    }
   },
   created() {
+    if (this.token) {
+      queryAllByCondition({ name: 'integrate', condition: { create_user_id: this.token } }).then(res => {
+        if (res.code === 0) {
+          this.list=res.data;
+        }else{
+          this.$message.error(res.message);
+        }
+      })
+    }
   },
   methods: {
   }

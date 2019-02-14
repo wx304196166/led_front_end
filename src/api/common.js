@@ -7,6 +7,14 @@ export function  queryAllByList(data) {
     data
   })
 }
+export function  queryAllByCondition(data) {
+  return request({
+    url: '/api/v1/common/queryAllByCondition',
+    method: 'post',
+    data
+  })
+}
+
 export function  queryAll(index) {
   return request({
     url: '/api/v1/master/queryAll/' + index,

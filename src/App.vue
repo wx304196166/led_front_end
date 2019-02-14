@@ -66,9 +66,9 @@
               <li @click.stop="jump(link.path,key)" v-for="(val,key) in map.classification_id" :key="key">{{val}}</li>
             </ul>
           </span>
-          <router-link v-else :to="link.path">
+          <span v-else @click.stop="jump(link.path)" class="pointer">
             {{ link.meta.title }}
-          </router-link>
+          </span>
         </span>
       </li>
     </ul>
@@ -187,7 +187,25 @@ export default {
 
   methods: {
     jump(path, id) {
-      this.$store.dispatch('SetClassification', id);
+      switch (path) {
+        case '/products':
+          this.$store.dispatch('SetClassification', id);
+          break;
+        case '/integrationSummary':
+          if (this.username) {
+            break;
+          } else {
+            this.$alert('Please login first!', 'Tips', {
+              confirmButtonText: 'ok',
+              callback: action => {
+                if (action === 'confirm') {
+                  this.loginDialog = true;
+                }
+              }
+            });
+            return;
+          }
+      }
       this.$router.push({ path });
     },
     randomNum(min, max) {
