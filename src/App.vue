@@ -61,13 +61,13 @@
             <span v-else @click.stop="loginDialog=true">Log In / Sign Up</span>
           </span>
           <span v-if="link.name==='Products'" class="pointer submenu-father">
-            {{ link.name }}
+            {{ link.meta.title }}
             <ul class="subMenu">
               <li @click.stop="jump(link.path,key)" v-for="(val,key) in map.classification_id" :key="key">{{val}}</li>
             </ul>
           </span>
           <router-link v-else :to="link.path">
-            {{ link.name }}
+            {{ link.meta.title }}
           </router-link>
         </span>
       </li>

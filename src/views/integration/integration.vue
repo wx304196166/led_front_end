@@ -36,8 +36,11 @@
                   <div />
                 </div>
               </li>
-              <li class="screen">
-                <div class="cover" :style="{width:`${100/screenCol}%`,height:`${100/screenRow}%`,backgroundImage:`url(${led02})`}" v-for="item in screenTotal" :key="item" />
+              <li class="screen" ref="screen">
+                <div class="cover-container" :style="{width:coverWidth,height:coverHeight}">
+                  <div v-for="item in screenTotal" :key="item" :style="{width:`${100/screenCol}%`,height:`${100/screenRow}%`,backgroundImage:`url(${led02})`}" class="cover" />
+
+                </div>
               </li>
             </ul>
             <div class="x clearfix">
@@ -123,6 +126,8 @@ export default {
         level: { val: 3, unit: '' },
         vertical: { val: 2, unit: '' }
       },
+      coverWidth: 0,
+      coverHeight: 0,
       relatedListMap: {},
       lastRow: {},
       table: [],
@@ -198,7 +203,42 @@ export default {
   created() {
     this.setTable();
   },
+  mounted() {
+    this.setCover();
+    window.addEventListener('resize', this.setCover);
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.setCover);
+  },
+  watch: {
+    screenRow(newVal, oldVal) {
+      if (newVal != oldVal) {
+        this.setCover();
+      }
+    },
+    screenCol(newVal, oldVal) {
+      if (newVal != oldVal) {
+        this.setCover();
+      }
+    }
+  },
   methods: {
+    setCover() {
+      const screenW = this.$refs.screen.clientWidth;
+      const screenH = this.$refs.screen.clientHeight;
+      const specW = this.specifications[0];
+      const specH = this.specifications[1];
+      const w = specW * this.screenCol;
+      const h = specH * this.screenRow;
+
+      if (w / h > screenW / screenH) {
+        this.coverWidth = '100%';
+        this.coverHeight = screenW * h / w + 'px';
+      } else {
+        this.coverWidth = screenH * w / h + 'px';
+        this.coverHeight = '100%';
+      }
+    },
     setRelatedListMap(classification) {
       if (this.relatedListMap[classification]) {
         this.relatedListMap[classification]++;
@@ -392,10 +432,15 @@ $bright: #fafafa;
         }
       }
       .screen {
-        display: flex;
-        flex-wrap: wrap;
         width: calc(100% - 3.5714rem);
         height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .cover-container {
+        display: flex;
+        flex-wrap: wrap;
       }
     }
     .bar {
