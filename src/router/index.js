@@ -33,7 +33,7 @@ export const constantRouterMap = [
     path: '/dashboard',
     name: 'Home',
     meta: {
-      title: 'dashboard'
+      title: 'Home'
     },
     component: dashboard
   },
@@ -41,7 +41,7 @@ export const constantRouterMap = [
     path: '/products',
     name: 'Products',
     meta: {
-      title: 'products'
+      title: 'Products'
     },
     component: products
   },
@@ -49,7 +49,7 @@ export const constantRouterMap = [
     path: '/integration',
     name: 'Integration',
     meta: {
-      title: 'integration'
+      title: 'Integration'
     },
     hidden: true,
     component: integration
@@ -58,7 +58,7 @@ export const constantRouterMap = [
     path: '/integrationSummary',
     name: 'integrationSummary',
     meta: {
-      title: 'integration'
+      title: 'Integration'
     },
     component: integrationSummary
   },
@@ -66,7 +66,7 @@ export const constantRouterMap = [
     path: '/maintenance',
     name: 'Maintenance',
     meta: {
-      title: 'maintenance'
+      title: 'Maintenance'
     },
     component: maintenance
   },
