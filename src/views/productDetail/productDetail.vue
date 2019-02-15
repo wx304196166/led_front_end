@@ -4,12 +4,14 @@
     <div class="page-container">
       <ul class="intro clearfix">
         <li class="show-box">
-          <img :src="product1" alt="">
+          <div class="img-main">
+            <img :src="cururl" />
+          </div>
           <ul class="img-list">
             <li :class="{disabled:moveDisabled||preDisabled}" @click="move('left')" />
             <li>
               <ul :style="{transform:`translateX(${distanse*6.3714}rem)`}" class="img-box">
-                <li v-for="(item,index) in productImgList" :key="index"><img :src="product1" /></li>
+                <li v-for="(item,index) in urlList" :key="index"><img :src="item.url" :class="{active:item.active}" @click="sel(index,'url')" /></li>
               </ul>
             </li>
             <li :class="{disabled:moveDisabled||nextDisabled}" @click="move('right')" />
@@ -18,7 +20,7 @@
         <li class="blank" />
         <li class="describe-box">
           <div class="title">
-            Led Colourful HD Display
+            {{name}}
             <!-- <i class="collect" /> -->
           </div>
           <ul class="specifications clearfix">
@@ -26,25 +28,24 @@
               Specifications:
             </li>
             <li>
-              <span v-for="(item, index) in specList" :key="index" :class="{active:item.active}" @click="sel(index)">{{item.spec}}</span>
+              <span v-for="(item, index) in specList" :key="index" :class="{active:item.active}" @click="sel(index,'spec')">{{item.spec}}</span>
             </li>
           </ul>
           <p class="describe">
-            Curabitur auctor tristique lobortis. Quisque bibendum, ipsum in feugiat pharetra, odio libero malesuada turpis, tempus fermentum augue est sit amet magna. Vestibulum bibendum lectus non mauris porta, sed blandit purus scelerisque. Sed consequat mollis ornare. Sed laoreet id dolor vitae facilisis. Mauris varius orci sed turpis commodo mattis.
+            {{intro}}
           </p>
-
+          <div v-if="isMain" @click="jump" class="btn">Integrate</div>
         </li>
       </ul>
       <ul class="detail-box clearfix">
         <li class="related">
-          <related :list="list" />
+          <related :ids="related" @get-item="switchProduct" />
         </li>
         <li class="blank">&emsp;</li>
         <li class="detail">
           <div class="tab">Commodity Introduction</div>
-          <div class="content">
-            Curabitur auctor tristique lobortis. Quisque bibendum, ipsum in feugiat pharetra, odio libero malesuada turpis, tempus fermentum augue est sit amet magna. Vestibulum bibendum lectus non mauris porta, sed blandit purus scelerisque. Sed consequat mollis ornare. Sed laoreet id dolor vitae facilisis. Mauris varius orci sed turpis commodo mattis. Cras vel nibh scelerisque urna tincidunt vestibulum accumsan pharetra ex. Proin ullamcorper eros non justo tincidunt lobortis. Ut sapien nisi, bibendum tempor efficitur ultricies, pellentesque interdum diam. Aliquam commodo felis eu urna consectetur, ut semper diam tempor. Etiam eu maximus sapien, a tristique tortor.
-            <img :src="product1" alt="">
+          <div class="content" v-html="detail">
+
           </div>
         </li>
       </ul>
@@ -56,8 +57,9 @@
 <script>
 import related from '@/components/Related/related';
 import banner from '@/components/Banner/banner';
-import product1 from '@/assets/img/products/MCTRL4K.png';
+import { queryOne } from '@/api/common';
 // 调试用
+import product1 from '@/assets/img/products/MCTRL4K.png';
 import cardA8s from '@/assets/img/products/cardA8s.png';
 import CVT4KS from '@/assets/img/products/CVT4K-S.png';
 import VX4S from '@/assets/img/products/VX4S.png';
@@ -67,212 +69,85 @@ export default {
   components: { related, banner },
   data() {
     return {
-      selector: {
-        width: 166,
-        halfWidth: 83,
-        top: 0,
-        left: 0,
-        bgTop: 0,
-        bgLeft: 0,
-        rightBound: 0,
-        bottomBound: 0,
-        absoluteLeft: 0,
-        absoluteTop: 0
-      },
-      imgInfo: {},
-      hideOutShow: true,
-      imgLoadedFlag: false,
-      screenWidth: document.body.clientWidth,
-      timer: null,
-      num1: 0,
       product1,
-      productImgList: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+      name: '',
+      intro: '',
+      urlList: [],
+      imgPath: '/upload/product/',
+      isMain: false,
+      detail: '',
+      productId: null,
       distanse: 0,
       preDisabled: true,
       nextDisabled: false,
-      specList: ['200*300', '300*400', '400*500', '500*400', '400*300', '300*200'],
-      curSpec: null,
-      list: [
-        {
-          id: 'cardA8s',
-          name: 'cardA8s',
-          classification: 'Sensor',
-          brand: 'Card',
-          imgUrl: cardA8s,
-          specifications: [200, 400]
-        },
-        {
-          id: 'CVT4K-S',
-          name: 'CVT4K-S',
-          classification: 'Sensor',
-          brand: 'CVT4K',
-          imgUrl: CVT4KS,
-          specifications: [300, 400]
-        },
-        {
-          id: 'VX4S',
-          name: 'all-in-one VX4S',
-          classification: 'Consumables',
-          imgUrl: VX4S,
-          brand: 'all-in-one',
-          specifications: [300, 400]
-        },
-        {
-          id: 'MCTRLR5',
-          name: 'MCTRLR5',
-          classification: 'Consumables',
-          imgUrl: MCTRLR5,
-          brand: 'MCTRL',
-          specifications: [200, 400]
-        }
-      ]
+      specList: [],
+      curspec: null,
+      cururl: null,
+      related: []
     };
   },
-  props: {
-    highUrl: String,
-    type: {
-      type: String,
-      default: 'square',
-      validator: function (value) {
-        return ['circle', 'square'].indexOf(value) !== -1;
-      }
-    },
-    scale: {
-      type: Number,
-      default: 3
-    },
-    moveEvent: {
-      type: [Object, MouseEvent],
-      default: null
-    },
-    leaveEvent: {
-      type: [Object, MouseEvent],
-      default: null
-    },
-    hideZoom: {
-      type: Boolean,
-      default: false
-    },
-    outShow: {
-      type: Boolean,
-      default: false
-    }
-  },
-  watch: {
-    moveEvent(e) {
-      this.mouseMove(e);
-    },
-    leaveEvent(e) {
-      this.mouseLeave(e);
-    },
-    url() {
-      this.imgLoadedFlag = false;
-    },
-    screenWidth(val) {
-      if (!this.timer) {
-        this.screenWidth = val;
-        this.timer = setTimeout(() => {
-          this.imgLoaded();
-          clearTimeout(this.timer);
-          this.timer = null;
-        }, 400);
-      }
-    }
-  },
   computed: {
-    imgSelectorPosition() {
-      let { top, left } = this.selector;
-      return {
-        top: `${top}px`,
-        left: `${left}px`
-      };
-    },
-    imgSelectorSize() {
-      let width = this.selector.width;
-      return {
-        width: `${width}px`,
-        height: `${width}px`
-      };
-    },
-    imgOutShowSize() {
-      let {
-        scale,
-        selector: { width }
-      } = this;
-      return {
-        width: `${width * scale}px`,
-        height: `${width * scale}px`
-      };
-    },
-    imgSelectorBg() {
-      let {
-        scale,
-        url,
-        highUrl,
-        imgInfo: { height, width }
-      } = this;
-      return {
-        backgroundImage: `url(${product1})`,
-        backgroundSize: `${width * scale}px ${height * scale}px`
-      };
-    },
-    imgBgPosition() {
-      let { bgLeft, bgTop } = this.selector;
-      return {
-        backgroundPosition: `${bgLeft}px ${bgTop}px`
-      };
-    },
     moveDisabled() {
-      return this.productImgList.length < 5;
-    },
-    map() {
-      return this.$store.getters.map;
+      return this.urlList.length < 5;
     }
   },
   created() {
-    this.specList = this.specList.map(item => {
-      const obj = { spec: item };
-      this.$set(obj, 'active', false);
-      return obj;
-    });
+    this.productId = this.$route.params.id;
+    queryOne('product', this.productId).then(res => {
+      if (res.data) {
+        const data = res.data;
+        data.img_list = data.img_list ? data.img_list.split(',') : [];
+        data.specifications = data.specifications ? data.specifications.split(',') : [];
+        this.name = data.name;
+        this.intro = data.intro;
+        this.isMain = Boolean(data.is_main);
+        this.related = data.product_id ? data.product_id.split(',') : [];
+        this.detail = data.detail;
+        this.urlList = data.img_list.map(item => {
+          const obj = { url: this.imgPath + item };
+          this.$set(obj, 'active', false);
+          return obj;
+        });
+        this.sel(0, 'url');
+        this.specList = data.specifications.map(item => {
+          const obj = { spec: item };
+          this.$set(obj, 'active', false);
+          return obj;
+        });
+      } else {
+        this.$alert('Can not find Product By this ID!', 'Tip', {
+          confirmButtonText: 'ok',
+          callback: () => {
+            this.$router.push({ path: '/dashboard' });
+          }
+        });
+      }
+    })
+
   },
   methods: {
-    imgLoaded() {
-      let imgInfo = this.$refs['img'].getBoundingClientRect();
-      if (JSON.stringify(this.imgInfo) == JSON.stringify(imgInfo)) {  // 位置不变不更新
+    jump() {
+      if (!this.curspec) {
+        this.$message.info('Don\'t forget select the specification');
         return;
       }
-      this.imgLoadedFlag = true;
-      let { width, height, left, top } = (this.imgInfo = imgInfo);
-      let selector = this.selector;
-      let { width: selectorWidth, halfWidth: selectorHalfWidth } = selector;
-      let { scrollLeft, scrollTop } = document.documentElement;
-      selector.rightBound = width - selectorWidth;
-      selector.bottomBound = height - selectorWidth;
-      selector.absoluteLeft = left + selectorHalfWidth + scrollLeft;
-      selector.absoluteTop = top + selectorHalfWidth + scrollTop;
+      this.$router.push({ path: '/integration', query: { productId: this.productId, spec: this.curspec } });
     },
-    reset() {
-      Object.assign(this.selector, {
-        top: 0,
-        left: 0,
-        bgLeft: 0,
-        bgTop: 0
-      });
+    switchProduct(product) {
+      this.$router.push({ path: '/productDetail/' + product.id });
     },
-
-    sel(index) {
-      this.specList.forEach((item, i) => {
+    sel(index, type) {
+      this[type + 'List'].forEach((item, i) => {
         if (i === index) {
           item.active = true;
-          this.curSpec = item.spec;
+          this['cur' + type] = item[type];
         } else {
           item.active = false;
         }
       })
     },
     move(direction) {
-      if (this.moveDisabled) { return }
+      if (this.moveDisabled) { return; }
       switch (direction) {
         case 'left':
           if (Math.abs(this.distanse) > 0) {
@@ -287,9 +162,9 @@ export default {
           }
           break;
         case 'right':
-          if (this.productImgList.length - Math.abs(this.distanse) >= 5) {
+          if (this.urlList.length - Math.abs(this.distanse) >= 5) {
             this.distanse--;
-            if (this.productImgList.length - Math.abs(this.distanse) >= 5) {
+            if (this.urlList.length - Math.abs(this.distanse) >= 5) {
               this.nextDisabled = false;
               this.preDisabled = true;
             } else {
@@ -305,30 +180,6 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.img-container {
-  position: relative;
-}
-
-.img-selector {
-  background-color: rgba(0, 0, 0, 0.6);
-  position: absolute;
-  background-repeat: no-repeat;
-  cursor: crosshair;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.img-selector.circle {
-  border-radius: 50%;
-}
-
-.img-out-show {
-  position: absolute;
-  top: 0;
-  right: 0;
-  background-repeat: no-repeat;
-  transform: translate(100%, 0);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-}
 .intro,
 .detail-box {
   padding: 20px 0;
@@ -352,40 +203,12 @@ export default {
       height: calc(100% - 80px);
       border: 1px solid #000;
       img {
-        display: block;
         width: 100%;
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
         height: auto;
-      }
-      .pic-span {
-        display: none;
-        position: absolute;
-        cursor: move;
-        width: 200px;
-        height: 200px;
-        // background: url(../img/pic-span.png);
-        left: 0px;
-        top: 0px;
-        z-index: 1;
-      }
-      .big-pic {
-        width: 400px;
-        height: 400px;
-        overflow: hidden;
-        background: white;
-        position: absolute;
-        left: 410px;
-        top: 0;
-        display: block;
-      }
-      .big-pic > img {
-        display: block;
-        position: absolute;
-        left: 0;
-        top: 0;
       }
     }
 
@@ -452,7 +275,7 @@ export default {
 
   .describe-box {
     width: calc(93% - 35rem);
-
+    position: relative;
     .title {
       font-size: 28px;
       font-weight: 700;
@@ -500,10 +323,21 @@ export default {
         }
       }
     }
-
     .describe {
       text-indent: 2em;
       margin-top: 10px;
+    }
+    .btn {
+      position: absolute;
+      bottom: 22px;
+      left: 0;
+      padding: 8px 15px;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: 700;
+      background: #686868;
+      color: #fafafa;
+      border-radius: 4px;
     }
   }
 }
@@ -516,34 +350,8 @@ export default {
   .detail {
     min-height: 535px;
   }
-
   .related {
     width: 200px;
-
-    .title {
-      font-size: 18px;
-      font-weight: 700;
-      line-height: 35px;
-      color: #fefefe;
-      background: #949494;
-      text-align: center;
-    }
-    .list {
-      background: #f5f5f5;
-      min-height: 500px;
-      .item {
-        padding: 20px 15px;
-        > div {
-          width: 100%;
-          height: 170px;
-          border: 1px solid #000;
-        }
-        > p {
-          font-size: 16px;
-          line-height: 20px;
-        }
-      }
-    }
   }
 
   .detail {

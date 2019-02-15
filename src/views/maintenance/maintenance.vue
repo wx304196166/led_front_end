@@ -2,42 +2,72 @@
   <div class="maintenance">
     <banner />
     <div class="page-container ">
-      <div class="searchBox">
-        <search/>
-        <i class="searchIcon" />
+      <div class="search-box">
+        <el-input v-model="keyword" @keyup.native.enter="search" filterable placeholder="please input serial number, and press Enter key" />
+        <i class="search-icon" />
       </div>
-      <div class="thumbnail" />
-      <div class="serialNumber">
-        <div>Led Colorful HD Display</div>
-        <span>serial number : 1245654687s</span>
+      <div v-if="model.thumbnail">
+        <div :style="{backgroundImage:`url(${path+model.thumbnail})`}" class="thumbnail bg-center" />
+        <div class="serial-number">
+          <div>{{model.productName}}</div>
+          <span>Serial Number : {{keyword}}</span>
+        </div>
+        <ul class="maintenance-list">
+          <li><span>Product type:</span> {{map[model.classification]}}</li>
+          <li><span>Contract number:</span> {{model.contract}}</li>
+          <li><span>Date of purchase:</span> {{setDate(model.purchase_date)}}</li>
+          <li><span>Warranty date:</span> {{setDate(model.warranty_date)}}</li>
+          <li><span>Warranty period:</span> {{model.warranty_period}}</li>
+        </ul>
       </div>
-      <ul class="maintenanceUl">
-        <li>Product type: xxxxxxxxx</li>
-        <li>Contract number: xxxxxxxxx</li>
-        <li>Date of purchase: xxxxxxxxx</li>
-        <li>Warranty date: xxxxxxxxx</li>
-        <li>Warranty period: xxxxxxxxx</li>
-      </ul>
+
     </div>
   </div>
 </template>
 
 <script>
 import banner from '@/components/Banner/banner';
-import search from '@/components/Search/search';
+import { getBySN } from '@/api/maintenance';
+import { parseTime } from '@/utils'
 export default {
   name: 'Maintenance',
-  components: { banner, search }
+  components: { banner },
+  data() {
+    return {
+      keyword: '',
+      path: '/upload/product/',
+      model: {}
+    };
+  },
+  computed: {
+    map() {
+      return this.$store.getters.map.classification_id;
+    }
+  },
+  methods: {
+    search() {
+      getBySN(this.keyword).then(res => {
+        if (res.data && res.data.thumbnail) {
+          this.model = res.data;
+        } else {
+          this.$message.info('Can not found relevant information');
+        }
+      })
+    },
+    setDate(date) {
+      return parseTime(date, '{y}-{m}-{d}');
+    }
+  }
 };
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.searchBox {
+.search-box {
   position: relative;
   width: 50%;
   margin: 40px auto 20px;
   text-align: center;
-  .searchIcon {
+  .search-icon {
     position: absolute;
     transform: scale(0.6);
     top: 5px;
@@ -48,8 +78,8 @@ export default {
   }
 }
 .thumbnail {
-  width: 200px;
-  height: 200px;
+  width: 300px;
+  height: 250px;
   margin: 50px auto 0;
   border: 1px solid #000;
 }
@@ -62,23 +92,28 @@ export default {
   margin: 20px auto;
   display: block;
 }
-.serialNumber {
-  line-height: 30px;
+.serial-number {
+  line-height: 35px;
   text-align: center;
+  margin: 12px 0;
+  font-size: 18px;
+  font-weight: 700;
 }
-.maintenanceUl {
+.maintenance-list {
   margin-left: 10%;
-  padding: 0 5%;
+  padding: 0 5% 20px;
 }
-.maintenanceUl li {
+.maintenance-list li {
   padding: 13px 0;
+  font-size: 16px;
+  span {
+    padding-right: 8px;
+    font-weight: 700;
+  }
 }
 </style>
 <style rel="stylesheet/scss" lang="scss">
 .maintenance {
-  .el-select {
-    width: 100%;
-  }
   .el-input__inner {
     padding-left: 40px;
   }

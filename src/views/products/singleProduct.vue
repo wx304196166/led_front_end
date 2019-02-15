@@ -1,5 +1,5 @@
 <template>
-  <div class="product pointer" @click.stop="jump('/productDetail',info.id)">
+  <div class="product pointer" @click.stop="jump(info.id)">
       <img :src="`/upload/product/${info.thumbnail}`" alt="">
       <div class="productSummary">
         <p class="title">{{ info.name }}</p>
@@ -9,7 +9,6 @@
 </template>
 
 <script>
-import productPng from '@/assets/img/products/VX2S.png';
 export default {
   name: 'SingleProduct',
   props: {
@@ -17,16 +16,10 @@ export default {
       type: Object,
       default: () => { return {}; }
     }
-  },
-  data() {
-    return {
-      productPng
-    };
-  },
+  }, 
   methods:{
-    jump(path,id){
-      sessionStorage.setItem('curProductId',id);
-      this.$router.push({path});
+    jump(id){
+      this.$router.push({ path: '/productDetail/' + id });
     }
   }
 };

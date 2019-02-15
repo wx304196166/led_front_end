@@ -84,7 +84,11 @@ li {
   background-repeat: no-repeat;
   background-position: 0 0;
 }
-
+.bg-center{
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
 .cover {
   background-size: cover;
   background-repeat: no-repeat;

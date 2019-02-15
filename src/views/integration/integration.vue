@@ -39,7 +39,6 @@
               <li class="screen" ref="screen">
                 <div class="cover-container" :style="{width:coverWidth,height:coverHeight}">
                   <div v-for="item in screenTotal" :key="item" :style="{width:`${100/screenCol}%`,height:`${100/screenRow}%`,backgroundImage:`url(${led02})`}" class="cover" />
-
                 </div>
               </li>
             </ul>
@@ -79,7 +78,7 @@
           <el-table-column prop="number" label="Number">
             <template slot-scope="scope">
               <el-input-number v-if="!(scope.row.isMain||scope.row.isInput)" v-model="scope.row.number" :min="1" controls-position="right" size="small"></el-input-number>
-              <span v-else>{{ scope.row.number }}</span>
+              <span v-else>{{ screenTotal }}</span>
             </template>
           </el-table-column>
 
@@ -201,6 +200,9 @@ export default {
     }
   },
   created() {
+    console.log(this.$route.query.id);
+    console.log(this.$route.query.spec);
+    console.log(this.$route.query.productId);
     this.setTable();
   },
   mounted() {

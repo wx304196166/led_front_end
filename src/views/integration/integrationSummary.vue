@@ -1,20 +1,16 @@
 <template>
   <div class="integration">
     <banner />
-    <div class="page-container">
-      <router-link to="/integration">
-        <span class="add">+</span>
-      </router-link>
+    <div class="page-container" style="marginTop:20px">
+      <span @click="jump(null)" class="add">+</span>
       <ul class="integrationList">
-        <li>
-          <div class="integrationName">name</div>
-          <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. A, odio.</div>
-        </li>
-        <li>
-          <div class="integrationName">name</div>
-          <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. A, odio.</div>
+        <li v-for="item in list" :key="item.id" @click="jump(item.id)" class="pointer">
+          <div class="integrationName">{{item.name}}</div>
+          <div>{{item.remark}}</div>
         </li>
       </ul>
+      <el-alert v-if="list.length===0" title="Tip" type="info" description="You still don't have any integration, try to click the button plus to add one." show-icon>
+      </el-alert>
     </div>
   </div>
 
@@ -40,14 +36,18 @@ export default {
     if (this.token) {
       queryAllByCondition({ name: 'integrate', condition: { create_user_id: this.token } }).then(res => {
         if (res.code === 0) {
-          this.list=res.data;
-        }else{
+          this.list = res.data;
+        } else {
           this.$message.error(res.message);
         }
       })
     }
   },
   methods: {
+    jump(id) {
+      this.$router.push({ path: '/integration', query: { id } });
+
+    }
   }
 };
 </script>

@@ -13,8 +13,10 @@ router.beforeEach((to, from, next) => {
   NProgress.start()
   if (getToken()) {
     if (Object.keys(store.getters.userInfo).length === 0) {
-      store.dispatch('GetInfo').then(res => { // 拉取用户信息
-        next()
+      store.dispatch('GetInfo').then(() => { // 拉取用户信息
+        store.dispatch('SetMap').then(()=>{
+          next();
+        });
       }).catch((err) => {
         store.dispatch('FedLogOut').then(() => {
           Message.error(err || 'Verification failed, please login again')

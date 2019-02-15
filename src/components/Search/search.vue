@@ -1,12 +1,5 @@
 <template>
-  <el-select v-model="value8" filterable placeholder="please enter">
-    <el-option
-      v-for="item in options"
-      :key="item.value"
-      :label="item.label"
-      :value="item.value">
-    </el-option>
-  </el-select>
+  
 </template>
 
 <script>

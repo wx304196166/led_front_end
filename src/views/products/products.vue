@@ -109,10 +109,9 @@ export default {
       }
     }
   },
-  methods: {
+  methods: {    
     setList(id) {
       let arr = [{ id: 'all', name: 'all' }].concat(this.classificationMap[id]['brand_id']);
-
       this.brands = arr.map(item => {
         const flag = item.id === 'all' ? true : false;
         this.$set(item, 'active', flag);

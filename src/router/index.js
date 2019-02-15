@@ -24,7 +24,7 @@ export const constantRouterMap = [
   // { path: '/login', component: () => import('@/views/login/index'), hidden: true },
   // { key: '/register', component: () => import('@/views/register/index'), hidden: true },
   {
-    path: '/productDetail',
+    path: '/productDetail/:id',
     component: productDetail,
     hidden: true
   },
@@ -48,9 +48,6 @@ export const constantRouterMap = [
   {
     path: '/integration',
     name: 'Integration',
-    meta: {
-      title: 'Integration'
-    },
     hidden: true,
     component: integration
   },

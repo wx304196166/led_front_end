@@ -51,8 +51,7 @@
     </el-dialog>
     <ul class="menu page-container clearfix">
       <li class="logo bg" :style="{backgroundImage:`url(${logo})`}">
-        <router-link to="/dashboard">
-        </router-link>
+        <router-link to="/dashboard" />
       </li>
       <li v-for="(link,index) in routes" :key="link.path" class="link">
         <span>
@@ -103,7 +102,6 @@
 
 <script>
 import { registerCustom } from '@/api/login';
-import { queryAll } from '@/api/common';
 import Foot1 from '@/assets/img/home/foot1.png';
 import Foot2 from '@/assets/img/home/foot2.png';
 import Foot3 from '@/assets/img/home/foot3.png';
@@ -195,7 +193,7 @@ export default {
           if (this.username) {
             break;
           } else {
-            this.$alert('Please login first!', 'Tips', {
+            this.$alert('Please login first!', 'Tip', {
               confirmButtonText: 'ok',
               callback: action => {
                 if (action === 'confirm') {
