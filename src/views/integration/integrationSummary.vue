@@ -55,7 +55,7 @@ export default {
 <style rel="stylesheet/scss" lang="scss" scoped>
 .add {
   float: right;
-  margin-right: 50px;
+  margin: 20px 50px 20px 0;
   color: #fff;
   display: inline-block;
   width: 30px;
