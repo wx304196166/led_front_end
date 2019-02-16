@@ -56,12 +56,10 @@ export default {
   computed: {
     map() {
       return this.$store.getters.map;
-    },
-    classificationId() {
-      return this.$store.getters.classificationId;
     }
   },
   async created() {
+    this.classificationId = this.$route.params.id;
     res = await queryAll('product');
     if (res.code === 0) {
       this.products = res.data.filter(item => item.classification_id === this.classificationId);
@@ -109,7 +107,7 @@ export default {
       }
     }
   },
-  methods: {    
+  methods: {
     setList(id) {
       let arr = [{ id: 'all', name: 'all' }].concat(this.classificationMap[id]['brand_id']);
       this.brands = arr.map(item => {

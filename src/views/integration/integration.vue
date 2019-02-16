@@ -97,7 +97,7 @@
       </li>
     </ul>
 
-    <el-dialog :visible.sync="swichDialog" width="500px">
+    <el-dialog :visible.sync="swichDialog" title="Select Main Product" width="500px">
       <el-form ref="form" :model="form" :rules="rules">
         <el-form-item label="Main Product" prop="id" label-width="120px">
           <el-select v-model="form.id">
@@ -112,7 +112,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="swichDialog = false" type="danger">Cancel</el-button>
-        <el-button @click.native.prevent="handleSwitch" type="primary">Confirm</el-button>
+        <el-button @click="handleSwitch" type="primary">Confirm</el-button>
       </div>
     </el-dialog>
   </div>
@@ -225,14 +225,16 @@ export default {
           })
         }
         this.setCurMain(data.main_specification);
+        this.setTable();
+
       }
+    } else if (this.$route.query.productId && this.$route.query.spec) {
+      this.mainId = this.$route.query.productId;
+      this.setCurMain(this.$route.query.spec);
+      this.setTable();
     } else {
-      if (this.$route.query.productId && this.$route.query.spec) {
-        this.mainId = this.$route.query.productId;
-        this.setCurMain(this.$route.query.spec);
-      }
+      this.swichDialog = true;
     }
-    this.setTable();
   },
   mounted() {
     this.setCover();
@@ -259,6 +261,7 @@ export default {
         if (valid) {
           this.mainId = this.form.id;
           this.setCurMain(this.form.spec);
+          this.setTable();
         } else {
           return false;
         }

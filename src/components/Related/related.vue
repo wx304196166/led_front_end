@@ -19,7 +19,7 @@ export default {
     ids: {
       type: Array,
       default: () => []
-    }    
+    }
   },
   data() {
     return { imgPath: '/upload/product/', related: [] }
@@ -27,6 +27,8 @@ export default {
   mounted() {
     if (this.ids.length) {
       this.init(this.ids);
+    } else {
+      this.related = [];
     }
 
   },
@@ -34,8 +36,10 @@ export default {
     ids(newVal, oldVal) {
       if (newVal.length) {
         this.init(newVal);
+      } else {
+        this.related = [];
       }
-    }    
+    }
   },
   methods: {
     init(ids) {

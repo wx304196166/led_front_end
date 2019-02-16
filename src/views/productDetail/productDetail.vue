@@ -58,18 +58,11 @@
 import related from '@/components/Related/related';
 import banner from '@/components/Banner/banner';
 import { queryOne } from '@/api/common';
-// 调试用
-import product1 from '@/assets/img/products/MCTRL4K.png';
-import cardA8s from '@/assets/img/products/cardA8s.png';
-import CVT4KS from '@/assets/img/products/CVT4K-S.png';
-import VX4S from '@/assets/img/products/VX4S.png';
-import MCTRLR5 from '@/assets/img/products/MCTRLR5.png';
 export default {
   name: 'ProductDetail',
   components: { related, banner },
   data() {
     return {
-      product1,
       name: '',
       intro: '',
       urlList: [],
@@ -123,7 +116,6 @@ export default {
         });
       }
     })
-
   },
   methods: {
     jump() {

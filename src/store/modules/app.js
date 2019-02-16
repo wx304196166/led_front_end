@@ -35,10 +35,7 @@ const app = {
     },
     SET_MAP: (state, map) => {
       state.map = map;
-    },
-    SET_CLASSIFICATION: (state, id) => {
-      state.classificationId = id;
-    },
+    }
   },
   actions: {
     ToggleSideBar: ({
@@ -75,12 +72,7 @@ const app = {
           }
         })
       })
-    },
-    SetClassification({
-      commit
-    }, id) {
-      commit('SET_CLASSIFICATION', id);
-    }
+    }   
   }
 };
 

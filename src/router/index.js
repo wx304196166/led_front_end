@@ -38,7 +38,7 @@ export const constantRouterMap = [
     component: dashboard
   },
   {
-    path: '/products',
+    path: '/products/:id',
     name: 'Products',
     meta: {
       title: 'Products'

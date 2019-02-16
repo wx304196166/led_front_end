@@ -186,9 +186,10 @@ export default {
   methods: {
     jump(path, id) {
       switch (path) {
-        case '/products':
-          this.$store.dispatch('SetClassification', id);
-          break;
+        case '/products/:id':
+          this.$router.push({ path: '/products/' + id });
+          this.$router.go(0);
+          return;
         case '/integrationSummary':
           if (this.username) {
             break;
