@@ -135,6 +135,7 @@ export default {
     },
     switchProduct(product) {
       this.$router.push({ path: '/productDetail/' + product.id });
+      this.$router.go(0);
     },
     sel(index, type) {
       this[type + 'List'].forEach((item, i) => {
