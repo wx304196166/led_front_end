@@ -226,7 +226,6 @@ export default {
         }
         this.setCurMain(data.main_specification);
         this.setTable();
-
       }
     } else if (this.$route.query.productId && this.$route.query.spec) {
       this.mainId = this.$route.query.productId;
