@@ -2,11 +2,11 @@
   <div style="height:100%">
     <div class="title">Related products</div>
     <ul class="list">
-      <li class="item pointer" v-for="item in list" :key="item.id" @click="returnItem(item)">
+      <li class="item pointer" v-for="item in related" :key="item.id" @click="returnItem(item)">
         <img :src="imgPath + item.thumbnail" alt="">
         <p>{{item.name}}</p>
       </li>
-      <li v-if="list.length===0" class="no-data">No Product</li>
+      <li v-if="ids.length===0" class="no-data">No Product</li>
     </ul>
   </div>
 </template>
@@ -19,28 +19,29 @@ export default {
     ids: {
       type: Array,
       default: () => []
-    }
+    }    
   },
   data() {
-    return { imgPath: '/upload/product/', list: [] }
+    return { imgPath: '/upload/product/', related: [] }
   },
   mounted() {
     if (this.ids.length) {
       this.init(this.ids);
     }
+
   },
   watch: {
     ids(newVal, oldVal) {
       if (newVal.length) {
         this.init(newVal);
       }
-    }
+    }    
   },
   methods: {
     init(ids) {
       queryMany('product', { ids }).then(res => {
         if (res.code === 0) {
-          this.list = res.data;
+          this.related = res.data;
         }
       })
     },

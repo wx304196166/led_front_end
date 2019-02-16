@@ -113,9 +113,11 @@ h5 {
 }
 
 .bold {
-  font-weight: bold;
+  font-weight: 700;
 }
-
+.text-center{
+  text-align: center;
+}
 // 覆盖element-ui样式
 .el-message {
   top: 90px;

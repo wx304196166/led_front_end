@@ -4,14 +4,16 @@
     <ul class="page-container clearfix">
       <li class="show-box clearfix">
         <ul class="show clearfix">
-          <li class="title">Led Colourful HD Display</li>
-          <li class="img-box bg" :style="{backgroundImage:`url(${led01})`}"></li>
-          <li class="title">Specifications:
-            <span class="spec">{{specifications[0]}}*{{specifications[1]}}</span>
+          <li class="title text-center">{{curMain.name}}
+            <i @click="swichDialog=true">
+              <svg-icon icon-class="edit" />
+            </i>
           </li>
-          <li>
-            Curabitur auctor tristique lobortis. Quisque bibendum, ipsum in feugiat pharetra, odio libero malesuada turpis, tempus fermentum augue est sit amet magna. Vestibulum bibendum lectus non mauris porta, sed blandit purus scelerisque. Sed consequat mollis ornare. Sed laoreet id dolor vitae facilisis. Mauris varius orci sed turpis commodo mattis.
+          <li v-if="curMain.thumbnail" class="img-box bg-center" :style="{backgroundImage:`url(/upload/product/${curMain.thumbnail})`}"></li>
+          <li v-if="curMain.id" class="title">Specifications:
+            <span class="spec">{{curMain.specifications[0]}}*{{curMain.specifications[1]}}</span>
           </li>
+          <li>{{curMain.intro}}</li>
         </ul>
         <ul class="operate clearfix">
           <li class="adjust">
@@ -30,7 +32,7 @@
                   <div />
                 </div>
                 <div class="number">
-                  {{specifications[1]*screenCol}} CM
+                  {{curMain.specifications[1]*screenCol}} CM
                 </div>
                 <div class="bar">
                   <div />
@@ -38,7 +40,7 @@
               </li>
               <li class="screen" ref="screen">
                 <div class="cover-container" :style="{width:coverWidth,height:coverHeight}">
-                  <div v-for="item in screenTotal" :key="item" :style="{width:`${100/screenCol}%`,height:`${100/screenRow}%`,backgroundImage:`url(${led02})`}" class="cover" />
+                  <div v-for="item in screenTotal" :key="item" :style="{width:`${100/screenCol}%`,height:`${100/screenRow}%`,backgroundImage:`url(${ledScreen})`}" class="cover" />
                 </div>
               </li>
             </ul>
@@ -47,7 +49,7 @@
                 <div />
               </div>
               <div class="number">
-                {{specifications[0]*screenCol}} CM
+                {{curMain.specifications[0]*screenCol}} CM
               </div>
               <div class="bar">
                 <div />
@@ -56,10 +58,10 @@
           </li>
         </ul>
         <div class="related">
-          <related :list="list" @get-item="getItem" />
+          <related :ids="ids" @get-item="getItem" />
         </div>
       </li>
-      <li class="parms-table">
+      <li v-if="curMain.id" class="parms-table">
         <el-table :data="table" :span-method="arraySpanMethod" border style="width: 100%" header-row-class-name="table-head">
 
           <el-table-column prop="classification" label="Classification" />
@@ -90,10 +92,29 @@
 
         </el-table>
       </li>
-      <li class="submit">
+      <li v-if="curMain.id" class="submit">
         <div @click="submitScheme" class="pointer">Submit</div>
       </li>
     </ul>
+
+    <el-dialog :visible.sync="swichDialog" width="500px">
+      <el-form ref="form" :model="form" :rules="rules">
+        <el-form-item label="Main Product" prop="id" label-width="120px">
+          <el-select v-model="form.id">
+            <el-option v-for="item in main" :key="item.id" :label="item.name" :value="item.id" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="Specification" prop="spec" label-width="120px">
+          <el-select v-model="form.spec">
+            <el-option v-for="(item,index) in specMap[form.id]" :key="index" :label="item" :value="item" />
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="swichDialog = false" type="danger">Cancel</el-button>
+        <el-button @click.native.prevent="handleSwitch" type="primary">Confirm</el-button>
+      </div>
+    </el-dialog>
   </div>
 
 </template>
@@ -102,29 +123,36 @@
 import related from '@/components/Related/related';
 import banner from '@/components/Banner/banner';
 
-import { submit } from '@/api/integration'
-// 调试用
-import main from './tableData';
-import cardA8s from '@/assets/img/products/cardA8s.png';
-import CVT4KS from '@/assets/img/products/CVT4K-S.png';
-import MCTRL4K from '@/assets/img/products/MCTRL4K.png';
-import VX4S from '@/assets/img/products/VX4S.png';
-import MCTRLR5 from '@/assets/img/products/MCTRLR5.png';
+import { submit, getMainProduct } from '@/api/integration';
+import { queryOne, queryMany } from '@/api/common';
 
-import led01 from '@/assets/img/img_led01.png';
-import led02 from '@/assets/img/img_led02.png';
+import ledScreen from '@/assets/img/img_led02.png';
 
 export default {
   name: 'Integration',
   components: { related, banner },
   data() {
     return {
-      specifications: [300, 200],
+      form: {
+        id: '',
+        spec: ''
+      },
+      rules: {
+        id: [{ required: true, trigger: 'change' }],
+        spec: [{ required: true, trigger: 'change' }]
+      },
+      specMap: {},
+      main: [],
+      curMain: {
+        specifications: [300, 200]
+      },
+      mainId: '',
       adjust: {
         // clearnce: { val: 10, unit: 'mm' },
         level: { val: 3, unit: '' },
         vertical: { val: 2, unit: '' }
       },
+      ids: [],
       coverWidth: 0,
       coverHeight: 0,
       relatedListMap: {},
@@ -141,51 +169,9 @@ export default {
         isInput: true
       },
       relatedList: [],
-      main,
-      led01,
-      led02,
-      list: [
-        {
-          id: 'cardA8s',
-          name: 'cardA8s',
-          classification: 'Sensor',
-          brand: 'Card',
-          imgUrl: cardA8s,
-          specifications: [200, 400]
-        },
-        {
-          id: 'CVT4K-S',
-          name: 'CVT4K-S',
-          classification: 'Sensor',
-          brand: 'CVT4K',
-          imgUrl: CVT4KS,
-          specifications: [300, 400]
-        },
-        {
-          id: 'MCTRL4K',
-          name: 'MCTRL4K',
-          classification: 'Sensor',
-          imgUrl: MCTRL4K,
-          brand: 'MCTRL',
-          specifications: [200, 400]
-        },
-        {
-          id: 'VX4S',
-          name: 'all-in-one VX4S',
-          classification: 'Consumables',
-          imgUrl: VX4S,
-          brand: 'all-in-one',
-          specifications: [300, 400]
-        },
-        {
-          id: 'MCTRLR5',
-          name: 'MCTRLR5',
-          classification: 'Consumables',
-          imgUrl: MCTRLR5,
-          brand: 'MCTRL',
-          specifications: [200, 400]
-        }
-      ]
+      ledScreen,
+      swichDialog: false,
+      list: []
     };
   },
   computed: {
@@ -197,12 +183,55 @@ export default {
     },
     screenCol() {
       return this.adjust.level.val;
+    },
+    map() {
+      return this.$store.getters.map;
     }
   },
-  created() {
-    console.log(this.$route.query.id);
-    console.log(this.$route.query.spec);
-    console.log(this.$route.query.productId);
+  async created() {
+    let res = await getMainProduct();
+    if (res.data && res.data.length) {
+      this.main = res.data;
+      this.main.forEach(item => {
+        this.specMap[item.id] = item.specifications.split(',');
+      })
+    } else {
+      this.$alert('Sorry, there is no main product !', 'Sorry', {
+        confirmButtonText: 'ok',
+        callback: () => {
+          this.$router.push({ path: '/dashboard' });
+          return;
+        }
+      });
+    }
+    if (this.$route.query.id) {
+      res = await queryOne('integrate', this.$route.query.id);
+      if (res.code === 0) {
+        const data = res.data;
+        this.mainId = data.main_id;
+        this.adjust.level.val = data.main_level;
+        this.adjust.vertical.val = data.main_vertical;
+        const related = data.related_list ? JSON.parse(data.related_list) : [];
+        this.ids = related.map(item => item.id);
+        this.schemeName.name = data.name;
+        this.remarks.name = data.remark;
+        res = await queryMany('product', { ids: this.ids });
+        if (res.code === 0) {
+          res.data.forEach((item, index) => {
+            this.setRelatedListMap(this.map.classification_id[item.classification_id]);
+            const obj = this.setProduct(item);
+            obj.number = related[index].number;
+            this.relatedList.push(obj);
+          })
+        }
+        this.setCurMain(data.main_specification);
+      }
+    } else {
+      if (this.$route.query.productId && this.$route.query.spec) {
+        this.mainId = this.$route.query.productId;
+        this.setCurMain(this.$route.query.spec);
+      }
+    }
     this.setTable();
   },
   mounted() {
@@ -225,11 +254,42 @@ export default {
     }
   },
   methods: {
+    handleSwitch() {
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          this.mainId = this.form.id;
+          this.setCurMain(this.form.spec);
+        } else {
+          return false;
+        }
+      })
+    },
+    setCurMain(specification) {
+      this.main.forEach(item => {
+        if (item.id === this.mainId) {
+          this.ids = item.product_id.split(',');
+          this.curMain = this.setProduct(item, specification.split('*'));
+          return;
+        }
+      });
+    },
+    setProduct(pro, specification) {
+      return {
+        id: pro.id,
+        name: pro.name,
+        classification: this.map.classification_id[pro.classification_id],
+        brand: this.map.brand_id[pro.brand_id],
+        specifications: specification || pro.specifications.split('*'),
+        isMain: pro.is_main,
+        intro: pro.intro,
+        thumbnail: pro.thumbnail
+      }
+    },
     setCover() {
       const screenW = this.$refs.screen.clientWidth;
       const screenH = this.$refs.screen.clientHeight;
-      const specW = this.specifications[0];
-      const specH = this.specifications[1];
+      const specW = this.curMain.specifications[0];
+      const specH = this.curMain.specifications[1];
       const w = specW * this.screenCol;
       const h = specH * this.screenRow;
 
@@ -257,9 +317,10 @@ export default {
     // 组装表格数据
     setTable() {
       let arr = [];
-      arr.push(this.main);
+      arr.push(this.curMain);
 
       this.relatedList.sort((a, b) => a.classification > b.classification);
+
       arr = arr.concat(this.relatedList);
       arr.push(this.schemeName);
       arr.push(this.remarks);
@@ -268,28 +329,21 @@ export default {
     },
     // 获取相关产品
     getItem(item) {
-      let flag = true;
-
       for (const pro of this.relatedList) {
         if (pro.id === item.id) {
           pro.number++;
-          flag = false;
-          break;
+          return;
         }
       }
-      if (flag) {
-        this.setRelatedListMap(item.classification);
-        this.relatedList.push(this.setItem(item));
-        this.setTable();
-      }
+      item = this.setProduct(item);
+      this.setRelatedListMap(item.classification);
+      this.relatedList.push(this.setItem(item));
+      this.setTable();
     },
     setItem(item) {
       const obj = Object.assign({}, item);
       obj.number = 1;
       return obj;
-    },
-    // 产品数量改变时
-    numberChange(value) {
     },
     // 条件合并行或列
     arraySpanMethod({ row, column, rowIndex, columnIndex }) {
@@ -321,10 +375,6 @@ export default {
     },
     submitScheme() {
       const token = this.$store.getters.token;
-      if (!token) {
-        this.$message.warning('Please login first!');
-        return;
-      }
       const sendData = { related_list: [] };
       for (const row of this.table) {
         switch (row.classification) {
@@ -333,7 +383,7 @@ export default {
           default:
             if (row.isMain) {
               sendData.main_id = row.id;
-              sendData.main_specification = row.specifications.join(',');
+              sendData.main_specification = row.specifications[0] + '*' + row.specifications[1];
               sendData.main_level = this.screenCol;
               sendData.main_vertical = this.screenRow;
               sendData.main_clearnce = 0;
@@ -391,10 +441,13 @@ $bright: #fafafa;
       font-weight: 700;
       height: 3.5714rem;
       line-height: 3.5714rem;
+      > i {
+        float: right;
+        cursor: pointer;
+      }
     }
     .img-box {
       height: 14.2857rem;
-      // background-image: url("../../assets/img/img_led01.png");
       position: relative;
       left: -0.5rem;
     }

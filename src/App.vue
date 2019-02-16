@@ -155,8 +155,8 @@ export default {
         email: ''
       },
       loginRules: {
-        username: [{ required: false, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: false, trigger: 'blur', validator: validatePass }]
+        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+        password: [{ required: true, trigger: 'blur', validator: validatePass }]
       },
       registRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],

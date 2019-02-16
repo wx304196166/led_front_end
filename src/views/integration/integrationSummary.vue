@@ -2,7 +2,7 @@
   <div class="integration">
     <banner />
     <div class="page-container" style="marginTop:20px">
-      <span @click="jump(null)" class="add">+</span>
+      <span @click="jump(null)" class="add pointer">+</span>
       <ul class="integrationList">
         <li v-for="item in list" :key="item.id" @click="jump(item.id)" class="pointer">
           <div class="integrationName">{{item.name}}</div>
@@ -46,7 +46,6 @@ export default {
   methods: {
     jump(id) {
       this.$router.push({ path: '/integration', query: { id } });
-
     }
   }
 };

@@ -1,5 +1,12 @@
 import request from '@/utils/request';
 
+// 获取主商品清单
+export function getMainProduct() {
+  return request({
+    url: '/api/v1/customer/integration',
+    method: 'get'
+  });
+};
 // 提交集成方案
 export function submit(data) {
   return request({
@@ -8,45 +15,4 @@ export function submit(data) {
     data
   });
 };
-// 获取用户信息
-export function getUserInfo(token, type = 1) {
-  return request({
-    url: '/api/v1/common/getUserInfo',
-    method: 'post',
-    data: {
-      token,
-      type
-    }
-  });
-};
-// 检查用户名是否存在
-export function checkName(username, type = 1) {
-  return request({
-    url: '/api/v1/common/check',
-    method: 'get',
-    params: {
-      username,
-      type
-    }
-  });
-};
-// 注册
-export function registerCustom({
-  username,
-  password,
-  realName,
-  phone,
-  email
-}) {
-  return request({
-    url: '/api/v1/common/createCustomer',
-    method: 'post',
-    data: {
-      username,
-      password,
-      realName,
-      phone,
-      email
-    }
-  });
-};
+

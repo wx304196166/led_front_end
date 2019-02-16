@@ -12,7 +12,7 @@ export default {
       type: String,
       required: true
     },
-    class: {
+    className: {
       type: String,
       default: ''
     }
@@ -22,8 +22,8 @@ export default {
       return `#icon-${this.iconClass}`;
     },
     svgClass() {
-      if (this.class) {
-        return 'svg-icon ' + this.class;
+      if (this.className) {
+        return 'svg-icon ' + this.className;
       } else {
         return 'svg-icon';
       }
