@@ -261,6 +261,7 @@ export default {
           this.mainId = this.form.id;
           this.setCurMain(this.form.spec);
           this.setTable();
+          this.swichDialog = false;
         } else {
           return false;
         }
