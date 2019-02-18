@@ -50,6 +50,7 @@ export default {
         if (res.data && res.data.thumbnail) {
           this.model = res.data;
         } else {
+          this.modal=[];
           this.$message.info('Can not found relevant information');
         }
       })
