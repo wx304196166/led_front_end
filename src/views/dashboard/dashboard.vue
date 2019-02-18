@@ -7,7 +7,7 @@
     </div>
     <div class="bg about" :style="{backgroundImage:`url(${About})`}">
       <div>
-        <h1>About us!</h1>
+        <!-- <h1>About us!</h1> -->
         <div class="aboutUs">
           <el-carousel :interval="4000" height="150px" arrow="never">
             <el-carousel-item v-for="item in aboutUsLIst" :key="item">
@@ -17,25 +17,25 @@
         </div>
         <div class="aboutbox">
           <div class="divide">
-            <h1>MAJOR</h1>
+            <h1>Passion</h1>
             <div class="imgBox"><img :src="About1" alt=""></div>
             Solution Integration
             <div class="describe">Provide you with an integrated solution</div>
           </div>
           <div class="divide">
-            <h1>EFFICIENCY</h1>
+            <h1>Performance</h1>
             <div class="imgBox"><img :src="About2" alt=""></div>
             Craftsman Spirit
             <div class="describe">Keep improving and constantly break through oneself</div>
           </div>
           <div class="divide">
-            <h1> PERFECT</h1>
+            <h1>Professionalism</h1>
             <div class="imgBox"><img :src="About3" alt=""></div>
             Deep Service
             <div class="describe">Customize proprietary integration solution services for each us</div>
           </div>
           <div class="divide">
-            <h1>SINCERE</h1>
+            <h1>Perfection</h1>
             <div class="imgBox"> <img :src="About4" alt=""> </div>
             Perfessional technology
             <div class="describe">hundreds of well-known strategic partners in the industry</div>
@@ -58,7 +58,6 @@
     </div>
   </div>
 </template>
-
 <script>
 import { play } from './play';
 
@@ -79,9 +78,7 @@ export default {
   data() {
     return {
       imgList: [Banner1, Banner2, Banner3,],
-      aboutUsLIst: [
-        'Lorem ipsum, dolor sit amet consectetur adipisicing elit. totam id corporis eveniet odio eos ad distinctio, mollitia dignissimos commodi alias sed excepturi tempore. Eveniet doloribus nemo suscipit porro, ipsam doloremque quae maiores impedit provident nobis, exercitationem eius voluptatibus assumenda quia velit.',
-        'unde quod sapiente perferendis magnam, fugiat totam id corporis eveniet odio eos ad distinctio, mollitia dignissimos commodi alias sed excepturi tempore. Eveniet doloribus nemo suscipit porro, ipsam doloremque quae maiores impedit provident nobis, quia velit.'],
+      aboutUsLIst: ['Xi’an Visual-Artisan is a leading international supplier, manufacturer and distributor of complete technology solutions to the live event, houses of worship, commercial, education and industrial sectors with the philosophy of providing only the highest quality, most technologically advanced solutions in order to ensure customer satisfaction and growth in North America, Europe, Middle East and Africa.','We are a dynamic, innovative company driven by passion, performance, professionalism and perfection. We believe that service, support, training, professional products and attitude are the foundations for customer satisfaction and company growth. “we supply the industry” is our company mission and aim. Supply means going far beyond simply selling products, it includes design, product service, training, technical support and more…'],
       screenHeight: window.innerHeight + 'px',
       About, Case1, Case2, Case3, About1, About2, About3, About4,
       mask,
@@ -135,7 +132,8 @@ export default {
   }
   .aboutUs {
     opacity: 0.6;
-    line-height: 30px;
+    line-height: 40px;
+    margin-top:50px;
   }
   .aboutbox {
     display: flex;

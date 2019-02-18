@@ -7,6 +7,7 @@ import products from '@/views/products/products';
 import integrationSummary from '@/views/integration/integrationSummary';
 import integration from '@/views/integration/integration';
 import maintenance from '@/views/maintenance/maintenance';
+import aboutUs from '@/views/aboutUs/about';
 
 // in development-env not use lazy-loading, because lazy-loading too many pages will cause webpack hot update too slow. so only in production use lazy-loading;
 // detail: https://panjiachen.github.io/vue-element-admin-site/#/lazy-loading
@@ -31,9 +32,9 @@ export const constantRouterMap = [
   // 菜单相关路由
   {
     path: '/dashboard',
-    name: 'Home',
+    name: 'Our Company',
     meta: {
-      title: 'Home'
+      title: 'Our Company'
     },
     component: dashboard
   },
@@ -61,11 +62,19 @@ export const constantRouterMap = [
   },
   {
     path: '/maintenance',
-    name: 'Maintenance',
+    name: 'Service',
     meta: {
-      title: 'Maintenance'
+      title: 'Service'
     },
     component: maintenance
+  },
+  {
+    path: '/aboutus',
+    name: 'About us',
+    meta: {
+      title: 'About us'
+    },
+    component: aboutUs
   },
 
   {
