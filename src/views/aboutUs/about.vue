@@ -1,6 +1,6 @@
 <template>
-  <div class="maintenance">
-    <banner />
+  <div>
+    <div id="map_div"></div>
     <div class="page-container box">
       <div class="marginTop">Headquarters</div>
       <div>T: +86 13109563986</div>
@@ -16,41 +16,20 @@
 </template>
 
 <script>
-import banner from '@/components/Banner/banner';
-import { getBySN } from '@/api/maintenance';
-import { parseTime } from '@/utils'
+import { setMap } from './map.js';
 export default {
-  name: 'Maintenance',
-  components: { banner },
-  data() {
-    return {
-      keyword: '',
-      path: '/upload/product/',
-      model: {}
-    };
-  },
-  computed: {
-    map() {
-      return this.$store.getters.map.classification_id;
-    }
-  },
-  methods: {
-    search() {
-      getBySN(this.keyword).then(res => {
-        if (res.data && res.data.thumbnail) {
-          this.model = res.data;
-        } else {
-          this.$message.info('Can not found relevant information');
-        }
-      })
-    },
-    setDate(date) {
-      return parseTime(date, '{y}-{m}-{d}');
-    }
+  name: 'About',
+  mounted() {
+    setMap();
   }
-};
+}
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 @import "./style.scss";
+#map_div{
+  width: 100%;
+  height: 400px;
+  margin-top: 70px;
+}
 </style>
