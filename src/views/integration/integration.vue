@@ -194,7 +194,7 @@ export default {
     if (res.data && res.data.length) {
       this.main = res.data;
       this.main.forEach(item => {
-        this.specMap[item.id] = item.specification && item.specifications.split(',') || '';
+        this.specMap[item.id] = item.specifications && item.specifications.split(',') || '';
       })
     } else {
       this.$alert('Sorry, there is no main product !', 'Sorry', {
@@ -261,7 +261,7 @@ export default {
         if (valid) {
           this.mainId = this.form.id;
           this.setCurMain(this.form.spec);
-          this.setTable();
+          this.reset();
           this.swichDialog = false;
         } else {
           return false;
@@ -272,7 +272,7 @@ export default {
       this.main.forEach(item => {
         if (item.id === this.mainId) {
           this.ids = item.product_id.split(',');
-          this.curMain = this.setProduct(item, specification && item, specification.split('*')||'');
+          this.curMain = this.setProduct(item, specification && specification.split('*') || '');
           return;
         }
       });
@@ -283,7 +283,7 @@ export default {
         name: pro.name,
         classification: this.map.classification_id[pro.classification_id],
         brand: this.map.brand_id[pro.brand_id],
-        specifications: specification || pro.specifications.split('*'),
+        specifications: specification || pro.specifications && pro.specifications.split('*') || '',
         isMain: pro.is_main,
         intro: pro.intro,
         thumbnail: pro.thumbnail
