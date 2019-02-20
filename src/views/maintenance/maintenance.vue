@@ -51,7 +51,7 @@ export default {
           this.model = res.data;
         } else {
           this.modal=[];
-          this.$message.info('Can not found relevant information');
+          this.$message.warning(res.message);
         }
       })
     },

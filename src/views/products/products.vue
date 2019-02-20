@@ -150,7 +150,15 @@ export default {
     setProducts() {
       this.sels = this.products.filter(item => {
         const inBrand = this.selbrands.includes('all') || this.selbrands.includes(item.brand_id);
-        const inLabel = this.sellabels.includes('all') || this.sellabels.includes(item.label_id);
+        let contained = false;
+        const arr = item.label_id.split(',');
+        arr.forEach(item => {
+          if (this.sellabels.includes(item)) {
+            contained = true;
+            return;
+          }
+        })
+        const inLabel = this.sellabels.includes('all') || contained;
         const matchKeyword = item.name.includes(this.keyword);
         return inBrand && inLabel && matchKeyword;
       })
