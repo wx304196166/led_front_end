@@ -193,7 +193,7 @@ export default {
     if (res.data && res.data.length) {
       this.main = res.data;
       this.main.forEach(item => {
-        this.specMap[item.id] = item.specifications.split(',');
+        this.specMap[item.id] = item.specification && item.specifications.split(',') || '';
       })
     } else {
       this.$alert('Sorry, there is no main product !', 'Sorry', {
@@ -271,7 +271,7 @@ export default {
       this.main.forEach(item => {
         if (item.id === this.mainId) {
           this.ids = item.product_id.split(',');
-          this.curMain = this.setProduct(item, specification.split('*'));
+          this.curMain = this.setProduct(item, specification && item, specification.split('*')||'');
           return;
         }
       });
