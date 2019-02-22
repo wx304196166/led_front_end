@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { setMap } from './gmap.js';
+import { setMap } from './amap.js';
 export default {
   name: 'About',
   mounted() {
@@ -27,9 +27,30 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 @import "./style.scss";
-#map_div{
+#map_div {
   width: 100%;
   height: 400px;
   margin-top: 70px;
 }
 </style>
+<style>
+.amap-icon img {
+  width: 25px;
+  height: 34px;
+}
+
+.amap-marker-label {
+  border: 0;
+  background-color: transparent;
+}
+
+.info {
+  position: relative;
+  top: 0;
+  right: 0;
+  min-width: 0;
+  font-size: 14px;
+  font-weight: 700;
+}
+</style>
+
