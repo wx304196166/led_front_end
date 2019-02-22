@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { setMap } from './map.js';
+import { setMap } from './gmap.js';
 export default {
   name: 'About',
   mounted() {
