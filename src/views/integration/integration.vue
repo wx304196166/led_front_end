@@ -13,7 +13,7 @@
           <li v-if="curMain.id" class="title">Specifications:
             <span class="spec">{{curMain.specifications[0]}}*{{curMain.specifications[1]}}</span>
           </li>
-          <li>{{curMain.intro}}</li>
+          <li v-html="curMain.intro" />
         </ul>
         <ul class="operate clearfix">
           <li class="adjust">
@@ -440,6 +440,7 @@ $bright: #fafafa;
   }
   .show {
     width: 20%;
+    overflow: auto;
     .title {
       font-size: 1.2857rem;
       font-weight: 700;

@@ -31,9 +31,7 @@
               <span v-for="(item, index) in specList" :key="index" :class="{active:item.active}" @click="sel(index,'spec')">{{item.spec}}</span>
             </li>
           </ul>
-          <p class="describe">
-            {{intro}}
-          </p>
+          <div class="describe" v-html="intro" />
           <div v-if="isMain" @click="jump" class="btn">Integrate</div>
         </li>
       </ul>
@@ -316,10 +314,6 @@ export default {
         }
       }
     }
-    .describe {
-      text-indent: 2em;
-      margin-top: 10px;
-    }
     .btn {
       position: absolute;
       bottom: 22px;
@@ -358,7 +352,7 @@ export default {
       border-bottom: 1px solid #ccc;
     }
     .content {
-      padding: 20px 15px;
+      padding: 20px 5px;
     }
   }
 }

@@ -3,7 +3,7 @@
       <img :src="`/upload/product/${info.thumbnail}`" alt="">
       <div class="productSummary">
         <p class="title">{{ info.name }}</p>
-        <p class="content">{{ info.intro }}</p>
+        <!-- <p class="content">{{ info.intro }}</p> -->
       </div>
   </div>
 </template>
