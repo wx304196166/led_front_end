@@ -30,7 +30,7 @@ export default {
   position: relative;
   margin-bottom: 1.4286rem;
   box-sizing: border-box;
-  width: 33.3%;
+  width: 25%;
   padding:5% 0;
   border: 1px solid transparent;
   overflow: hidden;

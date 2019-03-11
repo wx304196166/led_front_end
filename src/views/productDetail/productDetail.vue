@@ -4,8 +4,13 @@
     <div class="page-container">
       <ul class="intro clearfix">
         <li class="show-box">
-          <div class="img-main">
+          <div class="img-main" ref="box">
             <img :src="cururl" />
+            <div v-show="show" class="drag-block" :style="{left:dragX+'px',top:dragY+'px'}"></div>
+          </div>
+          <div :class="{show}" class="scale-box">
+            <img :src="cururl" :style="{left:`-${dragX*ratio}px`,top:`-${imgY}`}" />
+            <!-- <img :src="cururl" :style="{transform:`translate(-${dragX*ratio}px,-${dragY*ratio-67.5*ratio}px)`}"/> -->
           </div>
           <ul class="img-list">
             <li :class="{disabled:moveDisabled||preDisabled}" @click="move('left')" />
@@ -32,7 +37,7 @@
             </li>
           </ul>
           <div class="describe" v-html="intro" />
-          <div v-if="isMain" @click="jump" class="btn">Integrate</div>
+          <!-- <div v-if="isMain" @click="jump" class="btn">Integrate</div> -->
         </li>
       </ul>
       <ul class="detail-box clearfix">
@@ -74,12 +79,19 @@ export default {
       specList: [],
       curspec: null,
       cururl: null,
-      related: []
+      related: [],
+      show: false,
+      dragX: 0,
+      dragY: 0,
+      ratio: 1
     };
   },
   computed: {
     moveDisabled() {
       return this.urlList.length < 5;
+    },
+    imgY() {
+      return 67.5 / this.ratio;
     }
   },
   created() {
@@ -100,6 +112,7 @@ export default {
           return obj;
         });
         this.sel(0, 'url');
+        this.setRatio();
         this.specList = data.specifications.map(item => {
           const obj = { spec: item };
           this.$set(obj, 'active', false);
@@ -115,7 +128,57 @@ export default {
       }
     })
   },
+  mounted() {
+    this.$refs.box.onmouseenter = (e) => {
+      e.preventDefault();
+      this.show = true;
+      this.$refs.box.onmousemove = this.zoom
+    }
+    this.$refs.box.onmouseleave = () => {
+      this.show = false;
+    }
+  },
   methods: {
+    zoom(e) {
+      const width = document.body.clientWidth
+      const offsetX = width * 0.06;
+      const offsetY = width * 385 / 1920 + 3
+      //显示鼠标指针的位置，-100让鼠标位置出现在div的中间
+      var x = e.pageX - offsetX - 122;
+      var y = e.pageY - offsetY - 122;
+
+      if (x >= 245) {
+        x = 245;
+      }
+      if (y >= 189) {
+        y = 189;
+      }
+      if (x <= 0) {
+        x = 0;
+      }
+      if (y <= 0) {
+        y = 0;
+      }
+      this.dragX = x;
+      this.dragY = y;
+    },
+    setRatio() {
+      // 创建对象
+      var img = new Image();
+
+      // 改变图片的src
+      img.src = this.cururl;
+
+      // 判断是否有缓存
+      if (img.complete) {
+        this.ratio = img.width / 490
+      } else {
+        // 加载完成执行
+        img.onload = function () {
+          this.ratio = img.width / 490
+        };
+      }
+    },
     jump() {
       if (!this.curspec) {
         this.$message.info('Don\'t forget select the specification');
@@ -124,8 +187,9 @@ export default {
       this.$router.push({ path: '/integration', query: { productId: this.productId, spec: this.curspec } });
     },
     switchProduct(product) {
-      this.$router.push({ path: '/productDetail/' + product.id });
-      this.$router.go(0);
+      /* this.$router.push({ path: '/productDetail/' + product.id });
+      this.$router.go(0); */
+      window.open('/#/productDetail/' + product.id)
     },
     sel(index, type) {
       this[type + 'List'].forEach((item, i) => {
@@ -188,21 +252,49 @@ export default {
   }
 
   .show-box {
+    position: relative;
     width: 35rem;
     .img-main {
       position: relative;
       height: calc(100% - 80px);
       border: 1px solid #000;
       img {
-        width: 100%;
+        max-width: 100%;
+        max-height: 100%;
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        height: auto;
       }
     }
-
+    .drag-block {
+      width: 50%;
+      height: 50%;
+      position: absolute;
+      background: #000;
+      opacity: 0.3;
+    }
+    .scale-box {
+      width: 35rem;
+      height: 379px;
+      border: 1px solid #000;
+      position: absolute;
+      top: 0;
+      left: 35.1rem;
+      overflow: hidden;
+      background: #fff;
+      z-index: 20;
+      transition: 0.24s all ease-out;
+      opacity: 0;
+      visibility: hidden;
+      > img {
+        position: absolute;
+      }
+    }
+    .show{
+      opacity: 1;
+      visibility: visible;
+    }
     .img-list {
       height: 80px;
 
@@ -339,6 +431,7 @@ export default {
   }
   .related {
     width: 200px;
+    height: 775px;
   }
 
   .detail {
