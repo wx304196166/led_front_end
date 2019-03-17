@@ -44,7 +44,7 @@ export default {
   methods: {
     init(ids) {
       queryMany('product', { ids }).then(res => {
-        if (res.code === 0) {
+        if (res.code === 1) {
           this.related = res.data;
         }
       })

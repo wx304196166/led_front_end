@@ -1,6 +1,6 @@
 <template>
   <div class="product pointer" @click.stop="jump(info.id)">
-      <img :src="`/upload/product/${info.thumbnail}`" alt="">
+      <img :src="info.thumbnail_pic" alt="">
       <div class="productSummary">
         <p class="title">{{ info.name }}</p>
         <!-- <p class="content">{{ info.intro }}</p> -->

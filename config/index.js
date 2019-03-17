@@ -1,8 +1,8 @@
-'use strict'
+'use strict';
 // Template version: 1.2.6
 // see http://vuejs-templates.github.io/webpack for documentation.
 
-const path = require('path')
+const path = require('path');
 
 module.exports = {
   dev: {
@@ -10,16 +10,16 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/api/v1': {
+      '/api': {
         // target: 'http://localhost:7001',
-        target:'http://47.105.231.93',
-        changeOrigin: true        
+        target: 'http://47.105.231.93:81/index.php',
+        changeOrigin: true
       },
-      '/upload': {
+      '/uploads': {
         // target: 'http://localhost:7001',
-        target:'http://47.105.231.93',
-        changeOrigin: true        
-      } 
+        target: 'http://47.105.231.93:81',
+        changeOrigin: true
+      }
     },
 
     // Various Dev Server settings

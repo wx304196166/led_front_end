@@ -1,12 +1,13 @@
 import request from '@/utils/request';
 
 // 提交集成方案
-export function getBySN(sn) {
+export function maintenanceSearch(type, wd) {
   return request({
-    url: '/api/v1/customer/maintenance',
-    method: 'get',
-    params:{
-      sn
+    url: '/api/index/maintenanceSearch',
+    method: 'post',
+    data: {
+      type,
+      wd
     }
   });
-};
+}

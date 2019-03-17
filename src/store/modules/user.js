@@ -1,5 +1,6 @@
 import {
   login,
+  logout,
   getUserInfo
 } from '@/api/login';
 import {
@@ -15,7 +16,7 @@ const user = {
     token: getToken(),
     userInfo: {},
     username: '',
-    realName: ''
+    nickname: ''
     /* avatar: '',
     roles: [] */
   },
@@ -27,8 +28,8 @@ const user = {
     SET_USERNAME: (state, username) => {
       state.username = username;
     },
-    SET_REAL_NAME: (state, realName) => {
-      state.realName = realName;
+    SET_REAL_NAME: (state, nickname) => {
+      state.nickname = nickname;
     },
     SET_USER_INFO: (state, info) => {
       state.userInfo = info;
@@ -49,27 +50,23 @@ const user = {
       const username = userInfo.username.trim();
       return new Promise((resolve, reject) => {
         login(username, userInfo.password).then(response => {
-
-          if (response.code === 0) {
+          if (response.code === 1) {
             const data = response.data;
-            setToken(data.token);
-            commit('SET_TOKEN', data.token);
-            commit('SET_USER_INFO', data.info);
-            commit('SET_USERNAME', data.info.username);
-            commit('SET_REAL_NAME', data.info.realName);
-
+            setToken(data.logintoken);
+            commit('SET_TOKEN', data.logintoken);
+            commit('SET_USER_INFO', data.userinfo);
+            commit('SET_USERNAME', data.userinfo.username);
+            commit('SET_REAL_NAME', data.userinfo.nickname);
             resolve();
           } else {
-            err(response.message);
+            err(response.msg);
             reject();
           }
-
         }).catch(error => {
           reject(error);
-        })
-      })
+        });
+      });
     },
-
     // 获取用户信息
     GetInfo({
       commit,
@@ -77,12 +74,12 @@ const user = {
     }) {
       return new Promise((resolve, reject) => {
         getUserInfo(state.token).then(response => {
-          if (response.code === 0) {
-            const data =response.data;
+          if (response.code === 1) {
+            const data = response.data;
             commit('SET_TOKEN', data.token);
             commit('SET_USER_INFO', data);
-            commit('SET_USERNAME', data.info.username);
-            commit('SET_REAL_NAME', data.info.realName);
+            commit('SET_USERNAME', data.username);
+            commit('SET_REAL_NAME', data.truename);
             resolve(response);
           } else {
             err(response.message);
@@ -96,35 +93,34 @@ const user = {
     },
 
     // 登出
-    /* LogOut({
+    LogOut({
       commit,
       state
     }) {
       return new Promise((resolve, reject) => {
         logout(state.token).then(() => {
-          commit('SET_TOKEN', '')
-          commit('SET_ROLES', [])
-          commit('SET_USER_INFO', {})
-          removeToken()
-          resolve()
+          commit('SET_TOKEN', '');
+          commit('SET_USER_INFO', {});
+          removeToken();
+          resolve();
         }).catch(error => {
-          reject(error)
-        })
-      })
-    }, */
+          reject(error);
+        });
+      });
+    },
 
     // 前端 登出
     FedLogOut({
       commit
     }) {
       return new Promise(resolve => {
-        commit('SET_TOKEN', '')
-        commit('SET_USER_INFO', {})
-        removeToken()
-        resolve()
+        commit('SET_TOKEN', '');
+        commit('SET_USER_INFO', {});
+        removeToken();
+        resolve();
       });
     }
   }
-}
+};
 
-export default user
+export default user;

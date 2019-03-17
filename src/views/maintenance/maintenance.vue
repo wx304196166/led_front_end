@@ -1,41 +1,74 @@
 <template>
   <div class="maintenance">
-    <banner />
-    <div class="page-container ">
+    <banner/>
+    <div class="page-container">
       <div class="search-box">
-        <el-input v-model="keyword" @keyup.native.enter="search" filterable placeholder="please input serial number, and press Enter key" />
-        <i class="search-icon" />
-      </div>
-      <div v-if="model.thumbnail">
-        <div :style="{backgroundImage:`url(${path+model.thumbnail})`}" class="thumbnail bg-center" />
-        <div class="serial-number">
-          <div>{{model.productName}}</div>
-          <span>Serial Number : {{keyword}}</span>
+        <el-select v-model="type" placeholder="please select serch type">
+          <el-option label="SN" value="sn"/>
+          <el-option label="Contract or Maintenance" value="ma"/>
+        </el-select>
+        <div class="input">
+          <el-input
+            v-model="keyword"
+            @keyup.native.enter="search"
+            placeholder="please input, and press Enter key to search"
+          />
+          <i class="search-icon"/>
         </div>
-        <ul class="maintenance-list">
-          <li><span>Product type:</span> {{map[model.classification]}}</li>
-          <li><span>Contract number:</span> {{model.contract}}</li>
-          <li><span>Date of purchase:</span> {{setDate(model.purchase_date)}}</li>
-          <li><span>Warranty date:</span> {{setDate(model.warranty_date)}}</li>
-          <li><span>Warranty period:</span> {{model.warranty_period}}</li>
-        </ul>
       </div>
-
+      <div v-if="model.name">
+        <div v-if="type==='sn'">
+          <div
+            :style="{backgroundImage:`url(${model.thumbnail_pic})`}"
+            class="thumbnail bg-center"
+          />
+          <div class="serial-number">
+            <div>{{model.name}}</div>
+            <span>Serial Number : {{model.sn}}</span>
+          </div>
+          <ul class="maintenance-list">
+            <li>
+              <span>Product type:</span>
+              {{model.type}}
+            </li>
+            <li>
+              <span>Contract number:</span>
+              {{model.contract_no}}
+            </li>
+            <li>
+              <span>Maintenance number:</span>
+              {{model.maintenance_no}}
+            </li>
+            <li>
+              <span>Date of purchase:</span>
+              {{setDate(model.buy_time)}}
+            </li>
+            <li>
+              <span>Warranty date:</span>
+              {{setDate(model.warranty_period)}}
+            </li>
+            <li>
+              <span>Warranty period:</span>
+              {{model.warranty}}
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import banner from '@/components/Banner/banner';
-import { getBySN } from '@/api/maintenance';
-import { parseTime } from '@/utils'
+import banner from "@/components/Banner/banner";
+import { maintenanceSearch } from "@/api/maintenance";
+import { parseTime } from "@/utils";
 export default {
-  name: 'Maintenance',
+  name: "Maintenance",
   components: { banner },
   data() {
     return {
-      keyword: '',
-      path: '/upload/product/',
+      keyword: "",
+      type: "sn",
       model: {}
     };
   },
@@ -46,17 +79,19 @@ export default {
   },
   methods: {
     search() {
-      getBySN(this.keyword).then(res => {
-        if (res.data && res.data.thumbnail) {
-          this.model = res.data;
+      maintenanceSearch(this.type, this.keyword).then(res => {
+        if (res.data && res.data.product) {
+          this.model = res.data.product;
+          this.model.contract_no = res.data.contract_no;
+          this.model.maintenance_no = res.data.maintenance_no;
         } else {
-          this.modal=[];
-          this.$message.warning(res.message);
+          this.modal = {};
+          this.$message.warning(res.msg);
         }
-      })
+      });
     },
     setDate(date) {
-      return parseTime(date, '{y}-{m}-{d}');
+      return parseTime(date, "{y}-{m}-{d}");
     }
   }
 };
@@ -65,7 +100,7 @@ export default {
 <style rel="stylesheet/scss" lang="scss" scoped>
 .search-box {
   position: relative;
-  width: 50%;
+  // width: 50%;
   margin: 40px auto 20px;
   text-align: center;
   .search-icon {
@@ -76,6 +111,12 @@ export default {
     width: 40px;
     height: 40px;
     background: url("../../assets/img/icon_search.png") no-repeat 0 0;
+  }
+  .input {
+    position: relative;
+    display: inline-block;
+    width: calc(100% - 300px);
+    margin-left: 30px;
   }
 }
 .thumbnail {
@@ -114,7 +155,7 @@ export default {
 }
 </style>
 <style rel="stylesheet/scss" lang="scss">
-.maintenance {
+.input {
   .el-input__inner {
     padding-left: 40px;
   }

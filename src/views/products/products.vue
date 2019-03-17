@@ -1,56 +1,81 @@
 <template>
   <div>
-    <banner />
+    <banner/>
 
     <div class="page-container">
       <div class="productBrand">
         <!-- brand -->
         <span class="brand">Brand:</span>
         <div class="brandBox" :class="{fold:toggleBrand}">
-          <span v-for="item in brands" :key="item.id" @click="selFunc('brands',item)" :class="{active:item.active}" class="brand-item">{{ item.name }}</span>
+          <span
+            v-for="item in brands"
+            :key="item.id"
+            @click="selFunc('brands',item)"
+            :class="{active:item.active}"
+            class="brand-item"
+          >{{ item.name }}</span>
         </div>
-        <span class="el-select__caret el-input__icon el-icon-arrow-down pointer" :class="{reverse:!toggleBrand}" @click="toggleBrand = !toggleBrand" />
+        <span
+          class="el-select__caret el-input__icon el-icon-arrow-down pointer"
+          :class="{reverse:!toggleBrand}"
+          @click="toggleBrand = !toggleBrand"
+        />
         <!-- search -->
-        <span class='search'>
-          <input v-model="keyword" @keyup="setProducts" type="text" class="searchInput" placeholder="please enter keywords">
-          <i class="searchIcon" />
+        <span class="search">
+          <input
+            v-model="keyword"
+            @keyup="setProducts"
+            type="text"
+            class="searchInput"
+            placeholder="please enter keywords"
+          >
+          <i class="searchIcon"/>
         </span>
       </div>
       <div class="productBrand">
         <span class="brand">Label:&nbsp;</span>
         <div class="brandBox" :class="{fold:toggleLabel}">
-          <span v-for="item in labels" :key="item.id" @click="selFunc('labels',item)" :class="{active:item.active}" class="brand-item">{{ item.name }}</span>
+          <span
+            v-for="item in labels"
+            :key="item.id"
+            @click="selFunc('labels',item)"
+            :class="{active:item.active}"
+            class="brand-item"
+          >{{ item.name }}</span>
         </div>
-        <span class="el-select__caret el-input__icon el-icon-arrow-down pointer" :class="{reverse:!toggleLabel}" @click="toggleLabel = !toggleLabel" />
-
+        <span
+          class="el-select__caret el-input__icon el-icon-arrow-down pointer"
+          :class="{reverse:!toggleLabel}"
+          @click="toggleLabel = !toggleLabel"
+        />
       </div>
       <div class="productList">
-        <single-product v-for="item in sels" :key="item.id" :info="item" />
+        <single-product v-for="item in sels" :key="item.id" :info="item"/>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import SingleProduct from './singleProduct';
-import Banner from '@/components/Banner/banner';
-import { queryAll } from '@/api/common';
+import SingleProduct from "./singleProduct";
+import Banner from "@/components/Banner/banner";
+import { getCascadeBrandLable, getProductList } from "@/api/product";
 
 export default {
-  name: 'Products',
+  name: "Products",
   components: { SingleProduct, Banner },
   data() {
     return {
       toggleBrand: true,
       toggleLabel: true,
       classificationMap: {},
-      labels: [{ id: 'all', name: 'all' }],
-      brands: [{ id: 'all', name: 'all' }],
+      labels: [{ id: "all", name: "all" }],
+      brands: [{ id: "all", name: "all" }],
       products: [],
-      selbrands: ['all'],
-      sellabels: ['all'],
+      selbrands: ["all"],
+      sellabels: ["all"],
       sels: [],
-      keyword: ''
+      keyword: ""
     };
   },
   computed: {
@@ -58,89 +83,59 @@ export default {
       return this.$store.getters.map;
     }
   },
-  async created() {
-    this.classificationId = this.$route.params.id;
-    res = await queryAll('product');
-    if (res.code === 0) {
-      this.products = res.data.filter(item => item.classification_id === this.classificationId);
-    } else {
-      this.$message.error(res.message);
-    }
-    let res = await queryAll('classification');
-    if (res.code === 0) {
-      res.data.forEach(item => {
-        const obj = {
-          brand_id: [],
-          label_id: []
-        }
-        let arr = item.brand_id.split(',');
-        arr.forEach(id => {
-          obj.brand_id.push(
-            {
-              id,
-              name: this.map.brand_id[id]
-            }
-          )
-        })
-
-        arr = item.label_id.split(',');
-        arr.forEach(id => {
-          obj.label_id.push(
-            {
-              id,
-              name: this.map.label_id[id]
-            }
-          )
-        })
-        this.classificationMap[item.id] = obj;
-      })
-      this.setList(this.classificationId);
-    } else {
-      this.$message.error(res.message);
-    }
-
-  },
   watch: {
-    classificationId(cur, old) {
+    $route(cur, old) {
       if (cur !== old) {
-        this.setList(cur);
+        this.classificationId = this.$route.params.id;
+        this.setList();
       }
     }
   },
+  mounted() {
+    this.classificationId = this.$route.params.id;
+    this.setList();
+  },
   methods: {
-    setList(id) {
-      let arr = [{ id: 'all', name: 'all' }].concat(this.classificationMap[id]['brand_id']);
-      this.brands = arr.map(item => {
-        const flag = item.id === 'all' ? true : false;
-        this.$set(item, 'active', flag);
-        return item;
-      })
-
-      arr = [{ id: 'all', name: 'all' }].concat(this.classificationMap[id]['label_id']);
-      this.labels = arr.map(item => {
-        const flag = item.id === 'all' ? true : false;
-        this.$set(item, 'active', flag);
-        return item;
-      })
-      this.selbrands = ['all'];
-      this.sellabels = ['all'];
-      this.setProducts();
+    setList() {
+      getCascadeBrandLable(this.classificationId).then(res => {
+        if (res.code === 1) {
+          let brandArr = [{ id: "all", name: "all" }].concat(res.data.brands);
+          this.brands = brandArr.map(item => {
+            const flag = item.id === "all" ? true : false;
+            this.$set(item, "active", flag);
+            return item;
+          });
+          let labelArr = [{ id: "all", name: "all" }].concat(res.data.lables);
+          this.labels = labelArr.map(item => {
+            const flag = item.id === "all" ? true : false;
+            this.$set(item, "active", flag);
+            return item;
+          });
+          this.selbrands = ["all"];
+          this.sellabels = ["all"];
+          this.setProducts();
+        } else {
+          this.$message.error(res.msg);
+        }
+      });
     },
     selFunc(tag, item) {
-      if (item.id === 'all' && item.active === true) { return; }
-      if (item.id === 'all') {
+      if (item.id === "all" && item.active === true) {
+        return;
+      }
+      if (item.id === "all") {
         for (const obj of this[tag]) {
           obj.active = false;
         }
         item.active = true;
-        this['sel' + tag] = ['all'];
+        this["sel" + tag] = ["all"];
       } else {
         this[tag][0].active = false;
         item.active = !item.active;
-        this['sel' + tag] = [];
+        this["sel" + tag] = [];
         for (const obj of this[tag]) {
           if (obj.active) {
-            this['sel' + tag].push(obj.id);
+            this["sel" + tag].push(obj.id);
           }
         }
       }
@@ -148,23 +143,13 @@ export default {
       this.setProducts();
     },
     setProducts() {
-      this.sels = this.products.filter(item => {
-        const inBrand = this.selbrands.includes('all') || this.selbrands.includes(item.brand_id);
-        let contained = false;
-        const arr = item.label_id.split(',');
-        arr.forEach(item => {
-          if (this.sellabels.includes(item)) {
-            contained = true;
-            return;
-          }
-        })
-        const inLabel = this.sellabels.includes('all') || contained;
-        const matchKeyword = item.name.includes(this.keyword);
-        return inBrand && inLabel && matchKeyword;
-      })
+      getProductList(this.selbrands, this.sellabels, this.keyword).then(res => {
+        if (res.code === 1) {
+          this.sels = res.data.list;
+        }
+      });
     }
   }
-
 };
 </script>
 

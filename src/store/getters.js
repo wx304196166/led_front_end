@@ -4,10 +4,10 @@ const getters = {
   map: state => state.app.map,
   token: state => state.user.token,
   userInfo: state => state.user.userInfo,
-  username: state => state.user.username,
+  nickname: state => state.user.nickname
 
   // avatar: state => state.user.avatar,
   // name: state => state.user.name,
   // roles: state => state.user.roles
-}
-export default getters
+};
+export default getters;

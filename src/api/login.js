@@ -1,56 +1,56 @@
 import request from '@/utils/request';
 
-//登录
-export function login(username, password, type = 1) {
+// 登录
+export function login(account, password) {
   return request({
-    url: '/api/v1/common/login',
+    url: '/api/user/login',
     method: 'post',
-    data: {
-      username,
-      password,
-      type
-    }
-  });
-};
-// 获取用户信息
-export function getUserInfo(token, type = 1) {
-  return request({
-    url: '/api/v1/common/getUserInfo',
-    method: 'post',
-    data: {
-      token,
-      type
-    }
-  });
-};
-// 检查用户名是否存在
-export function checkName(username, type = 1) {
-  return request({
-    url: '/api/v1/common/check',
-    method: 'get',
     params: {
-      username,
-      type
+      account,
+      password
     }
   });
-};
+}
+// 登出
+export function logout(logintoken) {
+  return request({
+    url: '/api/index/logout',
+    method: 'post',
+    data: {
+      logintoken
+    }
+  });
+}
+// 获取用户信息
+export function getUserInfo(logintoken) {
+  return request({
+    url: '/api/index/userInfo',
+    method: 'post',
+    data: {
+      logintoken
+    }
+  });
+}
+
 // 注册
 export function registerCustom({
   username,
   password,
-  realName,
-  phone,
+  confirm_password,
+  truename,
+  mobile,
   email
 }) {
   return request({
-    url: '/api/v1/common/createCustomer',
+    url: '/api/user/register',
     method: 'post',
-    data: {
+    params: {
       username,
       password,
-      realName,
-      phone,
+      confirm_password,
+      truename,
+      mobile,
       email
     }
   });
-};
+}

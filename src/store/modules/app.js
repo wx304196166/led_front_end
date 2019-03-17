@@ -3,8 +3,8 @@ import {
   err
 } from '@/utils';
 import {
-  queryAllByList
-} from '@/api/common';
+  getCateList
+} from '@/api/menu';
 const app = {
   state: {
     sidebar: {
@@ -60,8 +60,8 @@ const app = {
       commit
     }) {
       return new Promise((resolve, reject) => {
-        queryAllByList(['brand', 'classification', 'label', 'product']).then(response => {
-          if (response.code === 0) {
+        getCateList().then(response => {
+          if (response.code === 1) {
             const data = response.data;
             commit('SET_MAP', data);
             const classificationId = Object.keys(data.classification_id)[0];
@@ -70,9 +70,9 @@ const app = {
             err(response.message);
             reject();
           }
-        })
-      })
-    }   
+        });
+      });
+    }
   }
 };
 

@@ -1,77 +1,85 @@
 <template>
   <div>
-    <banner />
+    <banner/>
     <div class="page-container">
       <ul class="intro clearfix">
         <li class="show-box">
           <div class="img-main" ref="box">
-            <img :src="cururl" />
-            <div v-show="show" class="drag-block" :style="{left:dragX+'px',top:dragY+'px'}"></div>
+            <img :src="cururl">
+            <div
+              v-show="show"
+              class="drag-block"
+              :style="{left:dragX+'px',top:dragY+'px',width:dragW+'px',height:dragH+'px'}"
+            ></div>
           </div>
           <div :class="{show}" class="scale-box">
-            <img :src="cururl" :style="{left:`-${dragX*ratio}px`,top:`-${imgY}`}" />
-            <!-- <img :src="cururl" :style="{transform:`translate(-${dragX*ratio}px,-${dragY*ratio-67.5*ratio}px)`}"/> -->
+            <!-- <img :src="cururl" :style="{left:`-${dragX*ratio}px`,top:`-${dragY*ratio}`}"> -->
+            <img
+              :src="cururl"
+              :style="{transform:`translate(-${dragX*ratio}px,-${dragY*ratio}px)`}"
+            >
           </div>
           <ul class="img-list">
-            <li :class="{disabled:moveDisabled||preDisabled}" @click="move('left')" />
+            <li :class="{disabled:moveDisabled||preDisabled}" @click="move('left')"/>
             <li>
               <ul :style="{transform:`translateX(${distanse*6.3714}rem)`}" class="img-box">
-                <li v-for="(item,index) in urlList" :key="index"><img :src="item.url" :class="{active:item.active}" @click="sel(index,'url')" /></li>
+                <li v-for="(item,index) in urlList" :key="index">
+                  <img :src="item.url" :class="{active:item.active}" @click="sel(index,'url')">
+                </li>
               </ul>
             </li>
-            <li :class="{disabled:moveDisabled||nextDisabled}" @click="move('right')" />
+            <li :class="{disabled:moveDisabled||nextDisabled}" @click="move('right')"/>
           </ul>
         </li>
-        <li class="blank" />
+        <li class="blank"/>
         <li class="describe-box">
           <div class="title">
             {{name}}
             <!-- <i class="collect" /> -->
           </div>
           <ul class="specifications clearfix">
+            <li>Specifications:</li>
             <li>
-              Specifications:
-            </li>
-            <li>
-              <span v-for="(item, index) in specList" :key="index" :class="{active:item.active}" @click="sel(index,'spec')">{{item.spec}}</span>
+              <span
+                v-for="(item, index) in specList"
+                :key="index"
+                :class="{active:item.active}"
+                @click="sel(index,'spec')"
+              >{{item.spec}}</span>
             </li>
           </ul>
-          <div class="describe" v-html="intro" />
+          <div class="describe" v-html="intro"/>
           <!-- <div v-if="isMain" @click="jump" class="btn">Integrate</div> -->
         </li>
       </ul>
       <ul class="detail-box clearfix">
-        <li class="related">
-          <related :ids="related" @get-item="switchProduct" />
-        </li>
-        <li class="blank">&emsp;</li>
+        <!-- <li class="related">
+          <related :ids="related" @get-item="switchProduct"/>
+        </li> -->
+        <!-- <li class="blank">&emsp;</li> -->
         <li class="detail">
           <div class="tab">Commodity Introduction</div>
-          <div class="content" v-html="detail">
-
-          </div>
+          <div class="content" v-html="detail"></div>
         </li>
       </ul>
     </div>
   </div>
-
 </template>
 
 <script>
-import related from '@/components/Related/related';
-import banner from '@/components/Banner/banner';
-import { queryOne } from '@/api/common';
+// import related from "@/components/Related/related";
+import banner from "@/components/Banner/banner";
+import { getProductDetail } from "@/api/product";
 export default {
-  name: 'ProductDetail',
-  components: { related, banner },
+  name: "ProductDetail",
+  components: { banner },
   data() {
     return {
-      name: '',
-      intro: '',
+      name: "",
+      intro: "",
       urlList: [],
-      imgPath: '/upload/product/',
-      isMain: false,
-      detail: '',
+      // isMain: false,
+      detail: "",
       productId: null,
       distanse: 0,
       preDisabled: true,
@@ -79,10 +87,12 @@ export default {
       specList: [],
       curspec: null,
       cururl: null,
-      related: [],
+      // related: [],
       show: false,
       dragX: 0,
       dragY: 0,
+      dragW: 245,
+      dragH: 196,
       ratio: 1
     };
   },
@@ -96,62 +106,69 @@ export default {
   },
   created() {
     this.productId = this.$route.params.id;
-    queryOne('product', this.productId).then(res => {
+    getProductDetail(this.productId).then(res => {
       if (res.data) {
         const data = res.data;
-        data.img_list = data.img_list ? data.img_list.split(',') : [];
-        data.specifications = data.specifications ? data.specifications.split(',') : [];
+        data.img_list = data.img_list ? data.img_list.split(",") : [];
+        data.specifications = data.specifications
+          ? data.specifications.split(",")
+          : [];
         this.name = data.name;
-        this.intro = data.intro;
-        this.isMain = Boolean(data.is_main);
-        this.related = data.product_id ? data.product_id.split(',') : [];
-        this.detail = data.detail;
-        this.urlList = data.img_list.map(item => {
-          const obj = { url: this.imgPath + item };
-          this.$set(obj, 'active', false);
+        this.intro = data.brief;
+        // this.isMain = Boolean(data.is_main);
+        // this.related = data.product_id ? data.product_id.split(",") : [];
+        this.detail = data.intro;
+        const imgList = (data.image && data.image.split(",")) || [];
+        this.urlList = imgList.map(item => {
+          const obj = { url: item };
+          this.$set(obj, "active", false);
           return obj;
         });
-        this.sel(0, 'url');
+        this.sel(0, "url");
         this.setRatio();
         this.specList = data.specifications.map(item => {
           const obj = { spec: item };
-          this.$set(obj, 'active', false);
+          this.$set(obj, "active", false);
           return obj;
         });
       } else {
-        this.$alert('Can not find Product By this ID!', 'Tip', {
-          confirmButtonText: 'ok',
+        this.$alert("Can not find Product By this ID!", "Tip", {
+          confirmButtonText: "ok",
           callback: () => {
-            this.$router.push({ path: '/dashboard' });
+            this.$router.push({ path: "/dashboard" });
           }
         });
       }
-    })
+    });
   },
   mounted() {
-    this.$refs.box.onmouseenter = (e) => {
+    this.$refs.box.onmouseenter = e => {
       e.preventDefault();
       this.show = true;
-      this.$refs.box.onmousemove = this.zoom
-    }
+      this.$refs.box.onmousemove = this.zoom;
+    };
     this.$refs.box.onmouseleave = () => {
       this.show = false;
-    }
+    };
   },
   methods: {
     zoom(e) {
-      const width = document.body.clientWidth
+      const width = document.body.clientWidth;
       const offsetX = width * 0.06;
-      const offsetY = width * 385 / 1920 + 3
-      //显示鼠标指针的位置，-100让鼠标位置出现在div的中间
-      var x = e.pageX - offsetX - 122;
-      var y = e.pageY - offsetY - 122;
+      const offsetY = (width * 385) / 1920 + 3;
 
-      if (x >= 245) {
-        x = 245;
+      // 产品展示框基础宽高
+      const BoxW = 490;
+      const BoxH = 392;
+      //显示鼠标指针的位置，-100让鼠标位置出现在div的中间
+      var x = e.pageX - offsetX - this.dragW / 2;
+      var y = e.pageY - offsetY - this.dragH + 10;
+
+      if (x >= BoxW - this.dragW) {
+        x = BoxW - this.dragW;
       }
-      if (y >= 189) {
-        y = 189;
+      if (y >= BoxH - this.dragH) {
+        y = BoxH - this.dragH;
       }
       if (x <= 0) {
         x = 0;
@@ -171,40 +188,54 @@ export default {
 
       // 判断是否有缓存
       if (img.complete) {
-        this.ratio = img.width / 490
+        this.ratio = img.width / 490;
+        this.setDragBlock();
       } else {
         // 加载完成执行
-        img.onload = function () {
-          this.ratio = img.width / 490
+        img.onload = () => {
+          this.ratio = img.width / 490;
+          this.setDragBlock();
         };
       }
     },
+    setDragBlock() {
+      // 产品展示框基础宽高
+      const BoxW = 490;
+      const BoxH = 392;
+      this.dragW = BoxW / this.ratio;
+      this.dragH = BoxH / this.ratio;
+    },
     jump() {
       if (!this.curspec) {
-        this.$message.info('Don\'t forget select the specification');
+        this.$message.info("Don't forget select the specification");
         return;
       }
-      this.$router.push({ path: '/integration', query: { productId: this.productId, spec: this.curspec } });
+      this.$router.push({
+        path: "/integration",
+        query: { productId: this.productId, spec: this.curspec }
+      });
     },
     switchProduct(product) {
       /* this.$router.push({ path: '/productDetail/' + product.id });
       this.$router.go(0); */
-      window.open('/#/productDetail/' + product.id)
+      window.open("/#/productDetail/" + product.id);
     },
     sel(index, type) {
-      this[type + 'List'].forEach((item, i) => {
+      this[type + "List"].forEach((item, i) => {
         if (i === index) {
           item.active = true;
-          this['cur' + type] = item[type];
+          this["cur" + type] = item[type];
         } else {
           item.active = false;
         }
-      })
+      });
     },
     move(direction) {
-      if (this.moveDisabled) { return; }
+      if (this.moveDisabled) {
+        return;
+      }
       switch (direction) {
-        case 'left':
+        case "left":
           if (Math.abs(this.distanse) > 0) {
             this.distanse++;
             if (Math.abs(this.distanse) > 0) {
@@ -216,7 +247,7 @@ export default {
             }
           }
           break;
-        case 'right':
+        case "right":
           if (this.urlList.length - Math.abs(this.distanse) >= 5) {
             this.distanse--;
             if (this.urlList.length - Math.abs(this.distanse) >= 5) {
@@ -243,7 +274,7 @@ export default {
   width: 3.5%;
 }
 .intro {
-  height: 500px;
+  height: 513px;
   border-bottom: 1px solid #ccc;
 
   > li {
@@ -261,10 +292,10 @@ export default {
       img {
         max-width: 100%;
         max-height: 100%;
-        position: absolute;
+        /* position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%); */
       }
     }
     .drag-block {
@@ -276,7 +307,7 @@ export default {
     }
     .scale-box {
       width: 35rem;
-      height: 379px;
+      height: 392px;
       border: 1px solid #000;
       position: absolute;
       top: 0;
@@ -287,11 +318,11 @@ export default {
       transition: 0.24s all ease-out;
       opacity: 0;
       visibility: hidden;
-      > img {
+      /* > img {
         position: absolute;
-      }
+      } */
     }
-    .show{
+    .show {
       opacity: 1;
       visibility: visible;
     }
@@ -359,6 +390,7 @@ export default {
   .describe-box {
     width: calc(93% - 35rem);
     position: relative;
+    overflow-y: auto;
     .title {
       font-size: 28px;
       font-weight: 700;
@@ -406,6 +438,7 @@ export default {
         }
       }
     }
+
     .btn {
       position: absolute;
       bottom: 22px;
@@ -435,7 +468,8 @@ export default {
   }
 
   .detail {
-    width: calc(96.5% - 200px);
+    // width: calc(96.5% - 200px);
+    width: 100%;
     padding: 20px 0;
     .tab {
       font-size: 18px;

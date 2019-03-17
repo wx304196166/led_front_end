@@ -1,17 +1,17 @@
-import Cookies from 'js-cookie'
+import Cookies from 'js-cookie';
 
-const TokenKey = 'JsSessionToken'
+const TokenKey = 'JsSessionToken';
 
 export function getToken() {
-  return Cookies.get(TokenKey)
+  return Cookies.get(TokenKey);
 }
 
 export function setToken(token) {
   return Cookies.set(TokenKey, token, {
-    expires: 1
-  })
+    expires: 0.45
+  });
 }
 
 export function removeToken() {
-  return Cookies.remove(TokenKey)
+  return Cookies.remove(TokenKey);
 }

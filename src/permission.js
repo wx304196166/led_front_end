@@ -1,42 +1,42 @@
-import router from './router'
-import store from './store'
-import NProgress from 'nprogress' // Progress 进度条
-import 'nprogress/nprogress.css' // Progress 进度条样式
+import router from './router';
+import store from './store';
+import NProgress from 'nprogress'; // Progress 进度条
+import 'nprogress/nprogress.css'; // Progress 进度条样式
 import {
   Message
-} from 'element-ui'
+} from 'element-ui';
 import {
   getToken
-} from '@/utils/auth' // 验权
+} from '@/utils/auth'; // 验权
 
 router.beforeEach((to, from, next) => {
-  NProgress.start()
+  NProgress.start();
   if (getToken()) {
     if (Object.keys(store.getters.userInfo).length === 0) {
       store.dispatch('GetInfo').then(() => { // 拉取用户信息
-        store.dispatch('SetMap').then(()=>{
+        store.dispatch('SetMap').then(() => {
           next();
         });
       }).catch((err) => {
-        store.dispatch('FedLogOut').then(() => {
-          Message.error(err || 'Verification failed, please login again')
+        store.dispatch('LogOut').then(() => {
+          Message.error(err || 'Verification failed, please login again');
           next({
             path: '/'
-          })
-        })
-      })
+          });
+        });
+      });
     } else {
-      next()
+      next();
     }
   } else if (Object.keys(store.getters.map).length === 0) {
     store.dispatch('SetMap').then(() => {
       next();
-    })
-  }else{
+    });
+  } else {
     next();
   }
-})
+});
 
 router.afterEach(() => {
-  NProgress.done() // 结束Progress
-})
+  NProgress.done(); // 结束Progress
+});

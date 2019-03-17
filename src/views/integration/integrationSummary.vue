@@ -35,10 +35,10 @@ export default {
   created() {
     if (this.token) {
       queryAllByCondition({ name: 'integrate', condition: { create_user_id: this.token } }).then(res => {
-        if (res.code === 0) {
+        if (res.code === 1) {
           this.list = res.data;
         } else {
-          this.$message.error(res.message);
+          this.$message.error(res.msg);
         }
       })
     }

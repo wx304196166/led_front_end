@@ -25,14 +25,14 @@
         <el-form-item label="Password" prop="password" :label-width="formLabelWidth">
           <el-input v-model="loginForm.password" type="password"></el-input>
         </el-form-item>
-        <el-form-item label="Confirm" prop="confirm" :label-width="formLabelWidth">
-          <el-input v-model="loginForm.confirm" type="password"></el-input>
+        <el-form-item label="Confirm" prop="confirm_password" :label-width="formLabelWidth">
+          <el-input v-model="loginForm.confirm_password" type="password"></el-input>
         </el-form-item>
-        <el-form-item label="Name" prop="realName" :label-width="formLabelWidth">
-          <el-input v-model="loginForm.realName"></el-input>
+        <el-form-item label="True Name" prop="truename" :label-width="formLabelWidth">
+          <el-input v-model="loginForm.truename"></el-input>
         </el-form-item>
-        <el-form-item label="Phone" prop="Phone" :label-width="formLabelWidth">
-          <el-input v-model="loginForm.phone"></el-input>
+        <el-form-item label="Mobile" prop="mobile" :label-width="formLabelWidth">
+          <el-input v-model="loginForm.mobile"></el-input>
         </el-form-item>
         <el-form-item label="Email" :label-width="formLabelWidth">
           <el-input v-model="loginForm.email"></el-input>
@@ -56,7 +56,7 @@
       <li v-for="(link,index) in routes" :key="link.path" class="link">
         <span>
           <span v-if="index===routes.length-1" class="login-box gradient-font pointer">
-            <span v-if="username">Welcome, {{username}}!</span>
+            <span v-if="nickname">Welcome, {{nickname}}!</span>
             <span v-else @click.stop="loginDialog=true">Log In / Sign Up</span>
           </span>
           <span v-if="link.name==='Products'" class="pointer submenu-father">
@@ -115,21 +115,28 @@ export default {
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!value) {
-        callback(new Error('username can not be empty'))
+        callback(new Error('Username can not be empty'))
       } else {
         callback()
       }
     }
     const validatePass = (rule, value, callback) => {
       if (value.length < 5) {
-        callback(new Error('password can not be less than 5'))
+        callback(new Error('Password can not be less than 5'))
       } else {
         callback()
       }
     }
     const validateConfirm = (rule, value, callback) => {
       if (value != this.loginForm.password) {
-        callback(new Error('password and confirm must be consistent'))
+        callback(new Error('Password and confirm must be consistent'))
+      } else {
+        callback()
+      }
+    }
+    const validateMobile = (rule, value, callback) => {
+      if (!/^1\d{10}$/.test(value)) {
+        callback(new Error('Mobile number format error'))
       } else {
         callback()
       }
@@ -149,9 +156,9 @@ export default {
       loginForm: {
         username: '',
         password: '',
-        realName: '',
-        confirm: '',
-        phone: '',
+        truename: '',
+        confirm_password: '',
+        mobile: '',
         email: ''
       },
       loginRules: {
@@ -161,9 +168,9 @@ export default {
       registRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
         password: [{ required: true, trigger: 'blur', validator: validatePass }],
-        confirm: [{ required: true, trigger: 'blur', validator: validateConfirm }],
-        realName: [{ required: true, trigger: 'blur' }],
-        phone: [{ required: true, trigger: 'blur' }]
+        confirm_password: [{ required: true, trigger: 'blur', validator: validateConfirm }],
+        truename: [{ required: true, trigger: 'blur' }],
+        mobile: [{ required: true, trigger: 'blur',  validator: validateMobile }]
       }
     };
   },
@@ -171,8 +178,8 @@ export default {
     routes() {
       return this.$router.options.routes.filter(item => !item.hidden);
     },
-    username() {
-      return this.$store.getters.username;
+    nickname() {
+      return this.$store.getters.nickname;
     },
     map() {
       return this.$store.getters.map;
@@ -188,10 +195,10 @@ export default {
       switch (path) {
         case '/products/:id':
           this.$router.push({ path: '/products/' + id });
-          this.$router.go(0);
+          // this.$router.go(0);
           return;
         case '/integrationSummary':
-          if (this.username) {
+          if (this.nickname) {
             break;
           } else {
             this.$alert('Please login first!', 'Tip', {
@@ -244,10 +251,10 @@ export default {
         this.$refs.loginForm.validate(valid => {
           if (valid) {
             registerCustom(this.loginForm).then(res => {
-              if (res.code === 0) {
+              if (res.code === 1) {
                 this.$message.success('Regist Success');
               } else {
-                this.$message.error(res.message);
+                this.$message.error(res.msg);
               }
               this.registerDialog = false;
             })

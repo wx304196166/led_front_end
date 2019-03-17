@@ -207,7 +207,7 @@ export default {
     }
     if (this.$route.query.id) {
       res = await queryOne('integrate', this.$route.query.id);
-      if (res.code === 0) {
+      if (res.code === 1) {
         const data = res.data;
         this.mainId = data.main_id;
         this.adjust.level.val = data.main_level;
@@ -217,7 +217,7 @@ export default {
         this.schemeName.name = data.name;
         this.remarks.name = data.remark;
         res = await queryMany('product', { ids: this.ids });
-        if (res.code === 0) {
+        if (res.code === 1) {
           res.data.forEach((item, index) => {
             this.setRelatedListMap(this.map.classification_id[item.classification_id]);
             const obj = this.setProduct(item);
@@ -411,11 +411,11 @@ export default {
       sendData.modification_user_id = token;
 
       submit(sendData).then(res => {
-        if (res.code === 0) {
+        if (res.code === 1) {
           this.$message.success('Submit success!');
           this.reset();
         } else {
-          this.$message.error(res.message);
+          this.$message.error(res.msg);
         }
       })
     }
