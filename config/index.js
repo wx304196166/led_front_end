@@ -12,12 +12,12 @@ module.exports = {
     proxyTable: {
       '/api': {
         // target: 'http://localhost:7001',
-        target: 'http://47.105.231.93:81/index.php',
+        target: 'http://47.105.231.93/index.php',
         changeOrigin: true
       },
       '/uploads': {
         // target: 'http://localhost:7001',
-        target: 'http://47.105.231.93:81',
+        target: 'http://47.105.231.93',
         changeOrigin: true
       }
     },

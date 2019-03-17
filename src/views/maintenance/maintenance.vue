@@ -53,6 +53,23 @@
             </li>
           </ul>
         </div>
+        <div v-else>
+          <ul class="maintenance-list">
+            <li>
+              <span>Contract number:</span>
+              {{model.contract_no}}
+            </li>
+            <li>
+              <span>Maintenance number:</span>
+              {{model.maintenance_no}}
+            </li>
+            <li>
+              <el-table :data="table" border style="width: 100%">
+                <el-table-column prop="classification" label="Classification"/>
+              </el-table>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>

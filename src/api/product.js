@@ -14,7 +14,7 @@ export function getCascadeBrandLable(cate_id) {
 export function getProductList(brand_id, lable_id, productName) {
   const data = {};
   if (!brand_id.includes('all')) {
-    data.brand_id = brand_id;
+    data.brand_id = brand_id.join(',');
   }
   if (!lable_id.includes('all')) {
     data.lable_id = lable_id.join(',');
