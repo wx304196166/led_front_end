@@ -79,11 +79,10 @@
       <div>
         <h1>VisualArtisan</h1>
         <ul class="linkOther">
-          <li><img :src="Foot1" /></li>
-          <li><img :src="Foot2" /></li>
-          <li><img :src="Foot3" /></li>
-          <li><img :src="Foot4" /></li>
-          <li><img :src="Foot5" /></li>
+          <li class="-mob-share-facebook"><img :src="Foot1" /></li>
+          <li class="-mob-share-linkedin"><img :src="Foot3" /></li>
+          <li class="-mob-share-twitter"><img :src="Foot4" /></li>
+          <li class="-mob-share-youtube"><a href="https://www.youtube.com" target="_blank"><img :src="Foot5" /></a></li>
         </ul>
       </div>
       <div class="line">
@@ -340,6 +339,7 @@ export default {
     margin-top: 6px;
     li img {
       width: 20px;
+      cursor: pointer;
     }
   }
   .linkOther li,
