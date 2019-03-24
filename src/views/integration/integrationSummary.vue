@@ -1,26 +1,34 @@
 <template>
   <div class="integration">
-    <banner />
+    <banner/>
     <div class="page-container" style="marginTop:20px">
-      <span @click="jump(null)" class="add pointer">+</span>
+      <div class="btn">
+        <span @click="jump('cabinet')">Cabinet</span>
+        <span @click="jump('module')">Module</span>
+      </div>
+
       <ul class="integrationList">
         <li v-for="item in list" :key="item.id" @click="jump(item.id)" class="pointer">
-          <div class="integrationName">{{item.name}}</div>
+          <div class="integrationName">{{item.title}}</div>
           <div>{{item.remark}}</div>
         </li>
       </ul>
-      <el-alert v-if="list.length===0" title="Tip" type="info" description="You still don't have any integration, try to click the button plus to add one." show-icon>
-      </el-alert>
+      <el-alert
+        v-if="list.length===0"
+        title="Tip"
+        type="info"
+        description="You still don't have any integration, try to click the button plus to add one."
+        show-icon
+      ></el-alert>
     </div>
   </div>
-
 </template>
 
 <script>
-import banner from '@/components/Banner/banner';
-import { queryAllByCondition } from '@/api/common'
+import banner from "@/components/Banner/banner";
+import { schemeList } from "@/api/integration";
 export default {
-  name: 'Integration',
+  name: "Integration",
   components: { banner },
   data() {
     return {
@@ -34,36 +42,37 @@ export default {
   },
   created() {
     if (this.token) {
-      queryAllByCondition({ name: 'integrate', condition: { create_user_id: this.token } }).then(res => {
+      schemeList(this.token).then(res => {
         if (res.code === 1) {
-          this.list = res.data;
+          this.list = res.data.list;
         } else {
           this.$message.error(res.msg);
         }
-      })
+      });
     }
   },
   methods: {
     jump(id) {
-      this.$router.push({ path: '/integration', query: { id } });
+      this.$router.push({ path: "/integration", query: { id } });
     }
   }
 };
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.add {
+.btn {
   float: right;
-  margin: 20px 50px 20px 0;
-  color: #fff;
-  display: inline-block;
-  width: 30px;
-  height: 30px;
-  line-height: 30px;
-  background-color: #33ccff;
-  text-align: center;
-  border-radius: 15px;
-  font-size: 24px;
+  > span {
+    display: inline-block;
+    padding: 8px 12px;
+    background: linear-gradient(74deg, #49007c, #e70088);
+    color: #fff;
+    border-radius: 16px;
+    cursor: pointer;
+  }
+  >span:first-child{
+    margin-right: 15px;
+  }
 }
 .integrationName {
   padding: 10px 0;
@@ -78,5 +87,4 @@ export default {
   border-bottom: 1px solid #ccc;
 }
 </style>
-<style rel="stylesheet/scss" lang="scss">
-</style>
+

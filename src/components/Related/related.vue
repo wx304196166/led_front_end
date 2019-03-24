@@ -2,55 +2,30 @@
   <div style="height:100%">
     <div class="title">Related products</div>
     <ul class="list">
-      <li class="item pointer" v-for="item in related" :key="item.id" @click="returnItem(item)">
-        <img :src="imgPath + item.thumbnail" alt="">
+      <li class="item pointer" v-for="item in list" :key="item.id" @click="jump(item.id)">
+        <img :src="item.thumbnail_pic" alt="">
         <p>{{item.name}}</p>
       </li>
-      <li v-if="ids.length===0" class="no-data">No Product</li>
+      <li v-if="list.length===0" class="no-data">No Product</li>
     </ul>
   </div>
 </template>
 
 <script>
-import { queryMany } from '@/api/common';
 export default {
   name: 'Related',
   props: {
-    ids: {
+    list: {
       type: Array,
       default: () => []
     }
-  },
-  data() {
-    return { imgPath: '/upload/product/', related: [] }
-  },
-  mounted() {
-    if (this.ids.length) {
-      this.init(this.ids);
-    } else {
-      this.related = [];
-    }
-
-  },
-  watch: {
-    ids(newVal, oldVal) {
-      if (newVal.length) {
-        this.init(newVal);
-      } else {
-        this.related = [];
-      }
-    }
-  },
-  methods: {
-    init(ids) {
-      queryMany('product', { ids }).then(res => {
-        if (res.code === 1) {
-          this.related = res.data;
-        }
-      })
-    },
-    returnItem(item) {
+  },    
+  methods: {    
+    /* returnItem(item) {
       this.$emit('get-item', item);
+    }, */
+    jump(id){
+      window.open('/#/productDetail/' + id )
     }
   }
 };

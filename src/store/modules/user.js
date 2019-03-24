@@ -76,7 +76,6 @@ const user = {
         getUserInfo(state.token).then(response => {
           if (response.code === 1) {
             const data = response.data;
-            commit('SET_TOKEN', data.token);
             commit('SET_USER_INFO', data);
             commit('SET_USERNAME', data.username);
             commit('SET_REAL_NAME', data.truename);

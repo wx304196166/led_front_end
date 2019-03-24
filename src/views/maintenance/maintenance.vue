@@ -3,8 +3,8 @@
     <banner/>
     <div class="page-container">
       <div class="search-box">
-        <el-select v-model="type" placeholder="please select serch type">
-          <el-option label="SN" value="sn"/>
+        <el-select v-model="type" placeholder="please select search type">
+          <el-option label="Serial Number" value="sn"/>
           <el-option label="Contract or Maintenance" value="ma"/>
         </el-select>
         <div class="input">
@@ -57,11 +57,11 @@
           <ul class="maintenance-list">
             <li>
               <span>Contract number:</span>
-              {{model.contract_no}}
+              {{contract_no}}
             </li>
             <li>
               <span>Maintenance number:</span>
-              {{model.maintenance_no}}
+              {{maintenance_no}}
             </li>
             <li>
               <el-table :data="table" border style="width: 100%">
@@ -86,7 +86,10 @@ export default {
     return {
       keyword: "",
       type: "sn",
-      model: {}
+      model: {},
+      table: [],
+      contract_no: "",
+      maintenance_no: ""
     };
   },
   computed: {
@@ -99,8 +102,8 @@ export default {
       maintenanceSearch(this.type, this.keyword).then(res => {
         if (res.data && res.data.product) {
           this.model = res.data.product;
-          this.model.contract_no = res.data.contract_no;
-          this.model.maintenance_no = res.data.maintenance_no;
+          this.contract_no = res.data.contract_no;
+          this.maintenance_no = res.data.maintenance_no;
         } else {
           this.modal = {};
           this.$message.warning(res.msg);

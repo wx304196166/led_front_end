@@ -121,7 +121,12 @@ h5 {
 .text-center {
   text-align: center;
 }
-
+.fr{
+  float: right;
+}
+.fl{
+  float: left;
+}
 // 覆盖element-ui样式
 .el-message {
   top: 90px;
