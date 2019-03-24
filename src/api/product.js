@@ -11,8 +11,8 @@ export function getCascadeBrandLable(cate_id) {
   });
 }
 // 获取产品列表
-export function getProductList(brand_id, lable_id, productName) {
-  const data = {};
+export function getProductList(cate_id, brand_id, lable_id, productName) {
+  const data = {cate_id};
   if (!brand_id.includes('all')) {
     data.brand_id = brand_id.join(',');
   }

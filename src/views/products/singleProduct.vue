@@ -31,12 +31,10 @@ export default {
   margin-bottom: 1.4286rem;
   box-sizing: border-box;
   width: 25%;
-  padding:5% 0;
   border: 1px solid transparent;
   overflow: hidden;
   img {
     width: 100%;
-    transform: scale(0.8);
   }
   &:hover {
     border: 1px solid #a549a5;

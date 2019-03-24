@@ -37,8 +37,7 @@
             {{name}}
             <!-- <i class="collect" /> -->
           </div>
-          <ul class="specifications clearfix">
-            <li>Specifications:</li>
+          <ul class="specifications clearfix">           
             <li>
               <span
                 v-for="(item, index) in specList"
@@ -52,16 +51,7 @@
           <!-- <div v-if="isMain" @click="jump" class="btn">Integrate</div> -->
         </li>
       </ul>
-      <ul class="detail-box clearfix">
-        <!-- <li class="related">
-          <related :ids="related" @get-item="switchProduct"/>
-        </li> -->
-        <!-- <li class="blank">&emsp;</li> -->
-        <li class="detail">
-          <div class="tab">Commodity Introduction</div>
-          <div class="content" v-html="detail"></div>
-        </li>
-      </ul>
+      <div v-html="detail" class="detail-box" />
     </div>
   </div>
 </template>
@@ -288,7 +278,7 @@ export default {
     .img-main {
       position: relative;
       height: calc(100% - 80px);
-      border: 1px solid #000;
+      border: 1px solid #999;
       img {
         max-width: 100%;
         max-height: 100%;
@@ -308,10 +298,9 @@ export default {
     .scale-box {
       width: 35rem;
       height: 392px;
-      border: 1px solid #000;
       position: absolute;
       top: 0;
-      left: 35.1rem;
+      left: 35.2rem;
       overflow: hidden;
       background: #fff;
       z-index: 20;
@@ -455,32 +444,6 @@ export default {
 }
 
 .detail-box {
-  > li {
-    float: left;
-  }
-  .blank,
-  .detail {
-    min-height: 535px;
-  }
-  .related {
-    width: 200px;
-    height: 775px;
-  }
-
-  .detail {
-    // width: calc(96.5% - 200px);
-    width: 100%;
-    padding: 20px 0;
-    .tab {
-      font-size: 18px;
-      font-weight: 700;
-      height: 40px;
-      line-height: 40px;
-      border-bottom: 1px solid #ccc;
-    }
-    .content {
-      padding: 20px 5px;
-    }
-  }
+  padding: 20px 5px;
 }
 </style>

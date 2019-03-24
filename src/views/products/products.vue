@@ -143,7 +143,7 @@ export default {
       this.setProducts();
     },
     setProducts() {
-      getProductList(this.selbrands, this.sellabels, this.keyword).then(res => {
+      getProductList(this.classificationId,this.selbrands, this.sellabels, this.keyword).then(res => {
         if (res.code === 1) {
           this.sels = res.data.list;
         }
