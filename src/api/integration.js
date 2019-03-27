@@ -9,27 +9,28 @@ export function schemeList(logintoken) {
       logintoken
     }
   });
-};
+}
 // 获取点间距列表
 export function pointspacingList() {
   return request({
     url: '/api/index/pointspacingList',
     method: 'get'
   });
-};
+}
 // 集成模组/箱体 查询
-export function integrationMainProduct({scenario, spacing_id}) {
+export function integrationMainProduct({ scenario, spacing_id, type }) {
   return request({
     url: '/api/index/integrationProducts',
     method: 'post',
     data: {
       scenario,
-      spacing_id
+      spacing_id,
+      type
     }
   });
-};
+}
 // 推荐产品查询
-export function integrationProducts(e,f) {
+export function integrationProducts(e, f) {
   return request({
     url: '/api/index/integrationProducts',
     method: 'post',
@@ -38,7 +39,7 @@ export function integrationProducts(e,f) {
       f
     }
   });
-};
+}
 // 获取集成方案详情
 export function schemeDetails(logintoken, id) {
   return request({
@@ -49,12 +50,12 @@ export function schemeDetails(logintoken, id) {
       id
     }
   });
-};
+}
 // 提交集成方案
 export function submit(data) {
   return request({
-    url: '/api/v1/customer/integration/submit',
+    url: '/api/index/schemeSubmit',
     method: 'post',
     data
   });
-};
+}

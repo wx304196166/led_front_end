@@ -3,14 +3,14 @@
     <banner/>
     <div class="page-container" style="marginTop:20px">
       <div class="btn">
-        <span @click="jump('cabinet')">Cabinet</span>
-        <span @click="jump('module')">Module</span>
+        <span @click="jump('box')">Cabinet</span>
+        <!-- <span @click="jump('module')">Module</span> -->
       </div>
 
       <ul class="integrationList">
         <li v-for="item in list" :key="item.id" @click="jump(item.id)" class="pointer">
-          <div class="integrationName">{{item.title}}</div>
-          <div>{{item.remark}}</div>
+          <div class="integrationName">{{item.name}}</div>
+          <div>{{item.remarks}}</div>
         </li>
       </ul>
       <el-alert

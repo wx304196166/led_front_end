@@ -52,6 +52,9 @@
       <div class="productList">
         <single-product v-for="item in sels" :key="item.id" :info="item"/>
       </div>
+      <div v-show="hasMore" class="more">
+        <div @click="getMore" class="pointer">More</div>
+      </div>
     </div>
   </div>
 </template>
@@ -75,7 +78,9 @@ export default {
       selbrands: ["all"],
       sellabels: ["all"],
       sels: [],
-      keyword: ""
+      keyword: "",
+      page: 1,
+      hasMore: true
     };
   },
   computed: {
@@ -139,15 +144,29 @@ export default {
           }
         }
       }
-
+      this.page = 1;
+      this.sels=[];
       this.setProducts();
     },
     setProducts() {
-      getProductList(this.classificationId,this.selbrands, this.sellabels, this.keyword).then(res => {
+      getProductList(
+        this.classificationId,
+        this.selbrands,
+        this.sellabels,
+        this.keyword,
+        this.page
+      ).then(res => {
         if (res.code === 1) {
-          this.sels = res.data.list;
+          this.sels=this.sels.concat(res.data.list);
+          if (res.data.list.length < 20) {
+            this.hasMore = false;
+          }
         }
       });
+    },
+    getMore() {
+      this.page++;
+      this.setProducts();
     }
   }
 };
@@ -219,6 +238,20 @@ export default {
       padding-left: 30px;
       margin-right: 10px;
     }
+  }
+}
+.more {
+  text-align: center;
+  margin: 22px 0;
+  > div {
+    display: inline-block;
+    width: 160px;
+    text-align: center;
+    background: linear-gradient(74deg, #49007c, #e70088);
+    color: #fff;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 28.5712px;
   }
 }
 </style>

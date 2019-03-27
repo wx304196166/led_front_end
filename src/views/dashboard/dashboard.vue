@@ -200,6 +200,7 @@ img {
 </style>
 <style rel="stylesheet/scss" lang="scss">
 .dashboard {
+  background:#000;
   .el-carousel__indicator {
     padding: 0 10px;
     .el-carousel__button {

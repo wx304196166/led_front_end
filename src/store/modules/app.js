@@ -13,6 +13,7 @@ const app = {
     },
     device: 'desktop',
     map: {},
+    share: false,
     classificationId: ''
   },
   mutations: {
@@ -35,6 +36,9 @@ const app = {
     },
     SET_MAP: (state, map) => {
       state.map = map;
+    },
+    TOGGLE_SHARE: (state) => {
+      state.share = !state.share;
     }
   },
   actions: {
@@ -42,6 +46,11 @@ const app = {
       commit
     }) => {
       commit('TOGGLE_SIDEBAR');
+    },
+    ToggleShare: ({
+      commit
+    }) => {
+      commit('TOGGLE_SHARE');
     },
     CloseSideBar({
       commit

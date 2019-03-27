@@ -125,11 +125,21 @@ $bright: #fafafa;
         display: flex;
         justify-content: center;
         align-items: center;
+        position: relative;
+        >canvas{
+          position: absolute;
+          top: 0;
+          left: 0;
+          z-index: 2019;
+        }
       }
       .cover-container {
         display: flex;
         flex-wrap: wrap;
         background: #000;
+        
+        justify-content: center;
+        align-items: center;       
       }
     }
     .bar {
@@ -152,7 +162,7 @@ $bright: #fafafa;
       .bar {
         width: calc(50% - 57.1424px);
         > div {
-          height: 0.0625rem;
+          height: 0.5px;
           width: 100%;
           top: 50%;
           transform: translateY(-50%);
@@ -170,7 +180,7 @@ $bright: #fafafa;
       .bar {
         height: calc(50% - 57.1424px);
         > div {
-          width: 0.0625rem;
+          width: 0.5px;
           height: 100%;
           left: 50%;
           transform: translateX(-50%);
@@ -191,18 +201,15 @@ $bright: #fafafa;
 .parms-table {
   // #e70088 粉色的字
   margin: 1.25rem 0;
-  .table-head {
+  /* .table-head {
     background-color: #000;
     color: #fff;
     opacity: 0.8;
     font-size: 19.2px;
     font-weight: normal;
     border: none;
-  }
-  .size {
-    color: #e70088;
-    font-size: 19.2px;
-  }
+  } */
+  
 }
 .submit {
   text-align: center;
@@ -230,6 +237,34 @@ $bright: #fafafa;
     cursor: pointer;
     > span {
       margin-right: 10px;
+    }
+  }
+}
+.canvas-box {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: auto;
+  margin: 0;
+  z-index: 200;
+  background: rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+  > div {
+    margin: 90px auto 0;
+    position: relative;
+    background: #fff;
+    border-radius: 2px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    >i{
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      cursor: pointer;
+      &:hover{
+        color: #00f;
+      }
     }
   }
 }

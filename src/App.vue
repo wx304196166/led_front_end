@@ -1,5 +1,32 @@
 <template>
   <div id="app">
+    <!-- share -->
+    <div v-show="shareDialog" class="share-box" @click.self="toggleShare">
+      <div>
+        <ul class="share">
+          <li class="-mob-share-linkedin">
+            <img :src="Linkedin" alt>
+            <span>Linkedin</span>
+          </li>
+          <li class="-mob-share-instapaper">
+            <img :src="Instapaper" alt>
+            <span>Instapaper</span>
+          </li>
+          <li class="-mob-share-tumblr">
+            <img :src="Tumblr" alt>
+            <span>Tumblr</span>
+          </li>
+          <li class="-mob-share-facebook">
+            <img :src="Facebook" alt>
+            <span>Facebook</span>
+          </li>
+          <li class="-mob-share-twitter">
+            <img :src="Twitter" alt>
+            <span>Twitter</span>
+          </li>
+        </ul>
+      </div>
+    </div>
     <!-- login -->
     <el-dialog :visible.sync="loginDialog" width="500px">
       <el-form ref="loginForm" :model="loginForm" :rules="loginRules">
@@ -51,7 +78,7 @@
     </el-dialog>
     <ul class="menu page-container clearfix">
       <li class="logo bg" :style="{backgroundImage:`url(${logo})`}">
-        <router-link to="/dashboard" />
+        <router-link to="/dashboard"/>
       </li>
       <li v-for="(link,index) in routes" :key="link.path" class="link">
         <span>
@@ -62,35 +89,45 @@
           <span v-if="link.name==='Products'" class="pointer submenu-father">
             {{ link.meta.title }}
             <ul class="subMenu">
-              <li @click.stop="jump(link.path,key)" v-for="(val,key) in map.classification_id" :key="key">{{val}}</li>
+              <li
+                @click.stop="jump(link.path,key)"
+                v-for="(val,key) in map.classification_id"
+                :key="key"
+              >{{val}}</li>
             </ul>
           </span>
-          <span v-else @click.stop="jump(link.path)" class="pointer">
-            {{ link.meta.title }}
-          </span>
+          <span v-else @click.stop="jump(link.path)" class="pointer">{{ link.meta.title }}</span>
         </span>
       </li>
     </ul>
 
     <div class="content">
-      <router-view />
+      <router-view/>
     </div>
     <div class="foot page-container">
       <div>
         <h1>VisualArtisan</h1>
         <ul class="linkOther">
-          <li class="-mob-share-facebook"><img :src="Foot1" /></li>
-          <li class="-mob-share-linkedin"><img :src="Foot3" /></li>
-          <li class="-mob-share-twitter"><img :src="Foot4" /></li>
-          <li class="-mob-share-youtube"><a href="https://www.youtube.com" target="_blank"><img :src="Foot5" /></a></li>
+          <li class="-mob-share-facebook">
+            <img :src="Foot1">
+          </li>
+          <li class="-mob-share-linkedin">
+            <img :src="Foot3">
+          </li>
+          <li class="-mob-share-twitter">
+            <img :src="Foot4">
+          </li>
+          <li class="-mob-share-youtube">
+            <a href="https://www.youtube.com" target="_blank">
+              <img :src="Foot5">
+            </a>
+          </li>
         </ul>
       </div>
       <div class="line">
         <ul class="footLink">
-          <li v-for="link in routes" :key="link.path" class="link">
-            <router-link :to="link.path">
-              {{ link.name }}
-            </router-link>
+          <li v-for="link in friends" :key="link.url" class="link">
+            <a :href="link.url" target="_blank">{{ link.name }}</a>
           </li>
         </ul>
         <span>Copyright © 2019 Artisan Visual. All rights reserved.</span>
@@ -100,76 +137,106 @@
 </template>
 
 <script>
-import { registerCustom } from '@/api/login';
-import Foot1 from '@/assets/img/home/foot1.png';
-import Foot2 from '@/assets/img/home/foot2.png';
-import Foot3 from '@/assets/img/home/foot3.png';
-import Foot4 from '@/assets/img/home/foot4.png';
-import Foot5 from '@/assets/img/home/foot5.png';
-import logo from '@/assets/img/logo.png';
-import sIdentify from './components/Validate/identify';
+import { registerCustom } from "@/api/login";
+import Foot1 from "@/assets/img/home/foot1.png";
+import Foot2 from "@/assets/img/home/foot2.png";
+import Foot3 from "@/assets/img/home/foot3.png";
+import Foot4 from "@/assets/img/home/foot4.png";
+import Foot5 from "@/assets/img/home/foot5.png";
+import logo from "@/assets/img/logo.png";
+import Facebook from "@/assets/img/share/Facebook.png";
+import Instapaper from "@/assets/img/share/Instapaper.png";
+import Linkedin from "@/assets/img/share/Linkedin.png";
+import Tumblr from "@/assets/img/share/Tumblr.png";
+import Twitter from "@/assets/img/share/Twitter.png";
+import sIdentify from "./components/Validate/identify";
 export default {
-  name: 'App',
+  name: "App",
   components: { sIdentify },
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!value) {
-        callback(new Error('Username can not be empty'))
+        callback(new Error("Username can not be empty"));
       } else {
-        callback()
+        callback();
       }
-    }
+    };
     const validatePass = (rule, value, callback) => {
       if (value.length < 5) {
-        callback(new Error('Password can not be less than 5'))
+        callback(new Error("Password can not be less than 5"));
       } else {
-        callback()
+        callback();
       }
-    }
+    };
     const validateConfirm = (rule, value, callback) => {
       if (value != this.loginForm.password) {
-        callback(new Error('Password and confirm must be consistent'))
+        callback(new Error("Password and confirm must be consistent"));
       } else {
-        callback()
+        callback();
       }
-    }
+    };
     const validateMobile = (rule, value, callback) => {
       if (!/^1\d{10}$/.test(value)) {
-        callback(new Error('Mobile number format error'))
+        callback(new Error("Mobile number format error"));
       } else {
-        callback()
+        callback();
       }
-    }
+    };
     return {
-      Foot1, Foot2, Foot3, Foot4, Foot5,
+      Foot1,
+      Foot2,
+      Foot3,
+      Foot4,
+      Foot5,
       logo,
+      // 分享图片
+      Facebook,
+      Instapaper,
+      Linkedin,
+      Tumblr,
+      Twitter,
       // 登录部分
       identifyCodes: "1234567890",
       identifyCode: "",
       loginDialog: false,
-      userInputCode: '',
+      userInputCode: "",
       registerDialog: false,
       submenu: false,
-      formLabelWidth: '100px',
+      formLabelWidth: "100px",
       loading: false,
       loginForm: {
-        username: '',
-        password: '',
-        truename: '',
-        confirm_password: '',
-        mobile: '',
-        email: ''
+        username: "",
+        password: "",
+        truename: "",
+        confirm_password: "",
+        mobile: "",
+        email: ""
       },
+      friends:[
+        {name:"PRG",url:"https://www.prg.com/"},
+        {name:"BARCO",url:"https://www.barco.com.cn/zh-CN/"},
+        {name:"ASTEL LED",url:"https://www.astelled.com.tr/"},
+        {name:"ANALOG WAY",url:"https://www.analogway.com/emea/"},
+        {name:"MIKYAJY",url:"http://www.kojamjoom.com/"}
+      ],
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePass }]
+        username: [
+          { required: true, trigger: "blur", validator: validateUsername }
+        ],
+        password: [{ required: true, trigger: "blur", validator: validatePass }]
       },
       registRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePass }],
-        confirm_password: [{ required: true, trigger: 'blur', validator: validateConfirm }],
-        truename: [{ required: true, trigger: 'blur' }],
-        mobile: [{ required: true, trigger: 'blur',  validator: validateMobile }]
+        username: [
+          { required: true, trigger: "blur", validator: validateUsername }
+        ],
+        password: [
+          { required: true, trigger: "blur", validator: validatePass }
+        ],
+        confirm_password: [
+          { required: true, trigger: "blur", validator: validateConfirm }
+        ],
+        truename: [{ required: true, trigger: "blur" }],
+        mobile: [{ required: true, trigger: "blur", validator: validateMobile }]
       }
     };
   },
@@ -182,6 +249,9 @@ export default {
     },
     map() {
       return this.$store.getters.map;
+    },
+    shareDialog() {
+      return this.$store.getters.share;
     }
   },
   mounted() {
@@ -190,20 +260,23 @@ export default {
   },
 
   methods: {
+    toggleShare() {
+      this.$store.dispatch("ToggleShare");
+    },
     jump(path, id) {
       switch (path) {
-        case '/products/:id':
-          this.$router.push({ path: '/products/' + id });
+        case "/products/:id":
+          this.$router.push({ path: "/products/" + id });
           // this.$router.go(0);
           return;
-        case '/integrationSummary':
+        case "/integrationSummary":
           if (this.nickname) {
             break;
           } else {
-            this.$alert('Please login first!', 'Tip', {
-              confirmButtonText: 'ok',
+            this.$alert("Please login first!", "Tip", {
+              confirmButtonText: "ok",
               callback: action => {
-                if (action === 'confirm') {
+                if (action === "confirm") {
                   this.loginDialog = true;
                 }
               }
@@ -231,18 +304,21 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true;
-          this.$store.dispatch('Login', this.loginForm).then(() => {
-            this.loading = false;
-            this.loginDialog = false;
-          }).catch(() => {
-            this.loading = false;
-            this.loginDialog = false;
-          })
+          this.$store
+            .dispatch("Login", this.loginForm)
+            .then(() => {
+              this.loading = false;
+              this.loginDialog = false;
+            })
+            .catch(() => {
+              this.loading = false;
+              this.loginDialog = false;
+            });
         } else {
           // console.log('error submit!!')
           return false;
         }
-      })
+      });
     },
     regist() {
       // 校验验证码
@@ -251,26 +327,66 @@ export default {
           if (valid) {
             registerCustom(this.loginForm).then(res => {
               if (res.code === 1) {
-                this.$message.success('Regist Success');
+                this.$message.success("Regist Success");
               } else {
                 this.$message.error(res.msg);
               }
               this.registerDialog = false;
-            })
+            });
           } else {
             // console.log('error submit!!')
             return false;
           }
-        })
+        });
       } else {
         this.$message.error("please check code");
       }
-    },
+    }
   }
-
 };
 </script>
 <style  rel="stylesheet/scss" lang="scss" scoped>
+.share-box {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: auto;
+  margin: 0;
+  z-index: 2019;
+  background: rgba(0, 0, 0, 0.45);
+  > div {
+    width: 800px;
+    margin: 16vh auto 0;
+    background: #fff;
+    position: relative;
+    border-radius: 2px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    padding: 50px;
+  }
+  .share {
+    display: flex;
+    > li {
+      margin-right: 25px;
+      flex: 1;
+      cursor: pointer;
+      img {
+        width: 100%;
+      }
+      span {
+        width: 100%;
+        text-align: center;
+        display: inline-block;
+        font-size: 14px;
+        line-height: 20px;
+      }
+    }
+    > li:last-child {
+      margin-right: 0;
+    }
+  }
+}
 .subMenu {
   background-color: rgba(0, 0, 0, 0.78);
   line-height: 50px;

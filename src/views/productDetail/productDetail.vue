@@ -1,39 +1,26 @@
 <template>
-  <div>
+  <div style="position:relative">
     <banner/>
     <div class="page-container">
-      <div class="-mob-share-ui" style="display: none">
-        <ul class="-mob-share-list">
-          <li class="-mob-share-linkedin">
-            <p>Linkedin</p>
-          </li>
-          <li class="-mob-share-instapaper">
-            <p>Instapaper</p>
-          </li>
-          <li class="-mob-share-tumblr">
-            <p>Tumblr</p>
-          </li>
-          <li class="-mob-share-facebook">
-            <p>Facebook</p>
-          </li>
-          <li class="-mob-share-twitter">
-            <p>Twitter</p>
-          </li>
-        </ul>
-        <div class="-mob-share-close">cancel</div>
-      </div>
       <ul class="intro clearfix">
         <li class="show-box">
           <div class="img-main" ref="box">
             <img :src="cururl">
-            <div v-show="show" class="drag-block" :style="{left:dragX+'px',top:dragY+'px',width:dragW+'px',height:dragH+'px'}"></div>
+            <div
+              v-show="show"
+              class="drag-block"
+              :style="{left:dragX+'px',top:dragY+'px',width:dragW+'px',height:dragH+'px'}"
+            ></div>
           </div>
           <div :class="{show}" class="scale-box">
             <!-- <img :src="cururl" :style="{left:`-${dragX*ratio}px`,top:`-${dragY*ratio}`}"> -->
-            <img :src="cururl" :style="{transform:`translate(-${dragX*ratio}px,-${dragY*ratio}px)`}">
+            <img
+              :src="cururl"
+              :style="{transform:`translate(-${dragX*ratio}px,-${dragY*ratio}px)`}"
+            >
           </div>
           <ul class="img-list">
-            <li :class="{disabled:moveDisabled||preDisabled}" @click="move('left')" />
+            <li :class="{disabled:moveDisabled||preDisabled}" @click="move('left')"/>
             <li>
               <ul :style="{transform:`translateX(${distanse*6.3714}rem)`}" class="img-box">
                 <li v-for="(item,index) in urlList" :key="index">
@@ -41,31 +28,39 @@
                 </li>
               </ul>
             </li>
-            <li :class="{disabled:moveDisabled||nextDisabled}" @click="move('right')" />
+            <li :class="{disabled:moveDisabled||nextDisabled}" @click="move('right')"/>
           </ul>
         </li>
-        <li class="blank" />
+        <li class="blank"/>
         <li class="describe-box">
           <div class="title">
             {{name}}
-            <i class="collect -mob-share-ui-button -mob-share-open" />
+            <i class="collect" @click="toggleShare"/>
           </div>
-          <ul class="specifications clearfix">           
+          <ul class="specifications clearfix">
             <li>
-              <span v-for="(item, index) in specList" :key="index" :class="{active:item.active}" @click="sel(index,'spec')">{{item.spec}}</span>
+              <span
+                v-for="(item, index) in specList"
+                :key="index"
+                :class="{active:item.active}"
+                @click="sel(index,'spec')"
+              >{{item.spec}}</span>
             </li>
           </ul>
-          <div class="describe" v-html="intro" />
+          <div class="describe" v-html="intro"/>
           <!-- <div v-if="isMain" @click="jump" class="btn">Integrate</div> -->
         </li>
       </ul>
-      <div v-html="detail" class="detail-box" />
+
+      <div v-html="detail" class="detail-box"/>
     </div>
   </div>
 </template>
 
 <script>
 // import related from "@/components/Related/related";
+
+
 import banner from "@/components/Banner/banner";
 import { getProductDetail } from "@/api/product";
 export default {
@@ -150,6 +145,9 @@ export default {
     };
   },
   methods: {
+    toggleShare(){
+      this.$store.dispatch('ToggleShare');
+    },
     zoom(e) {
       const width = document.body.clientWidth;
       const offsetX = width * 0.06;
@@ -212,11 +210,6 @@ export default {
         path: "/integration",
         query: { productId: this.productId, spec: this.curspec }
       });
-    },
-    switchProduct(product) {
-      /* this.$router.push({ path: '/productDetail/' + product.id });
-      this.$router.go(0); */
-      window.open("/#/productDetail/" + product.id);
     },
     sel(index, type) {
       this[type + "List"].forEach((item, i) => {
@@ -394,14 +387,13 @@ export default {
       height: 30px;
       line-height: 30px;
 
-      > i {
-        position: relative;
-        top: 6px;
-        margin-left: 1em;
-        display: inline-block;
+      .collect {
+        float: right;
+        cursor: pointer;
         background: url("../../assets/img/collect.png") no-repeat center center;
+        background-size: 100% auto;
         width: 31px;
-        height: 100%;
+        height: 31px;
       }
     }
     .specifications {

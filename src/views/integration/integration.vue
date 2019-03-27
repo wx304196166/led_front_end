@@ -101,14 +101,22 @@
                 </div>
               </li>
               <li class="screen" ref="screen">
-                <div class="cover-container" :style="{width:coverWidth,height:coverHeight}">
-                  <div
+                <div
+                  v-show="!canvasDialog"
+                  class="cover-container"
+                  :style="{width:coverWidth,height:coverHeight}"
+                >
+                  <!-- <div
                     v-for="item in screenTotal"
                     :key="item"
                     :style="{width:`${100/screenCol}%`,height:`${100/screenRow}%`,backgroundImage:`url(${ledScreen})`}"
                     class="cover"
-                  />
+                  />-->
+                  <img ref="logo" :src="logo" alt>
                 </div>
+                <canvas v-show="canvasDialog" ref="screenBox" :width="canvasW" :height="canvasH"></canvas>
+
+                <img ref="ledScreen" :src="ledScreen" alt style="display:none">
               </li>
             </ul>
             <div class="x clearfix">
@@ -134,31 +142,32 @@
           style="width: 100%"
           header-row-class-name="table-head"
         >
-          <el-table-column prop="classification" label="Classification"/>
+          <el-table-column prop="cate_name" label="Classification"/>
           <el-table-column prop="name" label="name">
             <template slot-scope="scope">
               <el-input v-if="scope.row.isInput" v-model="scope.row.name"></el-input>
               <span v-else>{{ scope.row.name }}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="brand" label="Brand"/>
+          <el-table-column prop="brand_name" label="Brand"/>
           <el-table-column prop="specification" label="Specification"/>
           <el-table-column prop="number" label="Number">
             <template slot-scope="scope">
-              <el-input-number
+              <!-- <el-input-number
                 v-if="!(scope.row.isMain||scope.row.isInput)"
                 v-model="scope.row.number"
                 :min="1"
                 controls-position="right"
                 size="small"
-              ></el-input-number>
-              <span v-else>{{ screenTotal }}</span>
+              ></el-input-number>-->
+              <span v-if="!(scope.row.isMain||scope.row.isInput)">{{ scope.row.number }}</span>
+              <span v-else>{{ screenCol }} * {{ screenRow }}</span>
             </template>
           </el-table-column>
 
           <el-table-column prop="isSize" label="Screen Size" align="center">
-            <template>
-              <span class="size">{{ specifications[0]}}&nbsp;*&nbsp;{{ specifications[1] }}</span>
+            <template slot-scope="scope">
+              <span class="size">{{ scope.row.w}}&nbsp;*&nbsp;{{ scope.row.h }}</span>
             </template>
           </el-table-column>
         </el-table>
@@ -182,6 +191,11 @@
         <el-button @click="swichDialog = false" type="info">Cancel</el-button>
       </div>
     </el-dialog>
+    <!-- <div v-show="canvasDialog" class="canvas-box" @click.self="canvasDialog=false">
+      <div style="width:500px;height:325px">
+        <i class="el-dialog__close el-icon el-icon-close" @click.stop="canvasDialog=false"></i>
+      </div>
+    </div>-->
   </div>
 </template>
 
@@ -198,12 +212,15 @@ import {
 } from "@/api/integration";
 
 import ledScreen from "@/assets/img/img_led02.png";
+import logo from "@/assets/img/logo.png";
 
 export default {
   name: "Integration",
   components: { related, banner },
   data() {
     return {
+      ledScreen,
+      logo,
       form: {
         id: "",
         spec: ""
@@ -238,24 +255,29 @@ export default {
       relatedListMap: {},
       lastRow: {},
       table: [],
+      mainId: "",
       schemeName: {
-        classification: "Scheme name",
+        cate_name: "Scheme name",
         name: "",
         isInput: true
       },
       remarks: {
-        classification: "Remarks",
+        cate_name: "Remarks",
         name: "",
         isInput: true
       },
-      relatedList: [],
-      ledScreen,
       swichDialog: false,
       list: [],
       spacingList: [],
       curSpacing: 0,
       cabinets: [],
-      size: [0, 0]
+      size: [0, 0],
+      screenBox: null,
+      ledScreenObj: null,
+      logoObj: null,
+      canvasDialog: false,
+      canvasW: 500,
+      canvasH: 328
     };
   },
   computed: {
@@ -270,65 +292,89 @@ export default {
     },
     map() {
       return this.$store.getters.map;
+    },
+    token() {
+      return this.$store.getters.token;
     }
   },
-  async created() {
-    let res = await pointspacingList();
-    if (res.code === 1) {
-      this.spacingList = res.data;
-    } else {
-      this.$message.error(res.msg);
-    }
-    const id = this.$route.query.id;
-    if (Number(id)) {
-      res = await queryOne("integrate", this.$route.query.id);
-      if (res.code === 1) {
-        const data = res.data;
-        this.adjust.level.val = data.main_level;
-        this.adjust.vertical.val = data.main_vertical;
-        const related = data.related_list ? JSON.parse(data.related_list) : [];
-        this.ids = related.map(item => item.id);
-        this.schemeName.name = data.name;
-        this.remarks.name = data.remark;
-        res = await queryMany("product", { ids: this.ids });
-        if (res.code === 1) {
-          res.data.forEach((item, index) => {
-            this.setRelatedListMap(
-              this.map.classification_id[item.classification_id]
-            );
-            const obj = this.setProduct(item);
-            obj.number = related[index].number;
-            this.relatedList.push(obj);
-          });
-        }
-        this.setTable();
-      }
-    } else {
-      this.type = id;
-    }
-  },
+
   mounted() {
+    this.ledScreenObj = this.$refs.ledScreen;
+    this.logoObj = this.$refs.logo;
+    this.screenBox = this.$refs.screenBox;
+
     this.setCover();
+    this.recover();
     window.addEventListener("resize", this.setCover);
   },
   beforeDestroy() {
     window.removeEventListener("resize", this.setCover);
   },
-  watch: {
-    screenRow(newVal, oldVal) {
-      if (newVal != oldVal) {
-        this.setCover();
+  methods: {
+    async recover() {
+      let res = await pointspacingList();
+      if (res.code === 1) {
+        this.spacingList = res.data;
+      } else {
+        this.$message.error(res.msg);
+      }
+      const id = this.$route.query.id;
+      if (Number(id)) {
+        res = await schemeDetails(this.token, id);
+        if (res.code === 1) {
+          const data = res.data;
+          this.type = data.type;
+          this.adjust.level.val = data.box_quantity.box_x;
+          this.adjust.vertical.val = data.box_quantity.box_y;
+          this.required.scenario = data.scene;
+          this.required.spacing_id = Number(data.spacing);
+          this.optional.type = data.stype;
+          this.optional.w = data.screen_size.size_w;
+          this.optional.h = data.screen_size.size_h;
+          this.mainId = data.main_product.id;
+          this.setSpacing();
+          /* this.curMain = data.main_product;
+          this.curMain.isMain = true;
+          this.curMain.w = this.optional.w;
+          this.curMain.h = this.optional.h;
+
+          for (let i = 1; i < data.product_list.length; i++) {
+            const item = data.product_list[i];
+            this.setRelatedListMap(item.product_id);
+            item.thumbnail_pic = data.featured_product[i - 1].thumbnail_pic;
+            this.relatedProducts.push(item);
+          } */
+          this.schemeName.name = data.scheme_name;
+          this.remarks.name = data.remarks;
+          res = await integrationMainProduct(this.required);
+          if (res.code === 1) {
+            this.cabinets = res.data.list;
+            for (let i = 0; i < this.cabinets.length; i++) {
+              const item = this.cabinets[i];
+              if (this.mainId === item.id) {
+                this.setSpecifications(item);
+                break;
+              }
+            }
+            this.start(false);
+          } else {
+            this.$message(res.msg);
+          }
+        }
+      } else {
+        this.type = id;
       }
     },
-    screenCol(newVal, oldVal) {
-      if (newVal != oldVal) {
-        this.setCover();
-      }
-    }
-  },
-  methods: {
+    show() {
+      this.canvasDialog = true;
+      this.$nextTick(() => {
+        this.animatePlay();
+      });
+    },
     setSpecifications(item) {
       this.curMain = item;
+      this.curMain.isMain = true;
+
       this.specifications =
         (item.specification && item.specification.split("*")) || "";
     },
@@ -343,6 +389,7 @@ export default {
       if (this.required.scenario === "" || this.required.spacing_id === "") {
         return;
       }
+      // this.required.type=this.type;
       integrationMainProduct(this.required).then(res => {
         if (res.code === 1) {
           this.cabinets = res.data.list;
@@ -351,25 +398,29 @@ export default {
         }
       });
     },
-    start() {
-      for (let key in this.required) {
-        if (this.required[key] === "") {
-          this.$message.warning("please finish the parameters");
+    start(isFirst = true) {
+      if (isFirst) {
+        for (let key in this.required) {
+          if (this.required[key] === "") {
+            this.$message.warning("please finish the parameters");
+            return;
+          }
+        }
+        for (let key in this.optional) {
+          if (this.optional[key] === "") {
+            this.$message.warning("please finish the parameters");
+            return;
+          }
+        }
+        if (!this.curMain.name) {
+          this.$message.warning("please select a " + this.type);
           return;
         }
       }
-      for (let key in this.optional) {
-        if (this.optional[key] === "") {
-          this.$message.warning("please finish the parameters");
-          return;
-        }
-      }
-      if (!this.curMain.name) {
-        this.$message.warning("please select a " + this.type);
-        return;
-      }
+
+      this.curMain.w = this.optional.w;
+      this.curMain.h = this.optional.h;
       let e, f;
-      // adjust.level
       if (this.optional.type === "size") {
         e = (this.optional.w * 1000) / this.curSpacing;
         f = (this.optional.h * 1000) / this.curSpacing;
@@ -377,53 +428,173 @@ export default {
         e = this.optional.w;
         f = this.optional.h;
       }
-      this.adjust.level.val = Math.ceil(
+      if (isFirst) {
+this.adjust.level.val = Math.ceil(
         (e * this.curSpacing) / this.specifications[0]
       );
       this.adjust.vertical.val = Math.ceil(
         (f * this.curSpacing) / this.specifications[1]
       );
+      this.reset();
+      }
+      
 
       this.size = [e, f];
+      this.canvasW = this.$refs.screen.clientWidth;
+      this.canvasH = this.$refs.screen.clientHeight;
+      if(isFirst){
+      this.show();
+      }
       this.setCover();
       integrationProducts(e, f).then(res => {
-        /* res = {
-          code: 1,
-          msg: "请求成功",
-          time: "1553434346",
-          data: {
-            list: [
-              {
-                id: 11,
-                name: "LED controller MSD 300",
-                thumbnail_pic: "",
-                brief:
-                  '<p style="font-family:Verdana, Arial, Helvetica, sans-serif;font-size:14px;white-space:normal;"><span style="font-family:Arial;"></span></p><p class="MsoNormal">The\r\nMctrl 300 is the third generation of LED controller by NovaStar. This device is\r\nthe basic and top seller of medium or small project. <o:p></o:p></p><p class="MsoNormal">1\r\nDVI interface for video input. <br /> 2. USB interface for instruction communication. <br /> 3. Audio input interface integrated. <o:p></o:p></p><p class="MsoNormal">4.Light\r\nsensor interface integrated.<br /> 5. Resolutions supported: 1024×1200, 1280×1024, 1600×848, 1920×712, 2048×640. <o:p></o:p></p><p><br /></p><p style="font-family:Verdana, Arial, Helvetica, sans-serif;font-size:14px;white-space:normal;"><span style="font-family:Arial;"></span></p>',
-                number: 1
-              },
-              {
-                id: 11,
-                name: "LED controller MSD 300",
-                thumbnail_pic: "",
-                brief:
-                  '<p style="font-family:Verdana, Arial, Helvetica, sans-serif;font-size:14px;white-space:normal;"><span style="font-family:Arial;"></span></p><p class="MsoNormal">The\r\nMctrl 300 is the third generation of LED controller by NovaStar. This device is\r\nthe basic and top seller of medium or small project. <o:p></o:p></p><p class="MsoNormal">1\r\nDVI interface for video input. <br /> 2. USB interface for instruction communication. <br /> 3. Audio input interface integrated. <o:p></o:p></p><p class="MsoNormal">4.Light\r\nsensor interface integrated.<br /> 5. Resolutions supported: 1024×1200, 1280×1024, 1600×848, 1920×712, 2048×640. <o:p></o:p></p><p><br /></p><p style="font-family:Verdana, Arial, Helvetica, sans-serif;font-size:14px;white-space:normal;"><span style="font-family:Arial;"></span></p>',
-                number: 0
-              },
-              {
-                id: 16,
-                name: "TB8",
-                thumbnail_pic: "",
-                brief:
-                  '<p><span style="font-family:Arial;">多媒体播放器 TB8</span></p><p><span style="font-family:Arial;">带载能力 ： 230万</span></p><p><span style="font-family:Arial;">处理能力 ： 8核，2GB运行内存+板载 8GB 内部存储，用户可用 4GB</span></p><p><span style="font-family:Arial;">wifi功能 ： √（双wifi）</span></p><p><span style="font-family:Arial;">3G、4G功能 ： √（选配）</span></p><p><span style="font-family:Arial;">冗余备份 ： 冗余备份带载130万</span></p><p><span style="font-family:Arial;">同异步切换 ： √</span></p><p><span style="font-family:Arial;">拼接带载 ： √</span></p><p><span style="font-family:Arial;">使用场合 ： 固装大屏</span></p><p><span style="font-family:Arial;">14:15:00  02/26/2019</span></p><p><br /></p><p><br /></p><br />',
-                number: 0
-              }
-            ]
-          }
-        }; */
         if (res.code === 1) {
-          this.relatedProducts = res.data.list;
+          if (res.data.list && res.data.list.length) {
+            const ids = {};
+            const list = [];
+            res.data.list.forEach(item => {
+              if (!ids[item.id]) {
+                ids[item.id] = 1;
+                list.push(item);
+                this.setRelatedListMap(item.cate_name);
+              } else {
+                list.forEach(obj => {
+                  if (item.id === obj.id) {
+                    obj.number += item.number;
+                    return;
+                  }
+                });
+              }
+            });
+            this.relatedProducts = list;
+
+            this.setTable();
+          }
         }
       });
+    },
+    animatePlay() {
+      const canvas = this.screenBox;
+      if (!canvas.getContext) return;
+      const ctx = canvas.getContext("2d");
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const totalTime = 5000;
+      let col = this.screenCol;
+      let row = this.screenRow;
+      // 计算单块屏幕宽和高
+      const totalW = this.canvasW;
+      const totalH = this.canvasH;
+
+      const screenW = totalW;
+      const screenH = totalH;
+      const specW = this.specifications[0];
+      const specH = this.specifications[1];
+      const width = specW * this.screenCol;
+      const height = specH * this.screenRow;
+      let w = 50;
+      let h = 50;
+      let offsetX = 0;
+      let offsetY = 0;
+
+      if (width / height > screenW / screenH) {
+        w = screenW / col;
+        h = (screenW * height) / width / row;
+        offsetY = (totalH - h * row) / 2;
+      } else {
+        w = (screenH * width) / height / col;
+        h = screenH / row;
+        offsetX = (totalW - w * col) / 2;
+      }
+
+      let count = 0;
+      const total = col * row;
+      const time = Math.floor(totalTime / total);
+
+      const img = this.ledScreenObj;
+      const logo = this.logoObj;
+      let c = 0;
+      let r = 1;
+      for (let i = 0; i < total; i++) {
+        if (c < col) {
+          c++;
+        } else {
+          c = 1;
+          r++;
+        }
+
+        let x = (c - 1) * w + offsetX;
+        let y = (r - 1) * h + offsetY;
+        let timeoutId = setTimeout(() => {
+          newRect(x, y);
+          clearTimeout(timeoutId);
+        }, time * i);
+      }
+      function newRect(x, y) {
+        let l = x + 2 * w;
+        const d = l;
+        const id = setInterval(() => {
+          ctx.clearRect(0, 0, canvas.clientWidth, canvas.height);
+          if (l > x) {
+            l -= 2;
+            ctx.drawImage(img, l, y, w, h);
+          } else {
+            count++;
+            clearInterval(id);
+          }
+          drawExisting();
+        }, (time * 2) / d);
+      }
+      function drawExisting() {
+        let c = 0;
+        let r = 1;
+        for (let i = 0; i < count; i++) {
+          if (c < col) {
+            c++;
+          } else {
+            c = 1;
+            r++;
+          }
+          let x = (c - 1) * w + offsetX;
+          let y = (r - 1) * h + offsetY;
+          ctx.drawImage(img, x, y, w, h);
+        }
+        if (total === count) {
+          const id = setTimeout(() => {
+            final();
+            clearTimeout(id);
+          }, 10);
+        }
+      }
+      function final() {
+        ctx.fillStyle = "#000";
+        let baseW = w / 2;
+        let baseH = h / 2;
+        let realW = w * col;
+        let realH = h * row;
+        let x = (realW - baseW) / 2 + offsetX;
+        let y = (realH - baseH) / 2 + offsetY;
+
+        let logoW = 180;
+        let logoH = 70;
+        let imgX = (realW - logoW) / 2 + offsetX;
+        let imgY = (realH - logoH) / 2 + offsetY;
+
+        ctx.fillRect(x, y, baseW, baseH);
+        const id = setInterval(() => {
+          if (x > offsetX) {
+            ctx.fillRect(x, y, baseW, baseH);
+            baseW = baseW < realW ? baseW + 2 : realW;
+            baseH = baseH < realH ? baseH + 2 : realH;
+            x--;
+            y = y > offsetY ? y - 1 : offsetY;
+          } else {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillRect(offsetX, offsetY, realW, realH);
+            ctx.drawImage(logo, imgX, imgY, logoW, logoH);
+            clearInterval(id);
+          }
+        }, 10);
+      }
     },
     setProduct(pro, specification) {
       return {
@@ -443,6 +614,7 @@ export default {
     setCover() {
       const screenW = this.$refs.screen.clientWidth;
       const screenH = this.$refs.screen.clientHeight;
+
       const specW = this.specifications[0];
       const specH = this.specifications[1];
       const w = specW * this.screenCol;
@@ -456,36 +628,31 @@ export default {
         this.coverHeight = "100%";
       }
     },
-    setRelatedListMap(classification) {
-      if (this.relatedListMap[classification]) {
-        this.relatedListMap[classification]++;
+    setRelatedListMap(cate_name) {
+      if (this.relatedListMap[cate_name]) {
+        this.relatedListMap[cate_name]++;
       } else {
-        this.relatedListMap[classification] = 1;
+        this.relatedListMap[cate_name] = 1;
       }
     },
     reset() {
-      this.relatedList = [];
+      this.relatedProducts = [];
       this.schemeName.name = "";
       this.remarks.name = "";
-      this.setTable();
+      this.relatedListMap = {};
+      // this.setTable();
     },
     // 组装表格数据
     setTable() {
       let arr = [];
       arr.push(this.curMain);
 
-      this.relatedList.sort((a, b) => a.classification > b.classification);
+      this.relatedProducts.sort((a, b) => a.cate_name > b.cate_name);
 
-      arr = arr.concat(this.relatedList);
+      arr = arr.concat(this.relatedProducts);
       arr.push(this.schemeName);
       arr.push(this.remarks);
       this.table = arr.concat();
-      arr = null;
-    },
-    setItem(item) {
-      const obj = Object.assign({}, item);
-      obj.number = 1;
-      return obj;
     },
     // 条件合并行或列
     arraySpanMethod({ row, column, rowIndex, columnIndex }) {
@@ -494,21 +661,21 @@ export default {
           return [this.table.length, 1];
         }
       } else if (row.isInput) {
-        if (column.property === "classification") {
+        if (column.property === "cate_name") {
           return [1, 1];
         } else if (column.property === "name") {
           return [1, 4];
         }
         return [0, 0];
       } else {
-        if (column.property === "classification") {
+        if (column.property === "cate_name") {
           if (this.lastRow.id !== row.id) {
-            if (this.lastRow.classification === row.classification) {
+            if (this.lastRow.cate_name === row.cate_name) {
               return [0, 0];
             }
             this.lastRow = Object.assign({}, row);
           }
-          return [this.relatedListMap[row.classification], 1];
+          return [this.relatedListMap[row.cate_name], 1];
         } else if (column.property === "isSize") {
           return [0, 0];
         }
@@ -516,29 +683,36 @@ export default {
       }
     },
     submitScheme() {
-      const token = this.$store.getters.token;
-      const sendData = { related_list: [] };
+      const logintoken = this.$store.getters.token;
+      const sendData = {
+        logintoken,
+        scene: this.required.scenario,
+        spacing: this.required.spacing_id,
+        stype: this.optional.type,
+        type: this.type,
+        product_id: [],
+        product_number: []
+      };
       for (const row of this.table) {
-        switch (row.classification) {
+        switch (row.cate_name) {
           case "Scheme name":
             sendData.name = row.name;
             break;
           case "Remarks":
-            sendData.remark = row.name;
+            sendData.remarks = row.name;
             break;
           default:
             if (row.isMain) {
-              sendData.main_id = row.id;
-              sendData.main_specification =
-                row.specifications[0] + "*" + row.specifications[1];
-              sendData.main_level = this.screenCol;
-              sendData.main_vertical = this.screenRow;
-              sendData.main_clearnce = 0;
+              sendData.product_id.push(row.id);
+              sendData.product_number.push(this.screenTotal);
+
+              sendData.size_w = Number(this.optional.w);
+              sendData.size_h = Number(this.optional.h);
+              sendData.box_x = this.screenCol;
+              sendData.box_y = this.screenRow;
             } else {
-              sendData.related_list.push({
-                id: row.id,
-                number: row.number
-              });
+              sendData.product_id.push(row.id);
+              sendData.product_number.push(row.number);
             }
             break;
         }
@@ -547,14 +721,10 @@ export default {
         this.$message.warning("Scheme name can not be empty!");
         return;
       }
-      sendData.related_list = JSON.stringify(sendData.related_list);
-      sendData.modification_user_type = 1;
-      sendData.modification_user_id = token;
 
       submit(sendData).then(res => {
         if (res.code === 1) {
           this.$message.success("Submit success!");
-          this.reset();
         } else {
           this.$message.error(res.msg);
         }
@@ -569,21 +739,6 @@ export default {
 </style>
 <style rel="stylesheet/scss" lang="scss">
 .integration {
-  .el-slider__runway {
-    height: 3px;
-    margin: 18px 0 0;
-  }
-  .el-slider__bar {
-    background-color: rgba(0, 0, 0, 0.4);
-    height: 3px;
-  }
-  .el-slider__button {
-    background: url("../../assets/img/slide.png") no-repeat 0 0;
-    border: none;
-    width: 8px;
-    height: 15px;
-    border-radius: 0;
-  }
   .el-table_1_column_1 {
     background-color: #f2f2f2;
   }
@@ -604,6 +759,10 @@ export default {
     tr:hover
     > td.el-table_1_column_1 {
     background-color: #f2f2f2;
+  }
+  .size {
+    color: #e70088;
+    font-size: 19.2px;
   }
 }
 </style>

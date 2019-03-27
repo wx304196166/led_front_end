@@ -11,12 +11,13 @@
           <el-input
             v-model="keyword"
             @keyup.native.enter="search"
-            placeholder="please input, and press Enter key to search"
+            placeholder="please input, and press Enter key Or Search button to search"
           />
           <i class="search-icon"/>
         </div>
+        <div class="btn" @click="search">Search</div>
       </div>
-      <div v-if="model.name">
+      <div v-if="model.name||table.length">
         <div v-if="type==='sn'">
           <div
             :style="{backgroundImage:`url(${model.thumbnail_pic})`}"
@@ -33,19 +34,19 @@
             </li>
             <li>
               <span>Contract number:</span>
-              {{model.contract_no}}
+              {{contract_no}}
             </li>
             <li>
               <span>Maintenance number:</span>
-              {{model.maintenance_no}}
+              {{maintenance_no}}
             </li>
             <li>
               <span>Date of purchase:</span>
-              {{setDate(model.buy_time)}}
+              {{model.buy_time}}
             </li>
             <li>
               <span>Warranty date:</span>
-              {{setDate(model.warranty_period)}}
+              {{model.warranty_period}}
             </li>
             <li>
               <span>Warranty period:</span>
@@ -65,7 +66,11 @@
             </li>
             <li>
               <el-table :data="table" border style="width: 100%">
-                <el-table-column prop="classification" label="Classification"/>
+                <el-table-column prop="name" label="Name"/>
+                <el-table-column prop="type" label="Type"/>
+                <el-table-column prop="buy_time" label="Buy Time"/>
+                <el-table-column prop="warranty" label="Period"/>
+                <el-table-column prop="warranty_period" label="Warranty"/>
               </el-table>
             </li>
           </ul>
@@ -101,18 +106,29 @@ export default {
     search() {
       maintenanceSearch(this.type, this.keyword).then(res => {
         if (res.data && res.data.product) {
-          this.model = res.data.product;
-          this.contract_no = res.data.contract_no;
-          this.maintenance_no = res.data.maintenance_no;
+          if (this.type === "sn" && res.data.product.name) {
+            this.model = res.data.product;
+            this.contract_no = res.data.contract_no;
+            this.maintenance_no = res.data.maintenance_no;
+          } else if (this.type === "ma" && res.data.product.length) {
+            this.table = res.data.product;
+            this.contract_no = res.data.contract_no;
+            this.maintenance_no = res.data.maintenance_no;
+          } else {
+            this.modal = {};
+            this.table = [];
+            this.$message.warning("Find nothing, please check your number");
+          }
         } else {
           this.modal = {};
-          this.$message.warning(res.msg);
+          this.table = [];
+          this.$message.warning("Find nothing, please check your number");
         }
       });
-    },
-    setDate(date) {
-      return parseTime(date, "{y}-{m}-{d}");
     }
+    /* jump() {
+      window.open("/#/productDetail/"+this.model.id);
+    } */
   }
 };
 </script>
@@ -135,15 +151,26 @@ export default {
   .input {
     position: relative;
     display: inline-block;
-    width: calc(100% - 300px);
-    margin-left: 30px;
+    width: calc(100% - 417px);
+    margin: 0 30px;
+  }
+  .btn{
+    width: 87px;
+    line-height: 40px;
+    display: inline-block;
+    background: linear-gradient(74deg, #49007c, #e70088);
+    color: #fff;
+    text-align: center;
+    border-radius: 5px; 
+    cursor: pointer;
   }
 }
 .thumbnail {
   width: 300px;
   height: 250px;
   margin: 50px auto 0;
-  border: 1px solid #000;
+  border: 1px solid #999;
+  // cursor: pointer;
 }
 .searchInput {
   border-radius: 10px;
@@ -162,7 +189,6 @@ export default {
   font-weight: 700;
 }
 .maintenance-list {
-  margin-left: 10%;
   padding: 0 5% 20px;
 }
 .maintenance-list li {

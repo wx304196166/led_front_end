@@ -31,6 +31,7 @@ export default {
   margin-bottom: 1.4286rem;
   box-sizing: border-box;
   width: 25%;
+  padding: 2% 3.5%;
   border: 1px solid transparent;
   overflow: hidden;
   img {
@@ -47,7 +48,8 @@ export default {
   }
   .productSummary {
     position: absolute;
-    top: 100%;
+    top: 104%;
+    left: 0;
     transform: translateY(-50px);
     transition: 0.38s;
     width: 100%;
