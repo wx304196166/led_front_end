@@ -279,7 +279,8 @@ export default {
     .img-main {
       position: relative;
       height: calc(100% - 80px);
-      border: 1px solid #999;
+      // border: 1px solid #999;
+      border: 1px solid transparent;
       img {
         max-width: 100%;
         max-height: 100%;
@@ -367,10 +368,13 @@ export default {
           width: 3.9286rem;
           height: 3.5714rem;
           padding: 1px;
-          border: 1px solid #cecfce;
+          // border: 1px solid #cecfce;
+          border: 1px solid transparent;
           &:hover,
           &.active {
-            border-color: #000;
+            // border-color: #000;
+            border-color: transparent;
+
           }
         }
       }

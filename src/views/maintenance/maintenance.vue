@@ -17,14 +17,15 @@
         </div>
         <div class="btn" @click="search">Search</div>
       </div>
-      <div v-if="model.name||table.length">
-        <div v-if="type==='sn'">
+      <div>
+        <div v-if="type==='sn'&&model.name" >
           <div
             :style="{backgroundImage:`url(${model.thumbnail_pic})`}"
+            @click="jump(model.product_id)"
             class="thumbnail bg-center"
           />
           <div class="serial-number">
-            <div>{{model.name}}</div>
+            <div @click="jump(model.product_id)">{{model.name}}</div>
             <span>Serial Number : {{model.sn}}</span>
           </div>
           <ul class="maintenance-list">
@@ -54,7 +55,7 @@
             </li>
           </ul>
         </div>
-        <div v-else>
+        <div v-if="type==='ma'&&table.length">
           <ul class="maintenance-list">
             <li>
               <span>Contract number:</span>
@@ -66,8 +67,14 @@
             </li>
             <li>
               <el-table :data="table" border style="width: 100%">
-                <el-table-column prop="name" label="Name"/>
+            
+                <el-table-column prop="name" label="Name" >
+                <template slot-scope="scope">
+                  <span @click="jump(scope.row.product_id)" style="cursor:pointer">{{scope.row.name}}</span>
+                  </template>
+                </el-table-column>
                 <el-table-column prop="type" label="Type"/>
+                <el-table-column prop="sn" label="SN"/>
                 <el-table-column prop="buy_time" label="Buy Time"/>
                 <el-table-column prop="warranty" label="Period"/>
                 <el-table-column prop="warranty_period" label="Warranty"/>
@@ -125,10 +132,10 @@ export default {
           this.$message.warning("Find nothing, please check your number");
         }
       });
+    },
+    jump(id) {
+      window.open("/#/productDetail/" + id);
     }
-    /* jump() {
-      window.open("/#/productDetail/"+this.model.id);
-    } */
   }
 };
 </script>
@@ -170,7 +177,7 @@ export default {
   height: 250px;
   margin: 50px auto 0;
   border: 1px solid #999;
-  // cursor: pointer;
+  cursor: pointer;
 }
 .searchInput {
   border-radius: 10px;
@@ -187,6 +194,9 @@ export default {
   margin: 12px 0;
   font-size: 18px;
   font-weight: 700;
+  >div{
+    cursor: pointer;
+  }
 }
 .maintenance-list {
   padding: 0 5% 20px;

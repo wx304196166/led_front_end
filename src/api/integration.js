@@ -11,10 +11,13 @@ export function schemeList(logintoken) {
   });
 }
 // 获取点间距列表
-export function pointspacingList() {
+export function pointspacingList(scenario) {
   return request({
     url: '/api/index/pointspacingList',
-    method: 'get'
+    method: 'post',
+    data: {
+      scenario
+    }
   });
 }
 // 集成模组/箱体 查询

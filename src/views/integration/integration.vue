@@ -25,7 +25,7 @@
                         v-model="required.scenario"
                         placeholder="please select"
                         style="width:100%"
-                        @change="searchCabinets"
+                        @change="getSpacingList();searchCabinets()"
                       >
                         <el-option label="indoor" value="indoor"/>
                         <el-option label="outdoor" value="outdoor"/>
@@ -95,7 +95,7 @@
                 <div class="bar">
                   <div/>
                 </div>
-                <div class="number">{{size[1]}} {{optional.type==='size'?'m':'px'}}</div>
+                <div class="number">{{size[1]}} px</div>
                 <div class="bar">
                   <div/>
                 </div>
@@ -123,7 +123,7 @@
               <div class="bar">
                 <div/>
               </div>
-              <div class="number">{{size[0]}} {{optional.type==='size'?'m':'px'}}</div>
+              <div class="number">{{size[0]}} px</div>
               <div class="bar">
                 <div/>
               </div>
@@ -146,7 +146,7 @@
           <el-table-column prop="name" label="name">
             <template slot-scope="scope">
               <el-input v-if="scope.row.isInput" v-model="scope.row.name"></el-input>
-              <span v-else>{{ scope.row.name }}</span>
+              <span v-else @click="jump(scope.row.id)" style="cursor:pointer">{{ scope.row.name }}</span>
             </template>
           </el-table-column>
           <el-table-column prop="brand_name" label="Brand"/>
@@ -312,58 +312,51 @@ export default {
   },
   methods: {
     async recover() {
-      let res = await pointspacingList();
-      if (res.code === 1) {
-        this.spacingList = res.data;
-      } else {
-        this.$message.error(res.msg);
-      }
       const id = this.$route.query.id;
       if (Number(id)) {
-        res = await schemeDetails(this.token, id);
+        let res = await schemeDetails(this.token, id);
         if (res.code === 1) {
           const data = res.data;
           this.type = data.type;
           this.adjust.level.val = data.box_quantity.box_x;
           this.adjust.vertical.val = data.box_quantity.box_y;
           this.required.scenario = data.scene;
-          this.required.spacing_id = Number(data.spacing);
-          this.optional.type = data.stype;
-          this.optional.w = data.screen_size.size_w;
-          this.optional.h = data.screen_size.size_h;
-          this.mainId = data.main_product.id;
-          this.setSpacing();
-          /* this.curMain = data.main_product;
-          this.curMain.isMain = true;
-          this.curMain.w = this.optional.w;
-          this.curMain.h = this.optional.h;
-
-          for (let i = 1; i < data.product_list.length; i++) {
-            const item = data.product_list[i];
-            this.setRelatedListMap(item.product_id);
-            item.thumbnail_pic = data.featured_product[i - 1].thumbnail_pic;
-            this.relatedProducts.push(item);
-          } */
-          this.schemeName.name = data.scheme_name;
-          this.remarks.name = data.remarks;
-          res = await integrationMainProduct(this.required);
+          res = await pointspacingList(this.required.scenario);
           if (res.code === 1) {
-            this.cabinets = res.data.list;
-            for (let i = 0; i < this.cabinets.length; i++) {
-              const item = this.cabinets[i];
-              if (this.mainId === item.id) {
-                this.setSpecifications(item);
-                break;
+            this.spacingList = res.data;
+            this.required.spacing_id = Number(data.spacing);
+            this.optional.type = data.stype;
+            this.optional.w = data.screen_size.size_w;
+            this.optional.h = data.screen_size.size_h;
+            this.mainId = data.main_product.id;
+            this.setSpacing();
+            this.schemeName.name = data.scheme_name;
+            this.remarks.name = data.remarks;
+            this.required.type = data.type;
+            res = await integrationMainProduct(this.required);
+            if (res.code === 1) {
+              this.cabinets = res.data.list;
+              for (let i = 0; i < this.cabinets.length; i++) {
+                const item = this.cabinets[i];
+                if (this.mainId === item.id) {
+                  this.setSpecifications(item);
+                  break;
+                }
               }
+              this.start(false);
+            } else {
+              this.$message(res.msg);
             }
-            this.start(false);
           } else {
-            this.$message(res.msg);
+            this.$message.error(res.msg);
           }
         }
       } else {
         this.type = id;
       }
+    },
+    jump(id) {
+      window.open("/#/productDetail/" + id);
     },
     show() {
       this.canvasDialog = true;
@@ -385,11 +378,20 @@ export default {
         }
       }
     },
+    getSpacingList() {
+      pointspacingList(this.required.scenario).then(res => {
+        if (res.code === 1) {
+          this.spacingList = res.data;
+        } else {
+          this.$message.error(res.msg);
+        }
+      });
+    },
     searchCabinets() {
       if (this.required.scenario === "" || this.required.spacing_id === "") {
         return;
       }
-      // this.required.type=this.type;
+      this.required.type = this.type;
       integrationMainProduct(this.required).then(res => {
         if (res.code === 1) {
           this.cabinets = res.data.list;
@@ -418,8 +420,6 @@ export default {
         }
       }
 
-      this.curMain.w = this.optional.w;
-      this.curMain.h = this.optional.h;
       let e, f;
       if (this.optional.type === "size") {
         e = (this.optional.w * 1000) / this.curSpacing;
@@ -429,22 +429,26 @@ export default {
         f = this.optional.h;
       }
       if (isFirst) {
-this.adjust.level.val = Math.ceil(
-        (e * this.curSpacing) / this.specifications[0]
-      );
-      this.adjust.vertical.val = Math.ceil(
-        (f * this.curSpacing) / this.specifications[1]
-      );
-      this.reset();
+        this.adjust.level.val = Math.ceil(
+          (e * this.curSpacing) / this.specifications[0]
+        );
+        this.adjust.vertical.val = Math.ceil(
+          (f * this.curSpacing) / this.specifications[1]
+        );
+        this.reset();
       }
-      
 
       this.size = [e, f];
+      this.curMain.w = this.size[0];
+      this.curMain.h = this.size[1];
       this.canvasW = this.$refs.screen.clientWidth;
       this.canvasH = this.$refs.screen.clientHeight;
-      if(isFirst){
-      this.show();
+      if (isFirst) {
+        this.show();
       }
+      // 调试使用
+      // this.show();
+
       this.setCover();
       integrationProducts(e, f).then(res => {
         if (res.code === 1) {
@@ -565,6 +569,7 @@ this.adjust.level.val = Math.ceil(
           }, 10);
         }
       }
+      const that = this;
       function final() {
         ctx.fillStyle = "#000";
         let baseW = w / 2;
@@ -583,17 +588,20 @@ this.adjust.level.val = Math.ceil(
         const id = setInterval(() => {
           if (x > offsetX) {
             ctx.fillRect(x, y, baseW, baseH);
-            baseW = baseW < realW ? baseW + 2 : realW;
-            baseH = baseH < realH ? baseH + 2 : realH;
-            x--;
-            y = y > offsetY ? y - 1 : offsetY;
+            baseW = baseW < realW ? baseW + 12 : realW;
+            baseH = baseH < realH ? baseH + 12 : realH;
+            x -= 6;
+            y = y > offsetY ? y - 6 : offsetY;
           } else {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.fillRect(offsetX, offsetY, realW, realH);
             ctx.drawImage(logo, imgX, imgY, logoW, logoH);
+            setTimeout(() => {
+              that.canvasDialog = false;
+            }, 100);
             clearInterval(id);
           }
-        }, 10);
+        }, 20);
       }
     },
     setProduct(pro, specification) {

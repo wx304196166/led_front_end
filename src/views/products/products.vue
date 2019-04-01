@@ -145,12 +145,29 @@ export default {
         }
       }
       this.page = 1;
-      this.sels=[];
       this.setProducts();
     },
     setProducts() {
+      this.page = 1;
       getProductList(
-        this.classificationId,
+        Number(this.classificationId),
+        this.selbrands,
+        this.sellabels,
+        this.keyword,
+        this.page
+      ).then(res => {
+        if (res.code === 1) {
+          this.sels=res.data.list;
+          if (res.data.list.length < 20) {
+            this.hasMore = false;
+          }
+        }
+      });
+    },
+    getMore() {
+      this.page++;
+      getProductList(
+        Number(this.classificationId),
         this.selbrands,
         this.sellabels,
         this.keyword,
@@ -163,10 +180,6 @@ export default {
           }
         }
       });
-    },
-    getMore() {
-      this.page++;
-      this.setProducts();
     }
   }
 };

@@ -12,16 +12,16 @@ module.exports = {
     proxyTable: {
       '/api': {
         // target: 'http://localhost:7001',
-        target: 'http://47.105.231.93/index.php',
+        target: 'http://47.89.182.155/index.php',
         changeOrigin: true
       },
       '/uploads': {
         // target: 'http://localhost:7001',
-        target: 'http://47.105.231.93',
+        target: 'http://47.89.182.155',
         changeOrigin: true
       }
     },
-
+ 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
     port: 3000, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
