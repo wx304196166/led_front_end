@@ -25,6 +25,7 @@ $bright: #fafafa;
       font-weight: 700;
       height: 57.1424px;
       line-height: 57.1424px;
+      background: #f5f5f5;
       > i {
         float: right;
         cursor: pointer;
@@ -33,7 +34,7 @@ $bright: #fafafa;
     .img-box {
       height: 228.5712px;
       position: relative;
-      left: -8px;
+      // left: -8px;
     }
     .spec {
       color: $bright;

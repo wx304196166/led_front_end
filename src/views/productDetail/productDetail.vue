@@ -157,8 +157,8 @@ export default {
       const BoxW = 490;
       const BoxH = 392;
       //显示鼠标指针的位置，-100让鼠标位置出现在div的中间
-      var x = e.pageX - offsetX - this.dragW / 2;
-      var y = e.pageY - offsetY - this.dragH + 10;
+      var x = e.pageX - offsetX + 10;
+      var y = e.pageY - offsetY - (this.dragH/2+10);
 
       if (x >= BoxW - this.dragW) {
         x = BoxW - this.dragW;
@@ -257,6 +257,10 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
+.page-container{
+  padding: 0;
+}
+
 .intro,
 .detail-box {
   padding: 20px 0;
@@ -446,8 +450,12 @@ export default {
     }
   }
 }
-
+</style>
+<style rel="stylesheet/scss" lang="scss">
 .detail-box {
   padding: 20px 5px;
+  p{
+    margin: 0;
+  }
 }
 </style>

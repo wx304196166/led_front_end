@@ -692,6 +692,17 @@ export default {
     },
     submitScheme() {
       const logintoken = this.$store.getters.token;
+      if (!logintoken) {
+        this.$alert("Please login first!", "Tip", {
+          confirmButtonText: "ok",
+          callback: action => {
+            /* if (action === "confirm") {
+              this.loginDialog = true;
+            } */            
+          }
+        });
+        return
+      }
       const sendData = {
         logintoken,
         scene: this.required.scenario,

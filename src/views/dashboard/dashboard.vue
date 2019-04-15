@@ -2,93 +2,163 @@
   <div class="dashboard">
     <div id="myCarousel" style="position:relative">
       <ul class="html5zoo-slides" style="display:none;">
-        <li v-for="item in imgList" :key="item"><img :src="item" /></li>
+        <li v-for="item in imgList" :key="item">
+          <img :src="item">
+        </li>
       </ul>
     </div>
     <div class="bg about" :style="{backgroundImage:`url(${About})`}">
       <div>
         <!-- <h1>About us!</h1> -->
         <div class="aboutUs">
-          <el-carousel :interval="4000" height="150px" arrow="never">
+          <!-- <el-carousel :interval="4000" height="200px" arrow="never">
             <el-carousel-item v-for="item in aboutUsLIst" :key="item">
               {{item}}
             </el-carousel-item>
-          </el-carousel>
+          </el-carousel>-->
+          <img :src="aboutUs" alt>
         </div>
         <div class="aboutbox">
           <div class="divide">
             <h1>Passion</h1>
-            <div class="imgBox"><img :src="About1" alt=""></div>
-            Solution Integration
+            <div class="imgBox">
+              <img :src="About1" alt>
+            </div>Solution Integration
             <div class="describe">Provide you with an integrated solution</div>
           </div>
           <div class="divide">
             <h1>Performance</h1>
-            <div class="imgBox"><img :src="About2" alt=""></div>
-            Craftsman Spirit
+            <div class="imgBox">
+              <img :src="About2" alt>
+            </div>Craftsman Spirit
             <div class="describe">Keep improving and constantly break through oneself</div>
           </div>
           <div class="divide">
             <h1>Professionalism</h1>
-            <div class="imgBox"><img :src="About3" alt=""></div>
-            Deep Service
+            <div class="imgBox">
+              <img :src="About3" alt>
+            </div>Deep Service
             <div class="describe">Customize proprietary integration solution services for each us</div>
           </div>
           <div class="divide">
             <h1>Perfection</h1>
-            <div class="imgBox"> <img :src="About4" alt=""> </div>
-            Perfessional technology
+            <div class="imgBox">
+              <img :src="About4" alt>
+            </div>Perfessional technology
             <div class="describe">hundreds of well-known strategic partners in the industry</div>
           </div>
         </div>
         <!-- <div class="submit">Watch more</div> -->
       </div>
-
     </div>
     <div class="case">
-      <div @mouseenter="control=true" @mouseleave="control=false">
-        <img :src="Case1" :class="{'img-hover':control}">
-        <div class="mask cover" :style="{backgroundImage:`url(${mask})`}" :class="{'mask-hover':control}">
-          <span class="title">This is a classic case</span>
-          <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Omnis, asperiores assumenda! Inventore labore officia possimus consequuntur eveniet! Quasi, quod aliquam quo dolor perspiciatis ducimus vero consequuntur, odio natus iure illum.</p>
+      <div @mouseenter="control1=true" @mouseleave="control1=false" @click="show(1)">
+        <img :src="Case1" :class="{'img-hover':control1}">
+        <div
+          class="mask cover"
+          :style="{backgroundImage:`url(${mask})`}"
+          :class="{'mask-hover':control1}"
+        >
+          <span class="title">2017 Jumeirah Palm Island</span>
+          <p>
+            Address: Jumeirah, Dubai, U.A.E
+            <br>Pixel Pitch: 6mm
+            <br>Screen Size：4m x 3m
+          </p>
         </div>
       </div>
-      <div><img :src="Case2"></div>
-      <div><img :src="Case3"></div>
+      <div @mouseenter="control2=true" @mouseleave="control2=false" @click="show(2)">
+        <img :src="Case2" :class="{'img-hover':control2}">
+        <div
+          class="mask cover"
+          :style="{backgroundImage:`url(${mask})`}"
+          :class="{'mask-hover':control2}"
+        >
+          <span class="title">akaful Emarat Insurance Head Office</span>
+          <p>
+            Project Year: 2018 <br>
+LED Screen Size: 4.6m2 <br>
+LED Screen Qty: 4 Indoor P2.5 LED Screen <br>
+Product: P2.5 Indoor Fixed Screen Panels <br>
+Location: Takaful Emarat Insurance Head Office, Dubai-UAE.
+          </p>
+        </div>
+      </div>
+      <div @mouseenter="control3=true" @mouseleave="control3=false" @click="show(3)">
+        <img :src="Case3" :class="{'img-hover':control3}">
+        <div
+          class="mask cover"
+          :style="{backgroundImage:`url(${mask})`}"
+          :class="{'mask-hover':control3}"
+        >
+          <span class="title">Zulekha Hospital</span>
+          <p>
+            Project Year: 2018 <br>
+LED Screen Size: 8.64×3.84 meter. <br>
+LED Screen Qty: 36 Outdoor P10 LED screen panels <br>
+Product: P10 Outdoor LED screen cabinets. <br>
+Location: Sharjah, UAE.
+          </p>
+        </div>
+      </div>
     </div>
+    <el-dialog :visible.sync="imgDialog" width="80%">
+      <img :src="caseSrc" alt="" width="100%">
+    </el-dialog>
   </div>
 </template>
 <script>
-import { play } from './play';
+import { play } from "./play";
 
-import Banner1 from '@/assets/img/home/banner1.jpg';
-import Banner2 from '@/assets/img/home/banner2.jpg';
-import Banner3 from '@/assets/img/home/banner3.jpg';
-import About from '@/assets/img/home/aboutBg.png';
-import Case1 from '@/assets/img/home/case1.png';
-import Case2 from '@/assets/img/home/case2.png';
-import Case3 from '@/assets/img/home/case3.png';
-import About1 from '@/assets/img/home/about1.png';
-import About2 from '@/assets/img/home/about2.png';
-import About3 from '@/assets/img/home/about3.png';
-import About4 from '@/assets/img/home/about4.png';
-import mask from '@/assets/img/home/mask.png';
+import Banner1 from "@/assets/img/home/banner1.jpg";
+import Banner2 from "@/assets/img/home/banner2.jpg";
+import Banner3 from "@/assets/img/home/banner3.jpg";
+import About from "@/assets/img/home/aboutBg.png";
+import Case1 from "@/assets/img/home/case1.png";
+import Case2 from "@/assets/img/home/case2.png";
+import Case3 from "@/assets/img/home/case3.png";
+import About1 from "@/assets/img/home/about1.png";
+import About2 from "@/assets/img/home/about2.png";
+import About3 from "@/assets/img/home/about3.png";
+import About4 from "@/assets/img/home/about4.png";
+import aboutUs from "@/assets/img/home/aboutUs.png";
+import mask from "@/assets/img/home/mask.png";
 export default {
-  name: 'Dashboard',
+  name: "Dashboard",
   data() {
     return {
-      imgList: [Banner1, Banner2, Banner3,],
-      aboutUsLIst: ['Xi’an Visual-Artisan is a leading international supplier, manufacturer and distributor of complete technology solutions to the live event, houses of worship, commercial, education and industrial sectors with the philosophy of providing only the highest quality, most technologically advanced solutions in order to ensure customer satisfaction and growth in North America, Europe, Middle East and Africa.','We are a dynamic, innovative company driven by passion, performance, professionalism and perfection. We believe that service, support, training, professional products and attitude are the foundations for customer satisfaction and company growth. “we supply the industry” is our company mission and aim. Supply means going far beyond simply selling products, it includes design, product service, training, technical support and more…'],
-      screenHeight: window.innerHeight + 'px',
-      About, Case1, Case2, Case3, About1, About2, About3, About4,
+      imgList: [Banner1, Banner2, Banner3],
+      aboutUsLIst: [
+        "Xi’an Visual-Artisan is a leading international supplier, manufacturer and distributor of complete technology solutions to the live event, houses of worship, commercial, education and industrial sectors with the philosophy of providing only the highest quality, most technologically advanced solutions in order to ensure customer satisfaction and growth in North America, Europe, Middle East and Africa.",
+        "We are a dynamic, innovative company driven by passion, performance, professionalism and perfection. We believe that service, support, training, professional products and attitude are the foundations for customer satisfaction and company growth. “we supply the industry” is our company mission and aim. Supply means going far beyond simply selling products, it includes design, product service, training, technical support and more…"
+      ],
+      screenHeight: window.innerHeight + "px",
+      About,
+      Case1,
+      Case2,
+      Case3,
+      About1,
+      About2,
+      About3,
+      About4,
+      aboutUs,
       mask,
-      control: false
+      imgDialog:false,
+      caseSrc:'',
+      control1: false,
+      control2: false,
+      control3: false
     };
   },
   mounted() {
     play();
+  },
+  methods:{
+    show(index){
+this.caseSrc=this['Case'+index];
+this.imgDialog=true;
+    }
   }
-
 };
 </script>
 
@@ -119,7 +189,7 @@ export default {
   margin: 50px auto 0;
 }
 .about {
-  height: 42.2857rem;
+  height: 700px;
   color: #fff;
   > div {
     margin: 0 auto;
@@ -131,11 +201,13 @@ export default {
     padding: 30px 0 20px 0;
   }
   .aboutUs {
-    opacity: 0.6;
+    opacity: 1;
     line-height: 40px;
-    margin-top:50px;
+    margin-top: 30px;
+    font-size: 16px;
   }
   .aboutbox {
+    margin-top: 10px;
     display: flex;
     flex-direction: row;
     & > span {
@@ -148,7 +220,8 @@ export default {
       text-align: center;
       .imgBox {
         width: 30%;
-        margin: 0 auto 20px;
+        margin: 0 auto;
+        height: 100px;
       }
       .describe {
         padding: 0 5px;
@@ -200,7 +273,7 @@ img {
 </style>
 <style rel="stylesheet/scss" lang="scss">
 .dashboard {
-  background:#000;
+  background: #000;
   .el-carousel__indicator {
     padding: 0 10px;
     .el-carousel__button {

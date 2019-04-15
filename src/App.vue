@@ -28,7 +28,7 @@
       </div>
     </div>
     <!-- login -->
-    <el-dialog :visible.sync="loginDialog" width="500px">
+    <el-dialog :visible.sync="loginDialog" width="350px">
       <el-form ref="loginForm" :model="loginForm" :rules="loginRules">
         <el-form-item label="Login name" prop="username" :label-width="formLabelWidth">
           <el-input v-model="loginForm.username"></el-input>
@@ -80,12 +80,12 @@
       <li class="logo bg" :style="{backgroundImage:`url(${logo})`}">
         <router-link to="/dashboard"/>
       </li>
-      <li v-for="(link,index) in routes" :key="link.path" class="link">
+      <li class="login-box gradient-font pointer">
+        <span v-if="nickname">Welcome, {{nickname}}!</span>
+        <span v-else @click.stop="loginDialog=true">Log In / Sign Up</span>
+      </li>
+      <li v-for="link in routes" :key="link.path" class="link">
         <span>
-          <span v-if="index===routes.length-1" class="login-box gradient-font pointer">
-            <span v-if="nickname">Welcome, {{nickname}}!</span>
-            <span v-else @click.stop="loginDialog=true">Log In / Sign Up</span>
-          </span>
           <span v-if="link.name==='Products'" class="pointer submenu-father">
             {{ link.meta.title }}
             <ul class="subMenu">
@@ -125,9 +125,14 @@
         </ul>
       </div>
       <div class="line">
-        <ul class="footLink">
+        <!-- <ul class="footLink">
           <li v-for="link in friends" :key="link.url" class="link">
             <a :href="link.url" target="_blank">{{ link.name }}</a>
+          </li>
+        </ul>-->
+        <ul class="footLink">
+          <li v-for="link in routes" :key="link.path" class="link">
+            <router-link :to="link.path">{{ link.name }}</router-link>
           </li>
         </ul>
         <span>Copyright © 2019 Artisan Visual. All rights reserved.</span>
@@ -212,12 +217,12 @@ export default {
         mobile: "",
         email: ""
       },
-      friends:[
-        {name:"PRG",url:"https://www.prg.com/"},
-        {name:"BARCO",url:"https://www.barco.com.cn/zh-CN/"},
-        {name:"ASTEL LED",url:"https://www.astelled.com.tr/"},
-        {name:"ANALOG WAY",url:"https://www.analogway.com/emea/"},
-        {name:"MIKYAJY",url:"http://www.kojamjoom.com/"}
+      friends: [
+        { name: "PRG", url: "https://www.prg.com/" },
+        { name: "BARCO", url: "https://www.barco.com.cn/zh-CN/" },
+        { name: "ASTEL LED", url: "https://www.astelled.com.tr/" },
+        { name: "ANALOG WAY", url: "https://www.analogway.com/emea/" },
+        { name: "MIKYAJY", url: "http://www.kojamjoom.com/" }
       ],
       loginRules: {
         username: [
@@ -273,14 +278,7 @@ export default {
           if (this.nickname) {
             break;
           } else {
-            this.$alert("Please login first!", "Tip", {
-              confirmButtonText: "ok",
-              callback: action => {
-                if (action === "confirm") {
-                  this.loginDialog = true;
-                }
-              }
-            });
+            this.$router.push({ path: "/integration", query: { id: "box" } });
             return;
           }
       }
@@ -492,9 +490,13 @@ export default {
   background: rgba($color: #000000, $alpha: 0.78);
   font-size: 1.1429rem;
   color: #fafafa;
+  padding: 0 10%;
 }
 .logo {
-  width: 12.8571rem;
+  position: absolute;
+  top: 7px;
+  left: 0;
+  width: 140px;
   cursor: pointer;
   a {
     width: 100%;
@@ -512,10 +514,10 @@ export default {
 .login-box {
   position: absolute;
   white-space: nowrap;
-  right: 0;
-  top: -20px;
-  font-size: 1rem;
-  line-height: 1.15rem;
+  right: 1.5%;
+  top: 0;
+  font-size: 16px;
+  line-height: 70px;
 }
 .register {
   float: right;

@@ -38,7 +38,8 @@ export default {
     width: 100%;
   }
   &:hover {
-    border: 1px solid #a549a5;
+    // border: 1px solid #a549a5;
+    border: 1px solid transparent;
     box-shadow: none;
     color: #fff;
     .productSummary {
