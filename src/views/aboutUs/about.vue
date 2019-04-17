@@ -2,14 +2,14 @@
   <div>
     <div id="map_div"></div>
     <div class="page-container box">
-      <div class="marginTop"><i class="el-icon-loading" /> Headquarter</div>
+      <div class="marginTop"><img src="@/assets/img/ab1.png"> Headquarter</div>
       <div><i class="el-icon-phone-outline" /> +86 13109563986</div>
       <div><i class="el-icon-printer" /> +86 (029) 84187879</div>
       <div><i class="el-icon-message" />  .....@.....</div>
       <div> <i data-v-9ece6142="" class="el-icon-location"></i> Room 11928, Unit 1, Building2, I-City Block, No.11 ofTang Yan South Road, Zhangba Street office, Hi-tech Zone, Xi'an, China
       <li></li>
       </div>
-      <div class="marginTop"><i class="el-icon-loading" /> Warehouse</div>
+      <div class="marginTop"><img src="@/assets/img/ab2.png"> Warehouse</div>
       <div><i class="el-icon-phone-outline" /> +86 185 9193 2311</div>
       <div> <i data-v-9ece6142="" class="el-icon-location"></i> No.13 E&T Development Zone Fengcheng Two Street, Xi'an, China
       <li></li>

@@ -24,29 +24,38 @@
             <div class="imgBox">
               <img :src="About1" alt>
             </div>
-            <div class="describe">We take personal pride and ownership in all we do. We seek fact-based, root cause solutions; not blame. For continued success, we must all work together to continually improve ourselves, our jobs and processes, and our company.
-</div>
+            <div style='width:225px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;'
+                 title='We take personal pride and ownership in all we do. We seek fact-based, root cause solutions; not blame. For continued success, we must all work together to continually improve ourselves, our jobs and processes, and our company.
+ ' class="describe">
+              We take personal pride and ownership in all we do. We seek fact-based, root cause solutions; not blame. For continued success, we must all work together to continually improve ourselves, our jobs and processes, and our company.
+            </div>
           </div>
           <div class="divide">
             <h1>Performance</h1>
             <div class="imgBox">
               <img :src="About2" alt>
             </div>
-            <div style='width:220px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;' title='We focused on exceeding all customer expectations. We determine our priorities and strategy based on voice-of-customer. ' class="describe">We focused on exceeding all customer expectations. We determine our priorities and strategy based on voice-of-customer. </div>
-          </div>
-          <div class="divide">
-            <h1>Profession</h1>
-            <div class="imgBox">
-              <img :src="About3" alt>
-            </div>
-            <div class="describe">Customize proprietary integration solution services for each us</div>
+            <div style='width:225px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;'
+                 title='We focused on exceeding all customer expectations. We determine our priorities and strategy based on voice-of-customer. ' class="describe">
+              We focused on exceeding all customer expectations. We determine our priorities and strategy based on voice-of-customer. </div>
           </div>
           <div class="divide">
             <h1>Perfection</h1>
             <div class="imgBox">
+              <img :src="About3" alt>
+            </div>
+            <div style='width:225px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;'
+                 title='We partner with our customers, making them competitive by delivering the best value, technology, and service. ' class="describe">
+              We partner with our customers, making them competitive by delivering the best value, technology, and service. </div>
+          </div>
+          <div class="divide">
+            <h1>Profession</h1>
+            <div class="imgBox">
               <img :src="About4" alt>
             </div>
-            <div class="describe">hundreds of well-known strategic partners in the industry</div>
+            <div style='width:225px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;'
+                 title='We committed to design, manufacture, and ship only products of the highest quality and workmanship.  ' class="describe">
+              We committed to design, manufacture, and ship only products of the highest quality and workmanship.  </div>
           </div>
         </div>
         <!-- <div class="submit">Watch more</div> -->
