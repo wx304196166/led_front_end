@@ -53,8 +53,8 @@ export const constantRouterMap = [
     component: integration
   },
   {
-    path: '/integrationSummary',
-    name: 'integrationSummary',
+    path: '/integration',
+    name: 'Integration',
     meta: {
       title: 'Integration'
     },
@@ -72,7 +72,7 @@ export const constantRouterMap = [
     path: '/aboutus',
     name: 'About us',
     meta: {
-      title: 'About us'
+      title: 'Contact'
     },
     component: aboutUs
   },

@@ -2,15 +2,18 @@
   <div>
     <div id="map_div"></div>
     <div class="page-container box">
-      <div class="marginTop">Headquarters</div>
+      <div class="marginTop"><i class="el-icon-loading" /> Headquarter</div>
       <div><i class="el-icon-phone-outline" /> +86 13109563986</div>
-      <div><i class="el-icon-printer" /> +86 (0)29 84187879</div>
-      <div>Room 11928, Unit 1, Building2, I-City Block,</div>
-      <div>No. 11 of Tang Yan South Road,</div>
-      <div>Zhangba Street office, Hi-tech zone, Xi'an, Shaanxi</div>
-      <div class="marginTop">Warehouse</div>
+      <div><i class="el-icon-printer" /> +86 (029) 84187879</div>
+      <div><i class="el-icon-message" />  .....@.....</div>
+      <div> <i data-v-9ece6142="" class="el-icon-location"></i> Room 11928, Unit 1, Building2, I-City Block, No.11 ofTang Yan South Road, Zhangba Street office, Hi-tech Zone, Xi'an, China
+      <li></li>
+      </div>
+      <div class="marginTop"><i class="el-icon-loading" /> Warehouse</div>
       <div><i class="el-icon-phone-outline" /> +86 185 9193 2311</div>
-      <div>NO.13 E&T DEVELOPING ZONE FENGCHENG TWO STREET,XI'AN CHINA</div>
+      <div> <i data-v-9ece6142="" class="el-icon-location"></i> No.13 E&T Development Zone Fengcheng Two Street, Xi'an, China
+      <li></li>
+      </div>
     </div>
   </div>
 </template>
@@ -29,7 +32,7 @@ export default {
 @import "./style.scss";
 #map_div {
   width: 100%;
-  height: 400px;
+  height: 439px;
   margin-top: 70px;
 }
 </style>

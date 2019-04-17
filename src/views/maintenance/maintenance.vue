@@ -67,7 +67,7 @@
             </li>
             <li>
               <el-table :data="table" border style="width: 100%">
-            
+
                 <el-table-column prop="name" label="Name" >
                 <template slot-scope="scope">
                   <span @click="jump(scope.row.product_id)" style="cursor:pointer">{{scope.row.name}}</span>
@@ -168,7 +168,7 @@ export default {
     background: linear-gradient(74deg, #49007c, #e70088);
     color: #fff;
     text-align: center;
-    border-radius: 5px; 
+    border-radius: 5px;
     cursor: pointer;
   }
 }
@@ -176,7 +176,7 @@ export default {
   width: 300px;
   height: 250px;
   margin: 50px auto 0;
-  border: 1px solid #999;
+  //border: 1px solid #999;
   cursor: pointer;
 }
 .searchInput {

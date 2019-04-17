@@ -491,6 +491,7 @@ export default {
   font-size: 1.1429rem;
   color: #fafafa;
   padding: 0 10%;
+  font-weight:bold;
 }
 .logo {
   position: absolute;
@@ -498,6 +499,7 @@ export default {
   left: 0;
   width: 140px;
   cursor: pointer;
+  margin-left:30px;
   a {
     width: 100%;
     height: 100%;
@@ -516,7 +518,7 @@ export default {
   white-space: nowrap;
   right: 1.5%;
   top: 0;
-  font-size: 16px;
+  font-size: 12px;
   line-height: 70px;
 }
 .register {

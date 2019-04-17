@@ -23,28 +23,29 @@
             <h1>Passion</h1>
             <div class="imgBox">
               <img :src="About1" alt>
-            </div>Solution Integration
-            <div class="describe">Provide you with an integrated solution</div>
+            </div>
+            <div class="describe">We take personal pride and ownership in all we do. We seek fact-based, root cause solutions; not blame. For continued success, we must all work together to continually improve ourselves, our jobs and processes, and our company.
+</div>
           </div>
           <div class="divide">
             <h1>Performance</h1>
             <div class="imgBox">
               <img :src="About2" alt>
-            </div>Craftsman Spirit
-            <div class="describe">Keep improving and constantly break through oneself</div>
+            </div>
+            <div style='width:220px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;' title='We focused on exceeding all customer expectations. We determine our priorities and strategy based on voice-of-customer. ' class="describe">We focused on exceeding all customer expectations. We determine our priorities and strategy based on voice-of-customer. </div>
           </div>
           <div class="divide">
-            <h1>Professionalism</h1>
+            <h1>Profession</h1>
             <div class="imgBox">
               <img :src="About3" alt>
-            </div>Deep Service
+            </div>
             <div class="describe">Customize proprietary integration solution services for each us</div>
           </div>
           <div class="divide">
             <h1>Perfection</h1>
             <div class="imgBox">
               <img :src="About4" alt>
-            </div>Perfessional technology
+            </div>
             <div class="describe">hundreds of well-known strategic partners in the industry</div>
           </div>
         </div>
@@ -59,9 +60,9 @@
           :style="{backgroundImage:`url(${mask})`}"
           :class="{'mask-hover':control1}"
         >
-          <span class="title">2017 Jumeirah Palm Island</span>
+          <span class="title"> Jumeirah Palm Island</span>
           <p>
-            Address: Jumeirah, Dubai, U.A.E
+            Location: Jumeirah, Dubai, U.A.E
             <br>Pixel Pitch: 6mm
             <br>Screen Size：4m x 3m
           </p>
@@ -74,13 +75,11 @@
           :style="{backgroundImage:`url(${mask})`}"
           :class="{'mask-hover':control2}"
         >
-          <span class="title">akaful Emarat Insurance Head Office</span>
+          <span class="title">Takaful Emarat Insurance HO</span>
           <p>
-            Project Year: 2018 <br>
-LED Screen Size: 4.6m2 <br>
-LED Screen Qty: 4 Indoor P2.5 LED Screen <br>
-Product: P2.5 Indoor Fixed Screen Panels <br>
-Location: Takaful Emarat Insurance Head Office, Dubai-UAE.
+          Location: TEI Head Office, Dubai, U.A.E.<br>
+          Pixel Pitch: 2.5mm <br>
+          Screen Size: 2.3m x 2m <br>
           </p>
         </div>
       </div>
@@ -91,13 +90,11 @@ Location: Takaful Emarat Insurance Head Office, Dubai-UAE.
           :style="{backgroundImage:`url(${mask})`}"
           :class="{'mask-hover':control3}"
         >
-          <span class="title">Zulekha Hospital</span>
-          <p>
-            Project Year: 2018 <br>
-LED Screen Size: 8.64×3.84 meter. <br>
-LED Screen Qty: 36 Outdoor P10 LED screen panels <br>
-Product: P10 Outdoor LED screen cabinets. <br>
-Location: Sharjah, UAE.
+          <span class="title">Jumeirah Palm Island</span>
+        <p>
+            Location: Jumeirah, Dubai, U.A.E
+            <br>Pixel Pitch: 6mm
+            <br>Screen Size：4m x 3m
           </p>
         </div>
       </div>
@@ -201,7 +198,7 @@ this.imgDialog=true;
     padding: 30px 0 20px 0;
   }
   .aboutUs {
-    opacity: 1;
+    opacity: 0.6;
     line-height: 40px;
     margin-top: 30px;
     font-size: 16px;
