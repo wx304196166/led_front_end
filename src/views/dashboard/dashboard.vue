@@ -24,38 +24,28 @@
             <div class="imgBox">
               <img :src="About1" alt>
             </div>
-            <div style='width:225px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;'
-                 title='We take personal pride and ownership in all we do. We seek fact-based, root cause solutions; not blame. For continued success, we must all work together to continually improve ourselves, our jobs and processes, and our company.
- ' class="describe">
-              We take personal pride and ownership in all we do. We seek fact-based, root cause solutions; not blame. For continued success, we must all work together to continually improve ourselves, our jobs and processes, and our company.
-            </div>
+            <div data-v-35f55fd3="" class="describe">Pride and ownership taken.</div>
           </div>
           <div class="divide">
             <h1>Performance</h1>
             <div class="imgBox">
               <img :src="About2" alt>
             </div>
-            <div style='width:225px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;'
-                 title='We focused on exceeding all customer expectations. We determine our priorities and strategy based on voice-of-customer. ' class="describe">
-              We focused on exceeding all customer expectations. We determine our priorities and strategy based on voice-of-customer. </div>
-          </div>
-          <div class="divide">
-            <h1>Perfection</h1>
-            <div class="imgBox">
-              <img :src="About3" alt>
-            </div>
-            <div style='width:225px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;'
-                 title='We partner with our customers, making them competitive by delivering the best value, technology, and service. ' class="describe">
-              We partner with our customers, making them competitive by delivering the best value, technology, and service. </div>
+            <div data-v-35f55fd3="" class="describe">Priority and strategy determined.</div>
           </div>
           <div class="divide">
             <h1>Profession</h1>
             <div class="imgBox">
               <img :src="About4" alt>
             </div>
-            <div style='width:225px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;'
-                 title='We committed to design, manufacture, and ship only products of the highest quality and workmanship.  ' class="describe">
-              We committed to design, manufacture, and ship only products of the highest quality and workmanship.  </div>
+            <div data-v-35f55fd3="" class="describe">The highest quality delivered.</div>
+          </div>
+          <div class="divide">
+            <h1>Perfection</h1>
+            <div class="imgBox">
+              <img :src="About3" alt>
+            </div>
+            <div data-v-35f55fd3="" class="describe">The best value committed.</div>
           </div>
         </div>
         <!-- <div class="submit">Watch more</div> -->
@@ -69,11 +59,11 @@
           :style="{backgroundImage:`url(${mask})`}"
           :class="{'mask-hover':control1}"
         >
-          <span class="title"> Jumeirah Palm Island</span>
+          <span class="title"> Music Event</span>
           <p>
-            Location: Jumeirah, Dubai, U.A.E
-            <br>Pixel Pitch: 6mm
-            <br>Screen Size：4m x 3m
+            Location: Charlotte，USA
+            <br>Pixel Pitch: 2.9mm
+            <br>Screen Size：5m x 3.5m
           </p>
         </div>
       </div>
@@ -232,8 +222,8 @@ this.imgDialog=true;
       .describe {
         padding: 0 5px;
         margin-top: 10px;
-        text-align: left;
-        opacity: 0.3;
+        text-align: center;
+        opacity: 0.5;
       }
     }
   }
