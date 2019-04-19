@@ -189,7 +189,7 @@ this.imgDialog=true;
   color: #fff;
   > div {
     margin: 0 auto;
-    width: 60%;
+    width: 70%;
     overflow: hidden;
   }
   h1 {

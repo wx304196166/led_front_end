@@ -5,7 +5,9 @@
     <div class="page-container">
       <div class="productBrand">
         <!-- brand -->
-        <span class="brand">Brand:</span>
+        <span class="all" @click="selFunc('brands',{ id: 'all', name: 'all' })">
+          <img :src="brandImg" alt>
+        </span>
         <div class="brandBox" :class="{fold:toggleBrand}">
           <span
             v-for="item in brands"
@@ -33,7 +35,9 @@
         </span>
       </div>
       <div class="productBrand">
-        <span class="brand">Label:&nbsp;</span>
+        <span class="all" @click="selFunc('labels',{ id: 'all', name: 'all' })">
+          <img :src="labelImg" alt>
+        </span>
         <div class="brandBox" :class="{fold:toggleLabel}">
           <span
             v-for="item in labels"
@@ -63,6 +67,8 @@
 import SingleProduct from "./singleProduct";
 import Banner from "@/components/Banner/banner";
 import { getCascadeBrandLable, getProductList } from "@/api/product";
+import brandImg from "@/assets/img/products/brand.png";
+import labelImg from "@/assets/img/products/label.png";
 
 export default {
   name: "Products",
@@ -72,15 +78,17 @@ export default {
       toggleBrand: true,
       toggleLabel: true,
       classificationMap: {},
-      labels: [{ id: "all", name: "all" }],
-      brands: [{ id: "all", name: "all" }],
+      labels: [],
+      brands: [],
       products: [],
       selbrands: ["all"],
       sellabels: ["all"],
       sels: [],
       keyword: "",
       page: 1,
-      hasMore: true
+      hasMore: true,
+      brandImg,
+      labelImg
     };
   },
   computed: {
@@ -104,13 +112,13 @@ export default {
     setList() {
       getCascadeBrandLable(this.classificationId).then(res => {
         if (res.code === 1) {
-          let brandArr = [{ id: "all", name: "all" }].concat(res.data.brands);
+          let brandArr = res.data.brands;
           this.brands = brandArr.map(item => {
             const flag = item.id === "all" ? true : false;
             this.$set(item, "active", flag);
             return item;
           });
-          let labelArr = [{ id: "all", name: "all" }].concat(res.data.lables);
+          let labelArr = res.data.lables;
           this.labels = labelArr.map(item => {
             const flag = item.id === "all" ? true : false;
             this.$set(item, "active", flag);
@@ -125,26 +133,21 @@ export default {
       });
     },
     selFunc(tag, item) {
-      if (item.id === "all" && item.active === true) {
-        return;
-      }
       if (item.id === "all") {
         for (const obj of this[tag]) {
           obj.active = false;
         }
-        item.active = true;
         this["sel" + tag] = ["all"];
       } else {
-        this[tag][0].active = false;
         item.active = !item.active;
         this["sel" + tag] = [];
+
         for (const obj of this[tag]) {
           if (obj.active) {
             this["sel" + tag].push(obj.id);
           }
         }
       }
-      this.page = 1;
       this.setProducts();
     },
     setProducts() {
@@ -157,9 +160,11 @@ export default {
         this.page
       ).then(res => {
         if (res.code === 1) {
-          this.sels=res.data.list;
+          this.sels = res.data.list;
           if (res.data.list.length < 20) {
             this.hasMore = false;
+          } else {
+            this.hasMore = true;
           }
         }
       });
@@ -174,7 +179,7 @@ export default {
         this.page
       ).then(res => {
         if (res.code === 1) {
-          this.sels=this.sels.concat(res.data.list);
+          this.sels = this.sels.concat(res.data.list);
           if (res.data.list.length < 20) {
             this.hasMore = false;
           }
@@ -200,14 +205,16 @@ export default {
 }
 .productBrand {
   margin: 20px 0;
-  .brand {
-    font-weight: 700;
+  .all {
     display: inline-block;
     padding: 0 10px;
+    width: 80px;
     height: 40px;
     line-height: 40px;
-    background-color: #eee;
-    border-radius: 4px;
+    cursor: pointer;
+    img {
+      width: 100%;
+    }
   }
   .brandBox {
     display: inline-block;

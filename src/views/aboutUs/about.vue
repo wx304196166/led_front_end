@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { setMap } from './amap.js';
+import { setMap } from './gmap.js';
 export default {
   name: 'About',
   mounted() {

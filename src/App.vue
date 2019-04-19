@@ -80,7 +80,11 @@
       <li class="logo bg" :style="{backgroundImage:`url(${logo})`}">
         <router-link to="/dashboard"/>
       </li>
-      <li class="login-box gradient-font pointer">
+      <li
+        :title="nickname?'Click to Log out':''"
+        @click="logoutFun"
+        class="login-box gradient-font pointer"
+      >
         <span v-if="nickname">Welcome, {{nickname}}!</span>
         <span v-else @click.stop="loginDialog=true">Log In / Sign Up</span>
       </li>
@@ -267,6 +271,13 @@ export default {
   methods: {
     toggleShare() {
       this.$store.dispatch("ToggleShare");
+    },
+    logoutFun() {
+      if (this.nickname) {
+        this.$store.dispatch("LogOut").then(() => {
+          this.$message.success("Log out succeeded");
+        });
+      }
     },
     jump(path, id) {
       switch (path) {
@@ -491,7 +502,7 @@ export default {
   font-size: 1.1429rem;
   color: #fafafa;
   padding: 0 10%;
-  font-weight:bold;
+  font-weight: bold;
 }
 .logo {
   position: absolute;
@@ -499,7 +510,7 @@ export default {
   left: 0;
   width: 140px;
   cursor: pointer;
-  margin-left:30px;
+  margin-left: 30px;
   a {
     width: 100%;
     height: 100%;
@@ -520,6 +531,7 @@ export default {
   top: 0;
   font-size: 12px;
   line-height: 70px;
+  // z-index: 3100;
 }
 .register {
   float: right;
