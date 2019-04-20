@@ -110,7 +110,7 @@
     </div>
     <div class="foot page-container">
       <div>
-        <h1>VisualArtisan</h1>
+        <h1>Visual-Artisan</h1>
         <ul class="linkOther">
           <li class="-mob-share-facebook">
             <img :src="Foot1">
@@ -139,7 +139,7 @@
             <router-link :to="link.path">{{ link.name }}</router-link>
           </li>
         </ul>
-        <span>Copyright © 2019 Artisan Visual. All rights reserved.</span>
+        <span>Copyright © 2019 Visual Artisan. All rights reserved.</span>
       </div>
     </div>
   </div>
