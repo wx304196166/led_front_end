@@ -110,7 +110,7 @@
     </div>
     <div class="foot page-container">
       <div>
-        <h1>Visual-Artisan</h1>
+        <h1>Visual Artisan</h1>
         <ul class="linkOther">
           <li class="-mob-share-facebook">
             <img :src="Foot1">
