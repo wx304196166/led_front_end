@@ -221,7 +221,7 @@ this.imgDialog=true;
       }
       .describe {
         padding: 0 5px;
-        margin-top: 10px;
+        margin-top: 30px;
         text-align: center;
         opacity: 0.5;
       }
