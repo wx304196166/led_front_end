@@ -69,8 +69,8 @@ $bright: #fafafa;
               margin-right: 5%;
             }
             .label{
-              width: 65px;
-            }            
+              width: 100px;
+            }
             .unit {
               text-align: center;
               width: 30px;
@@ -92,10 +92,10 @@ $bright: #fafafa;
               border-radius: 16px;
               cursor: pointer;
             }
-          }          
+          }
           .cabinets {
             height: 35px;
-            overflow: hidden;            
+            overflow: hidden;
           }
           .more {
             color: #e70088;
@@ -138,9 +138,9 @@ $bright: #fafafa;
         display: flex;
         flex-wrap: wrap;
         background: #000;
-        
+
         justify-content: center;
-        align-items: center;       
+        align-items: center;
       }
     }
     .bar {
@@ -210,7 +210,7 @@ $bright: #fafafa;
     font-weight: normal;
     border: none;
   } */
-  
+
 }
 .submit {
   text-align: center;
@@ -230,7 +230,7 @@ $bright: #fafafa;
   flex: 1;
   display: flex;
   text-decoration: underline;
-  flex-wrap: wrap;  
+  flex-wrap: wrap;
   line-height: 35px;
   > li {
     margin-right: 15px;

@@ -412,6 +412,7 @@ export default {
     overflow: hidden;
     padding: 0 15px;
     cursor: pointer;
+    font-weight:initial;
   }
 }
 .submenu-father {

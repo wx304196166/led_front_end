@@ -5,7 +5,7 @@
       <div class="search-box">
         <el-select v-model="type" placeholder="please select search type">
           <el-option label="Serial Number" value="sn"/>
-          <el-option label="Contract or Maintenance" value="ma"/>
+          <el-option label="PI Number/RMA Number" value="ma"/>
         </el-select>
         <div class="input">
           <el-input
@@ -34,11 +34,11 @@
               {{model.type}}
             </li>
             <li>
-              <span>Contract number:</span>
+              <span>PI Number:</span>
               {{contract_no}}
             </li>
             <li>
-              <span>Maintenance number:</span>
+              <span>RMA Number:</span>
               {{maintenance_no}}
             </li>
             <li>
@@ -58,11 +58,11 @@
         <div v-if="type==='ma'&&table.length">
           <ul class="maintenance-list">
             <li>
-              <span>Contract number:</span>
+              <span>PI Number:</span>
               {{contract_no}}
             </li>
             <li>
-              <span>Maintenance number:</span>
+              <span>RMA Number:</span>
               {{maintenance_no}}
             </li>
             <li>

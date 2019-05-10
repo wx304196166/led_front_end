@@ -24,28 +24,28 @@
             <div class="imgBox">
               <img :src="About1" alt>
             </div>
-            <div data-v-35f55fd3="" class="describe">Pride and ownership taken.</div>
+            <div data-v-35f55fd3="" class="describe">Pride and ownership taken</div>
           </div>
           <div class="divide">
             <h1>Performance</h1>
             <div class="imgBox">
               <img :src="About2" alt>
             </div>
-            <div data-v-35f55fd3="" class="describe">Priority and strategy determined.</div>
+            <div data-v-35f55fd3="" class="describe">Priority and strategy determined</div>
           </div>
           <div class="divide">
             <h1>Profession</h1>
             <div class="imgBox">
               <img :src="About4" alt>
             </div>
-            <div data-v-35f55fd3="" class="describe">The highest quality delivered.</div>
+            <div data-v-35f55fd3="" class="describe">The highest quality delivered</div>
           </div>
           <div class="divide">
             <h1>Perfection</h1>
             <div class="imgBox">
               <img :src="About3" alt>
             </div>
-            <div data-v-35f55fd3="" class="describe">The best value committed.</div>
+            <div data-v-35f55fd3="" class="describe">The best value committed</div>
           </div>
         </div>
         <!-- <div class="submit">Watch more</div> -->

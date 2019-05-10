@@ -31,7 +31,7 @@
                         <el-option label="outdoor" value="outdoor"/>
                       </el-select>
                     </li>
-                    <li class="label">Spacing</li>
+                    <li class="label">Pixel Pitch</li>
                     <li class="condition">
                       <el-select
                         v-model="required.spacing_id"
@@ -49,15 +49,15 @@
                     </li>
                   </ul>
                   <ul>
-                    <li class="label">Type</li>
+                    <li class="label">Screen Type</li>
                     <li class="condition margin-r">
                       <el-select
                         v-model="optional.type"
                         placeholder="please select"
                         style="width:100%"
                       >
-                        <el-option label="resolving power" value="power"/>
-                        <el-option label="size" value="size"/>
+                        <el-option label="Screen Resolution" value="power"/>
+                        <el-option label="Screen Size" value="size"/>
                       </el-select>
                     </li>
                     <li class="condition">
@@ -698,7 +698,7 @@ export default {
           callback: action => {
             /* if (action === "confirm") {
               this.loginDialog = true;
-            } */            
+            } */
           }
         });
         return
