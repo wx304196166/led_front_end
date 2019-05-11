@@ -4,9 +4,11 @@
     <div v-show="shareDialog" class="share-box" @click.self="toggleShare">
       <div>
         <ul class="share">
-          <li class="-mob-share-linkedin">
-            <img :src="Linkedin" alt>
-            <span>Linkedin</span>
+          <li class="-mob-share-line">
+            <a href="https://line.me/zh-hans/ " target="_blank">
+              <img :src="Linkedin">
+            </a>
+            <span>Line</span>
           </li>
           <li class="-mob-share-instapaper">
             <img :src="Instapaper" alt>
@@ -115,8 +117,10 @@
           <li class="-mob-share-facebook">
             <img :src="Foot1">
           </li>
-          <li class="-mob-share-linkedin">
-            <img :src="Foot3">
+          <li class="-mob-share-line">            
+            <a href="https://line.me/zh-hans/ " target="_blank">
+              <img :src="Foot3">
+            </a>
           </li>
           <li class="-mob-share-twitter">
             <img :src="Foot4">

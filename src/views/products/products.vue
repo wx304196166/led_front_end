@@ -139,12 +139,18 @@ export default {
         }
         this["sel" + tag] = ["all"];
       } else {
-        item.active = !item.active;
-        this["sel" + tag] = [];
-
+        // item.active = !item.active;
+        // this["sel" + tag] = [];
+        // debugger;
         for (const obj of this[tag]) {
-          if (obj.active) {
+          if (obj.id===item.id) {
+            // 改为单选
+            this["sel" + tag] = [];
+
             this["sel" + tag].push(obj.id);
+            obj.active=true;
+          } else {
+            obj.active = false;
           }
         }
       }
