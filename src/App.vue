@@ -5,7 +5,7 @@
       <div>
         <ul class="share">
           <li class="-mob-share-line">
-            <a href="https://line.me/zh-hans/ " target="_blank">
+            <a href="https://www.linkedin.com/company/14605659/admin/" target="_blank">
               <img :src="Linkedin">
             </a>
             <span>Line</span>
@@ -117,8 +117,8 @@
           <li class="-mob-share-facebook">
             <img :src="Foot1">
           </li>
-          <li class="-mob-share-line">            
-            <a href="https://line.me/zh-hans/ " target="_blank">
+          <li class="-mob-share-line">
+            <a href="https://www.linkedin.com/company/14605659/admin/" target="_blank">
               <img :src="Foot3">
             </a>
           </li>

@@ -23,7 +23,7 @@
           @click="toggleBrand = !toggleBrand"
         />
         <!-- search -->
-         搜索问题先注掉 <span class="search">
+          <span class="search">
           <input
             v-model="keyword"
             @keyup="setProducts"
